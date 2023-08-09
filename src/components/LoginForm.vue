@@ -7,9 +7,13 @@ import {
 	NInput,
 	NButton,
 	useMessage,
+	useNotification,
 } from 'naive-ui';
+import authApi from '../services/apis/backend/authApi';
+import { useAuthStore } from '../stores/authStore';
 
 const msg = useMessage();
+const notif = useNotification();
 
 const loginFormRef = ref();
 const loginFormModel = ref({
@@ -49,17 +53,31 @@ function isValidEmail() {
 }
 
 function handleLogin() {
-	loginFormRef.value?.validate((err) => {
+	loginFormRef.value?.validate(async (err) => {
 		if (err) return msg.error("Invalid form!");
 
-		msg.success("Form is valid!");
+		const credentials = {
+			email: loginFormModel.value.email,
+			password: loginFormModel.value.password,
+		};
+
+		try {
+			const attempt = await authApi.login(credentials);
+			console.log(attempt);
+			useAuthStore().checkAuth();
+		} catch (err) {
+			msg.error('Login failed');
+		}
+
+
+
 	});
 }
 
 onMounted(() => {
-	loginFormModel.value.email = 'text@example.com';
+	loginFormModel.value.email = 'test@example.com';
 	loginFormModel.value.password = 'password';
-})
+});
 
 </script>
 

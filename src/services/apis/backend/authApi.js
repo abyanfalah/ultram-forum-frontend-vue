@@ -1,3 +1,4 @@
+import axios from "axios";
 import backendApi from "./api";
 const api = backendApi;
 const url = api.defaults.baseURL;
@@ -12,7 +13,8 @@ export default {
 			return false;
 		}
 	},
-	login(credential) {
+	async login(credential) {
+		axios.get(`${url}/sanctum/csrf-cookie`);
 		return api.post(`${url}/login`, credential);
 	}
 };

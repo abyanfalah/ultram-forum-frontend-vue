@@ -32,18 +32,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
+	useAuthStore().checkAuth();
 	const isLogin = useAuthStore().isLogin;
 	console.log(isLogin);
-
-	if (isLogin) {
-		if (to.meta.authPage) {
-			return { name: 'home' };
-		}
-	} else {
-		if (!to.meta.authPage || to.meta.guarded) {
-			return { name: 'auth' };
-		}
-	}
+	if (isLogin && to.meta.authPage == true) { router.replace({ name: 'home' }); }
+	else if (isLogin == false && to.meta.authPage == false) { return { name: 'auth' }; }
 
 });
 

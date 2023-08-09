@@ -4,6 +4,7 @@ import './assets/tailwindOutput.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 
 import App from './App.vue';
@@ -15,10 +16,11 @@ meta.name = 'naive-ui-style';
 document.head.appendChild(meta);
 
 const app = createApp(App);
+const pinia = createPinia();
 
+pinia.use(piniaPluginPersistedstate);
 
-
-app.use(createPinia());
+app.use(pinia);
 app.use(router);
 
 app.mount('#app');
