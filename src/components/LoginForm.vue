@@ -1,0 +1,94 @@
+<script setup>
+import { onMounted, ref } from 'vue';
+
+import {
+	NForm,
+	NFormItemRow,
+	NInput,
+	NButton,
+	useMessage,
+} from 'naive-ui';
+
+const msg = useMessage();
+
+const loginFormRef = ref();
+const loginFormModel = ref({
+	email: '',
+	password: '',
+});
+const loginFormRules = {
+	email: [
+		{
+			required: true,
+			message: "Email is required!",
+			trigger: ["input", "blur"],
+		},
+		{
+			validator: isValidEmail,
+			message: "Email is not valid!",
+			trigger: ["blur"],
+		},
+	],
+	password: [
+		{
+			required: true,
+			message: "Password is required!",
+			trigger: ['blur'],
+		},
+	],
+};
+
+
+function isValidEmail() {
+	const email = loginFormModel.value.email;
+
+	if (!email) return;
+
+	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return !!re.test(String(email).toLowerCase());
+}
+
+function handleLogin() {
+	loginFormRef.value?.validate((err) => {
+		if (err) return msg.error("Invalid form!");
+
+		msg.success("Form is valid!");
+	});
+}
+
+onMounted(() => {
+	loginFormModel.value.email = 'text@example.com';
+	loginFormModel.value.password = 'password';
+})
+
+</script>
+
+<template>
+	<NForm ref="loginFormRef"
+		:model="loginFormModel"
+		:rules="loginFormRules"
+		class="my-4">
+
+		<NFormItemRow label="Email"
+			path="email">
+			<NInput v-model:value="loginFormModel.email"
+				placeholder="example@mail.com"
+				type="email" />
+		</NFormItemRow>
+
+		<NFormItemRow label="Password"
+			path="password">
+			<NInput v-model:value="loginFormModel.password"
+				type="password"
+				placeholder="Password" />
+		</NFormItemRow>
+
+	</NForm>
+
+	<NButton @click="handleLogin"
+		type="primary"
+		block
+		strong>
+		Login
+	</NButton>
+</template>
