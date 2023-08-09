@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import { useAuthStore } from '../stores/authStore';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +8,7 @@ const router = createRouter({
 		{
 			path: '/',
 			name: 'home',
-			component: HomeView
+			component: HomeView,
 		},
 		{
 			path: '/about',
@@ -22,9 +23,29 @@ const router = createRouter({
 		{
 			path: '/auth',
 			name: 'auth',
+			meta: {
+				authPage: true,
+			},
 			component: () => import('../views/AuthView.vue')
 		},
 	]
 });
+
+router.beforeEach((to, from) => {
+	const isLogin = useAuthStore().isLogin;
+	console.log(isLogin);
+
+	if (isLogin) {
+		if (to.meta.authPage) {
+			return { name: 'home' };
+		}
+	} else {
+		if (!to.meta.authPage || to.meta.guarded) {
+			return { name: 'auth' };
+		}
+	}
+
+});
+
 
 export default router;
