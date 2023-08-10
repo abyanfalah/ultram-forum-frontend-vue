@@ -69,6 +69,8 @@ function handleLogin() {
 
 			if (loginResponse?.status == 204 || loginResponse?.status == 200) {
 				authStore.isLogin = true;
+
+
 				router.replace({ name: 'home' });
 				msg.success('Welcome!', { closable: true });
 			}

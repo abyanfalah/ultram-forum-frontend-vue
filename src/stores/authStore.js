@@ -11,9 +11,10 @@ export const useAuthStore = defineStore('auth',
 		async function checkAuth() {
 			const res = await authApi.checkAuth();
 			isLogin.value = res;
-			sessionStorage.setItem('isLogin', res);
 
-			// if (isLogin.value === false) { router.replace({ name: 'auth' }); }
+			if (isLogin.value === false) {
+				user.value = Object.assign({});
+			}
 			// else { router.replace({ name: 'home' }); }
 			return res;
 		}

@@ -37,6 +37,8 @@ const theme = computed(() => {
 
 onBeforeMount(async () => {
 	// authStore.checkAuth();
+
+	router.push('/me');
 });
 
 </script>
@@ -80,8 +82,8 @@ onBeforeMount(async () => {
 								<!-- page -->
 								<NLayoutContent :native-scrollbar="false"
 									position="absolute"
-									:style="{ top: authStore.isLogin ? '4rem' : null }">
-									<main class="p-4">
+									:style="{ top: authStore.isLogin ? '4.2rem' : null }">
+									<main :class="{ 'p-4': authStore.isLogin }">
 										<RouterView />
 									</main>
 								</NLayoutContent>

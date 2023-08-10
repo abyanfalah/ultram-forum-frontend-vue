@@ -90,8 +90,8 @@ function confirmLogout() {
 						size="medium"
 						animated
 						:options="userMenuOptions">
-						<NAvatar src="./img/miku.jpg"
-							fallback-src="./img/user-default.svg"
+						<NAvatar src="/img/miku.jpg"
+							fallback-src="/img/user-default.svg"
 							size="small"
 							role="button"
 							@click=""></NAvatar>

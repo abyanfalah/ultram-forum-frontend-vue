@@ -1,15 +1,18 @@
 import axios from "axios";
 import backendApi from "./api";
+import { useAuthStore } from "../../../stores/authStore";
 const api = backendApi;
 const url = api.defaults.baseURL;
+
 
 export default {
 	async checkAuth() {
 		try {
-			await api.get(`${url}/api/user`);
+			const res = await api.get(`${url}/api/user`);
+			useAuthStore().user = res.data;
 			return true;
 		} catch (err) {
-			// console.log('unauthorized');
+			console.log('checkAuth: unauthorized');
 			return false;
 		}
 	},
@@ -21,6 +24,7 @@ export default {
 
 	logout() {
 		return api.post(`${url}/logout`);
-	}
+	},
+
 
 };
