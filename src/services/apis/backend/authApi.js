@@ -13,8 +13,14 @@ export default {
 			return false;
 		}
 	},
+
 	async login(credential) {
-		axios.get(`${url}/sanctum/csrf-cookie`);
+		await axios.get(`${url}/sanctum/csrf-cookie`);
 		return api.post(`${url}/login`, credential);
+	},
+
+	logout() {
+		return api.post(`${url}/logout`);
 	}
+
 };

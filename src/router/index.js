@@ -9,34 +9,42 @@ const router = createRouter({
 			path: '/',
 			name: 'home',
 			component: HomeView,
+			meta: { requiresAuth: true },
+		},
+		{
+			path: '/me',
+			name: 'profile',
+			component: () => import('../views/ProfileView.vue'),
+			meta: { requiresAuth: true },
 		},
 		{
 			path: '/about',
 			name: 'about',
-			component: () => import('../views/AboutView.vue')
+			component: () => import('../views/AboutView.vue'),
+			meta: { requiresAuth: true },
 		},
 		{
 			path: '/testpage',
 			name: 'testpage',
-			component: () => import('../views/TestPage.vue')
+			component: () => import('../views/TestPage.vue'),
+			meta: { requiresAuth: false },
 		},
 		{
 			path: '/auth',
 			name: 'auth',
-			meta: {
-				authPage: true,
-			},
-			component: () => import('../views/AuthView.vue')
+			component: () => import('../views/AuthView.vue'),
+			meta: { requiresAuth: false },
 		},
 	]
 });
 
-router.beforeEach((to, from) => {
-	useAuthStore().checkAuth();
+router.beforeEach((to, from, next) => {
 	const isLogin = useAuthStore().isLogin;
-	console.log(isLogin);
-	if (isLogin && to.meta.authPage == true) { router.replace({ name: 'home' }); }
-	else if (isLogin == false && to.meta.authPage == false) { return { name: 'auth' }; }
+	// console.log('isLogin: ', isLogin);
+
+	if (!isLogin && to.meta.requiresAuth) { return next({ name: 'auth' }); }
+	else if (isLogin && to.name == 'auth') { return next({ name: 'home' }); }
+	else return next();
 
 });
 

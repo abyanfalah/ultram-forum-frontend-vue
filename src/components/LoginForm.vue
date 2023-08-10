@@ -11,6 +11,7 @@ import {
 } from 'naive-ui';
 import authApi from '../services/apis/backend/authApi';
 import { useAuthStore } from '../stores/authStore';
+import router from '../router';
 
 const msg = useMessage();
 const notif = useNotification();
@@ -42,6 +43,7 @@ const loginFormRules = {
 	],
 };
 
+const authStore = useAuthStore();
 
 function isValidEmail() {
 	const email = loginFormModel.value.email;
@@ -62,15 +64,18 @@ function handleLogin() {
 		};
 
 		try {
-			const attempt = await authApi.login(credentials);
-			console.log(attempt);
-			useAuthStore().checkAuth();
+			const loginResponse = await authApi.login(credentials);
+			console.log('login: ', loginResponse);
+
+			if (loginResponse?.status == 204 || loginResponse?.status == 200) {
+				authStore.isLogin = true;
+				router.replace({ name: 'home' });
+				msg.success('Welcome!', { closable: true });
+			}
+
 		} catch (err) {
 			msg.error('Login failed');
 		}
-
-
-
 	});
 }
 

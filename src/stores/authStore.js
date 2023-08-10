@@ -13,16 +13,26 @@ export const useAuthStore = defineStore('auth',
 			isLogin.value = res;
 			sessionStorage.setItem('isLogin', res);
 
-			if (isLogin.value === false) { router.replace({ name: 'auth' }); }
-			else { router.replace({ nae: 'home' }); }
-
+			// if (isLogin.value === false) { router.replace({ name: 'auth' }); }
+			// else { router.replace({ name: 'home' }); }
 			return res;
+		}
+
+		async function logout() {
+			const res = await authApi.logout();
+			console.log('logout: ', res);
+
+			if (res?.status == 204 || res?.status == 200) {
+				isLogin.value = false;
+				router.replace({ name: 'auth' });
+			}
 		}
 
 		return {
 			user,
 			isLogin,
 			checkAuth,
+			logout,
 		};
 	},
 	{ persist: true }

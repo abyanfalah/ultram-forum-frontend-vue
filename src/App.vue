@@ -36,7 +36,7 @@ const theme = computed(() => {
 });
 
 onBeforeMount(async () => {
-	authStore.checkAuth();
+	// authStore.checkAuth();
 });
 
 </script>
@@ -50,12 +50,16 @@ onBeforeMount(async () => {
 
 						<!-- content -->
 						<NLayout has-sider
+							embedded
 							position="absolute"
 							class="min-h-screen">
 							<!-- sidebar -->
 							<NLayoutSider v-if="authStore.isLogin"
 								:native-scrollbar="false"
 								show-trigger="bar"
+								@collapse="store.isCollapsedSidebar = true"
+								@expand="store.isCollapsedSidebar = false"
+								:collapsed="store.isCollapsedSidebar"
 								:collapsed-width="0"
 								bordered>
 								<div class="p-4">
@@ -76,8 +80,8 @@ onBeforeMount(async () => {
 								<!-- page -->
 								<NLayoutContent :native-scrollbar="false"
 									position="absolute"
-									style="top: 4rem;">
-									<main>
+									:style="{ top: authStore.isLogin ? '4rem' : null }">
+									<main class="p-4">
 										<RouterView />
 									</main>
 								</NLayoutContent>
@@ -92,3 +96,9 @@ onBeforeMount(async () => {
 		</NMessageProvider>
 	</NConfigProvider>
 </template>
+
+<style>
+* {
+	/* border: 1px solid red; */
+}
+</style>
