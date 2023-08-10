@@ -3,8 +3,12 @@ import { defineStore } from 'pinia';
 import authApi from '../services/apis/backend/authApi';
 import router from '../router';
 
+
+
+
 export const useAuthStore = defineStore('auth',
 	() => {
+
 		const user = ref({});
 		const isLogin = ref(false);
 
@@ -23,10 +27,23 @@ export const useAuthStore = defineStore('auth',
 			const res = await authApi.logout();
 			console.log('logout: ', res);
 
-			if (res?.status == 204 || res?.status == 200) {
+			const statusCode = res?.status ?? null;
+
+			if (statusCode == 204 || statusCode == 200) {
 				isLogin.value = false;
-				router.replace({ name: 'auth' });
+				// msg.success('Logout success!');
+				return router.replace({ name: 'auth' });
 			}
+
+			// in case for something needs to be added when 419
+			if (statusCode == 419) {
+				isLogin.value = false;
+				// msg.error('Logout error: no token');
+				return router.replace({ name: 'auth' });
+			}
+
+			// msg.error('Logout failed');
+			// return router.replace({ name: 'auth' });
 		}
 
 		return {

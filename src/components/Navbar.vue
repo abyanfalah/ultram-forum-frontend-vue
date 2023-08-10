@@ -38,6 +38,20 @@ const userMenuOptions = ref([
 	},
 ]);
 
+const addPostOptions = ref([
+	{
+		label: 'New post',
+		key: 'new-post',
+		icon: () => renderIcon('fe:text-align-left'),
+		action: () => router.push({ name: 'post.new' }),
+	},
+	{ type: 'divider' },
+	{
+		label: 'Something else',
+		action: () => msg.info('might add later...')
+	},
+]);
+
 function confirmLogout() {
 	dialog.warning({
 		title: 'Logout',
@@ -58,10 +72,24 @@ function confirmLogout() {
 		<NSpace justify="space-between"
 			align="center">
 			<RouterLink :to="{ name: 'home' }">
-				<span class="font-bold">TOKOKO</span>
+				<span
+					class="font-bold py-1 px-4 bg-white text-primary rounded hover:bg-primary hover:text-white hover:scale-110 transition ease-out">Ultram</span>
 			</RouterLink>
 
 			<NSpace align="center">
+
+				<!-- add post -->
+				<NDropdown trigger="click"
+					@select="(key, option) => { option.action() }"
+					:show-arrow="false"
+					size="medium"
+					animated
+					:options="addPostOptions">
+					<NButton text
+						circle
+						:render-icon="() => renderIcon('fe:plus')" />
+				</NDropdown>
+
 
 				<!-- notification -->
 				<NDropdown trigger="click"
@@ -76,10 +104,7 @@ function confirmLogout() {
 				</NDropdown>
 
 
-				<!-- shopping cart -->
-				<NButton text
-					circle
-					:render-icon="() => renderIcon('fe:cart')" />
+
 
 
 				<!-- profile menu -->
@@ -94,6 +119,7 @@ function confirmLogout() {
 							fallback-src="/img/user-default.svg"
 							size="small"
 							role="button"
+							round
 							@click=""></NAvatar>
 					</NDropdown>
 				</div>

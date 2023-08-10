@@ -18,6 +18,12 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 		},
 		{
+			path: '/post/new',
+			name: 'post.new',
+			component: () => import('../views/NewPostView.vue'),
+			meta: { requiresAuth: true },
+		},
+		{
 			path: '/about',
 			name: 'about',
 			component: () => import('../views/AboutView.vue'),

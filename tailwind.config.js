@@ -2,7 +2,11 @@
 module.exports = {
 	content: ["./src/**/*.{html,vue}"],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				"primary": '#4000ff',
+			}
+		},
 	},
 	plugins: [],
 };

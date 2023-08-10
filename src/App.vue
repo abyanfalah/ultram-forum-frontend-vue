@@ -38,7 +38,7 @@ const theme = computed(() => {
 onBeforeMount(async () => {
 	// authStore.checkAuth();
 
-	router.push('/me');
+	router.push('/post/new');
 });
 
 </script>

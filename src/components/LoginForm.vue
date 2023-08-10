@@ -105,6 +105,7 @@ onMounted(() => {
 			path="password">
 			<NInput v-model:value="loginFormModel.password"
 				type="password"
+				show-password-on="click"
 				placeholder="Password" />
 		</NFormItemRow>
 
