@@ -4,12 +4,12 @@ import { useAuthStore } from "../../../stores/authStore";
 const api = backendApi;
 const url = api.defaults.baseURL;
 
-
 export default {
 	async checkAuth() {
 		try {
 			const res = await api.get(`${url}/api/user`);
 			useAuthStore().user = res.data;
+			// console.log(res);
 			return true;
 		} catch (err) {
 			console.log('checkAuth: unauthorized');

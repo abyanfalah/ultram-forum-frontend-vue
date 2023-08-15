@@ -8,7 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tiptap/pm": "^2.0.4",
+    "@tiptap/starter-kit": "^2.0.4",
+    "@tiptap/vue-3": "^2.0.4",
     "axios": "^1.4.0",
+    "moment": "^2.29.4",
     "naive-ui": "^2.34.4",
     "pinia": "^2.1.4",
     "pinia-plugin-persistedstate": "^3.2.0",

@@ -18,9 +18,15 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 		},
 		{
-			path: '/post/new',
-			name: 'post.new',
-			component: () => import('../views/NewPostView.vue'),
+			path: '/me/thread',
+			name: 'me.thread',
+			component: () => import('../views/MyThreadView.vue'),
+			meta: { requiresAuth: true },
+		},
+		{
+			path: '/thread/new',
+			name: 'thread.new',
+			component: () => import('../views/NewThreadView.vue'),
 			meta: { requiresAuth: true },
 		},
 		{
@@ -33,7 +39,7 @@ const router = createRouter({
 			path: '/testpage',
 			name: 'testpage',
 			component: () => import('../views/TestPage.vue'),
-			meta: { requiresAuth: false },
+			meta: { requiresAuth: true },
 		},
 		{
 			path: '/auth',

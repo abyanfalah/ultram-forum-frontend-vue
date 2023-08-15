@@ -7,6 +7,8 @@ import router from './router';
 import { useAuthStore } from './stores/authStore';
 import { useStore } from './stores/store';
 import Navbar from './components/Navbar.vue';
+import Sidebar from './components/Sidebar.vue';
+
 
 import {
 	NDialogProvider,
@@ -30,15 +32,18 @@ const authStore = useAuthStore();
 const store = useStore();
 
 const theme = computed(() => {
-	if (useStore().isDarkTheme) return darkTheme;
-	// return null;
+	if (useStore().isBrightTheme) return null;
 	return darkTheme;
 });
+
+
+// router.replace('/thread/new');
+// router.replace('/testpage');
+
 
 onBeforeMount(async () => {
 	// authStore.checkAuth();
 
-	router.push('/post/new');
 });
 
 </script>
@@ -64,11 +69,7 @@ onBeforeMount(async () => {
 								:collapsed="store.isCollapsedSidebar"
 								:collapsed-width="0"
 								bordered>
-								<div class="p-4">
-									<span class="block"
-										v-for="i in 100">sidebar</span>
-								</div>
-
+								<Sidebar />
 							</NLayoutSider>
 
 							<!-- content -->
@@ -82,8 +83,9 @@ onBeforeMount(async () => {
 								<!-- page -->
 								<NLayoutContent :native-scrollbar="false"
 									position="absolute"
-									:style="{ top: authStore.isLogin ? '4.2rem' : null }">
-									<main :class="{ 'p-4': authStore.isLogin }">
+									:style="{ top: authStore.isLogin ? '4.3rem' : null }">
+									<main :class="{ 'p-4 max-w-[800px]  mx-auto': authStore.isLogin }"
+										class="">
 										<RouterView />
 									</main>
 								</NLayoutContent>

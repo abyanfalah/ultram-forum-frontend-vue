@@ -6,7 +6,7 @@ export default function (iconName) {
 		Icon,
 		{ icon: iconName },
 		{
-			default: () => null,
+			default: () => iconName,
 		}
 	);
 }

@@ -28,6 +28,12 @@ const userMenuOptions = ref([
 		action: () => router.push({ name: 'profile' }),
 	},
 	{
+		label: 'My threads',
+		key: 'mythread',
+		icon: () => renderIcon('fe:comments'),
+		action: () => router.push({ name: 'me.thread' }),
+	},
+	{
 		type: 'divider'
 	},
 	{
@@ -40,10 +46,10 @@ const userMenuOptions = ref([
 
 const addPostOptions = ref([
 	{
-		label: 'New post',
-		key: 'new-post',
+		label: 'New thread',
+		key: 'new-thread',
 		icon: () => renderIcon('fe:text-align-left'),
-		action: () => router.push({ name: 'post.new' }),
+		action: () => router.push({ name: 'thread.new' }),
 	},
 	{ type: 'divider' },
 	{
@@ -53,7 +59,8 @@ const addPostOptions = ref([
 ]);
 
 function confirmLogout() {
-	dialog.warning({
+
+	dialog.error({
 		title: 'Logout',
 		content: 'Are you sure?',
 		positiveText: 'Proceed',
@@ -62,6 +69,7 @@ function confirmLogout() {
 		negativeText: 'Cancel',
 		negativeButtonProps: { renderIcon: () => renderIcon('fe:close') },
 	});
+
 }
 
 
