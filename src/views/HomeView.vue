@@ -1,15 +1,29 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import threadApi from '../services/apis/backend/threadApi';
-import { NCard, NSpace } from 'naive-ui';
 import { threadDate } from '../services/humanTime';
 import ThreadCard from '../components/ThreadCard.vue';
+
+import {
+	NCard,
+	NSpace,
+	useLoadingBar,
+} from 'naive-ui';
+
+const loading = useLoadingBar();
 
 const threads = ref();
 
 async function getAllThreads() {
-	const data = (await threadApi.getAll()).data;
-	threads.value = data;
+	try {
+		loading.start();
+		const data = (await threadApi.getAll()).data;
+		threads.value = data;
+		loading.finish();
+
+	} catch (error) {
+		loading.error();
+	}
 	// console.log(threads.value);
 }
 

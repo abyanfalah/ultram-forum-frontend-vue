@@ -13,14 +13,21 @@ export const useAuthStore = defineStore('auth',
 		const isLogin = ref(false);
 
 		async function checkAuth() {
-			const res = await authApi.checkAuth();
-			isLogin.value = res;
+			try {
+				const res = await authApi.checkAuth();
+				isLogin.value = res;
 
-			if (isLogin.value === false) {
-				user.value = Object.assign({});
+				if (isLogin.value === false) {
+					user.value = Object.assign({});
+					return res;
+
+				}
+			} catch (error) {
+
 			}
+
+
 			// else { router.replace({ name: 'home' }); }
-			return res;
 		}
 
 		async function logout() {

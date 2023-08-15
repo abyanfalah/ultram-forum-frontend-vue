@@ -6,9 +6,9 @@ import {
 	useMessage,
 } from 'naive-ui';
 import { threadDate } from '../services/humanTime';
-import { Icon } from '@iconify/vue';
-import { h } from 'vue';
-
+// import { Icon } from '@iconify/vue';
+// import { h } from 'vue';
+import LikeDislikeButton from './LikeDislikeButton.vue';
 
 const props = defineProps(['thread']);
 
@@ -21,7 +21,7 @@ const props = defineProps(['thread']);
 
 
 		<template #header>
-			<RouterLink to="/testpage">
+			<RouterLink :to="{ name: 'thread.view', params: { id: thread.id } }">
 				{{ thread.title }}
 			</RouterLink>
 
@@ -30,8 +30,9 @@ const props = defineProps(['thread']);
 
 		<template #footer>
 			<NSpace justify="space-between">
+
 				<!-- likes/dislikes -->
-				<NSpace class="text-neutral-400">
+				<!-- <NSpace class="text-neutral-400">
 					<div class="transition hover:scale-110 ease-out">
 						<NButton text
 							:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined' })">
@@ -46,7 +47,9 @@ const props = defineProps(['thread']);
 						</NButton>
 					</div>
 
-				</NSpace>
+				</NSpace> -->
+				<LikeDislikeButton :thread="thread" />
+
 
 				<!-- date -->
 				<div>

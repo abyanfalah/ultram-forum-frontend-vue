@@ -7,7 +7,7 @@ const url = api.defaults.baseURL;
 export default {
 	async checkAuth() {
 		try {
-			const res = await api.get(`${url}/api/user`);
+			const res = await api.get(`${url}/api/userdata`);
 			useAuthStore().user = res.data;
 			// console.log(res);
 			return true;

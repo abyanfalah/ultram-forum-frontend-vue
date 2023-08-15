@@ -30,6 +30,13 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 		},
 		{
+			path: '/thread/:id',
+			name: 'thread.view',
+			component: () => import('../views/ThreadView.vue'),
+			meta: { requiresAuth: true },
+			props: true,
+		},
+		{
 			path: '/about',
 			name: 'about',
 			component: () => import('../views/AboutView.vue'),
