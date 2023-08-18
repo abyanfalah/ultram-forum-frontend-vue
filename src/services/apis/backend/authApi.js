@@ -1,6 +1,7 @@
 import axios from "axios";
 import backendApi from "./api";
 import { useAuthStore } from "../../../stores/authStore";
+import router from "../../../router";
 const api = backendApi;
 const url = api.defaults.baseURL;
 
@@ -13,6 +14,7 @@ export default {
 			return true;
 		} catch (err) {
 			console.log('checkAuth: unauthorized');
+			router.replace({ name: 'auth' });
 			return false;
 		}
 	},
