@@ -42,5 +42,6 @@ onMounted(() => {
 
 	<ThreadCard v-for="thread in threads"
 		:key="thread.id"
-		:thread="thread" />
+		:thread="thread"
+		class="my-4" />
 </template>

@@ -1,9 +1,24 @@
 <script setup>
+import { NButton, NSpace, NTabPane, NTabs } from 'naive-ui';
 import { useAuthStore } from '../stores/authStore';
-
+import { useStore } from '../stores/store';
+import renderIcon from '../services/renderIcon';
+import { computed, onMounted, ref } from 'vue';
+import threadApi from '../services/apis/backend/threadApi';
+import ThreadCard from '../components/ThreadCard.vue';
 
 const authStore = useAuthStore();
+const store = useStore();
 const user = authStore.user;
+
+const myThreads = ref([]);
+const myPosts = ref([]);
+
+onMounted(async () => {
+	// console.log(user);
+	myThreads.value = (await threadApi.getByUserId(user.id)).data;
+	console.log(myThreads.value);
+});
 </script>
 
 <template>
@@ -13,17 +28,50 @@ const user = authStore.user;
 			src="/img/cover/default.jpg"
 			alt="">
 
-		<div class="absolute -bottom-[3rem] w-full  flex justify-center">
-			<img src="/img/miku.jpg"
-				class="  w-[6rem] h-[6rem]  rounded-full object-cover shadow"
-				alt="">
+		<div class="absolute -bottom-[3rem] w-full  flex justify-start px-4">
+			<div class="rounded-full overflow-clip p-[4px] transition ease-out duration-500"
+				:class="[store.isBrightTheme ? 'bg-white' : 'bg-dark']">
+				<img src="/img/miku.jpg"
+					class=" w-[8rem] h-[8rem] rounded-full object-cover"
+					alt="">
+				<!-- <div class="  w-[8rem] h-[8rem] "></div> -->
+			</div>
+
 		</div>
 
 	</div>
 
 
-
-	<div class="flex justify-center">
+	<NSpace justify="space-between">
 		<p class="text-2xl">{{ user.name }}</p>
-	</div>
+
+		<!-- profile btns -->
+		<div>
+			<NButton :render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
+		</div>
+	</NSpace>
+
+	<!-- thread / post history -->
+
+	<NTabs animated>
+		<NTabPane name="Threads">
+			<NSpace v-if="myThreads.length < 1">
+				You haven't make any thread yet...
+			</NSpace>
+
+			<ThreadCard v-else
+				v-for="thread in myThreads"
+				:key="thread.id"
+				:thread="thread"
+				class="my-4" />
+
+
+		</NTabPane>
+
+		<NTabPane name="Posts">
+			<NSpace>
+				You haven't make any post yet...
+			</NSpace>
+		</NTabPane>
+	</NTabs>
 </template>

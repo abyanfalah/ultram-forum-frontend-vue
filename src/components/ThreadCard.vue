@@ -16,7 +16,6 @@ const props = defineProps(['thread']);
 
 <template>
 	<NCard :key="thread.id"
-		class="my-4"
 		hoverable>
 
 
@@ -31,23 +30,6 @@ const props = defineProps(['thread']);
 		<template #footer>
 			<NSpace justify="space-between">
 
-				<!-- likes/dislikes -->
-				<!-- <NSpace class="text-neutral-400">
-					<div class="transition hover:scale-110 ease-out">
-						<NButton text
-							:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined' })">
-							{{ thread.likes }}
-						</NButton>
-					</div>
-
-					<div class="transition hover:scale-110 ease-out">
-						<NButton text
-							:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined', verticalFlip: true })">
-							{{ thread.dislikes }}
-						</NButton>
-					</div>
-
-				</NSpace> -->
 				<LikeDislikeButton :thread="thread" />
 
 

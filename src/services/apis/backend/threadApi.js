@@ -11,10 +11,15 @@ export default {
 	getAll() {
 		return api.get(url);
 	},
-	
+
 	async get(threadId) {
 		await axios.get(`${api.defaults.baseURL}/sanctum/csrf-cookie`);
 		return api.get(`${url}/${threadId}`);
+	},
+
+	async getByUserId(userId) {
+		await axios.get(`${api.defaults.baseURL}/sanctum/csrf-cookie`);
+		return api.get(`${url}/user/${userId}`);
 	},
 
 	async store(thread) {

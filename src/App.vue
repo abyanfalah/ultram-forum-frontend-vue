@@ -39,7 +39,10 @@ const theme = computed(() => {
 
 // router.replace('/thread/new');
 // router.replace('/testpage');
-
+const sidebarPosition = computed(() => {
+	// if mobile absolute
+	return "absolute";
+});
 
 onBeforeMount(async () => {
 	// authStore.checkAuth();
@@ -64,6 +67,7 @@ onBeforeMount(async () => {
 							<NLayoutSider v-if="authStore.isLogin"
 								:native-scrollbar="false"
 								show-trigger="bar"
+								:position="sidebarPosition"
 								@collapse="store.isCollapsedSidebar = true"
 								@expand="store.isCollapsedSidebar = false"
 								:collapsed="store.isCollapsedSidebar"

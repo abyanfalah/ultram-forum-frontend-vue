@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import Tiptap from '../components/TiptapTexteditor.vue';
 import renderIcon from '../services/renderIcon';
 import threadApi from '../services/apis/backend/threadApi';
@@ -23,7 +23,7 @@ const newThreadFormRef = ref();
 const newThreadFormModel = ref({
 	title: '',
 	content: '',
-	categoryId: null,
+	category: null,
 });
 const newThreadFormRules = {
 	title: [
@@ -79,12 +79,15 @@ async function getCategories() {
 	categories.value = categoryList.map(cat => {
 		return {
 			label: cat.name,
+			// value: "asdf",
 			value: cat.id.toString(),
 		};
 	});
+
+	console.log(categories.value);
 }
 
-onMounted(async () => {
+onMounted(() => {
 	getCategories();
 });
 </script>
@@ -107,7 +110,7 @@ onMounted(async () => {
 		<NFormItem label="Category"
 			path="category">
 			<NSelect placeholder="Select category"
-				v-model:value="newThreadFormModel.categoryId"
+				v-model:value="newThreadFormModel.category"
 				:options="categories"
 				filterable />
 		</NFormItem>
