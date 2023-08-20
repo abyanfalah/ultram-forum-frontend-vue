@@ -16,14 +16,21 @@ import {
 import { ref } from 'vue';
 import LoginForm from '../components/LoginForm.vue';
 import RegisterForm from '../components/RegisterForm.vue';
+import ThemeSwitcher from '../components/ThemeSwitcher.vue';
+
 
 </script>
 
 <template>
-	<NSpace class="min-h-screen bg-green-600 text-white"
+	<NSpace class="min-h-screen "
 		vertical
 		justify="center"
 		align="center">
+
+		<div class="absolute top-0 right-0 m-4">
+			<ThemeSwitcher />
+		</div>
+
 
 		<NSpace vertical
 			align="center"

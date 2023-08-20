@@ -76,7 +76,8 @@ function handleLogin() {
 			}
 
 		} catch (err) {
-			msg.error('Login failed');
+			msg.error(`Login failed: ${err.message}`);
+			// console.log(err);
 		}
 	});
 }

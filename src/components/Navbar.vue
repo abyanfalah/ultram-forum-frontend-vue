@@ -76,7 +76,7 @@ function confirmLogout() {
 </script>
 
 <template>
-	<nav class="px-4 py-4">
+	<nav class="px-4 py-4 ">
 		<NSpace justify="space-between"
 			align="center">
 			<RouterLink :to="{ name: 'home' }">

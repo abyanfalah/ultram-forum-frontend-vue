@@ -5,6 +5,7 @@ import { useStore } from '../stores/store';
 import renderIcon from '../services/renderIcon';
 import { computed, onMounted, ref } from 'vue';
 import threadApi from '../services/apis/backend/threadApi';
+import postApi from '../services/apis/backend/postApi';
 import ThreadCard from '../components/ThreadCard.vue';
 
 const authStore = useAuthStore();
@@ -15,9 +16,11 @@ const myThreads = ref([]);
 const myPosts = ref([]);
 
 onMounted(async () => {
-	// console.log(user);
 	myThreads.value = (await threadApi.getByUserId(user.id)).data;
-	console.log(myThreads.value);
+	myPosts.value = (await postApi.getByUserId(user.id)).data;
+
+	// console.log('threads', myThreads.value);
+	console.log('posts', myPosts.value);
 });
 </script>
 
@@ -55,6 +58,7 @@ onMounted(async () => {
 
 	<NTabs animated>
 		<NTabPane name="Threads">
+
 			<NSpace v-if="myThreads.length < 1">
 				You haven't make any thread yet...
 			</NSpace>
@@ -65,13 +69,18 @@ onMounted(async () => {
 				:thread="thread"
 				class="my-4" />
 
-
 		</NTabPane>
 
 		<NTabPane name="Posts">
-			<NSpace>
+
+			<NSpace v-if="myPosts.length < 1">
 				You haven't make any post yet...
 			</NSpace>
+
+			<div v-else>
+				you got a post
+			</div>
+
 		</NTabPane>
 	</NTabs>
 </template>

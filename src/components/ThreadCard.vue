@@ -10,7 +10,7 @@ import { threadDate } from '../services/humanTime';
 // import { h } from 'vue';
 import LikeDislikeButton from './LikeDislikeButton.vue';
 
-const props = defineProps(['thread']);
+const props = defineProps(['thread', 'showAuthor']);
 
 </script>
 
@@ -18,26 +18,44 @@ const props = defineProps(['thread']);
 	<NCard :key="thread.id"
 		hoverable>
 
-
-		<template #header>
+		<!-- <template #header>
 			<RouterLink :to="{ name: 'thread.view', params: { id: thread.id } }">
 				{{ thread.title }}
 			</RouterLink>
+		</template> -->
 
-		</template>
+		<NSpace justify="space-between">
+			<div>
+				<span>user</span>
+				<!-- <span v-if="showAuthor == true">user</span> -->
+			</div>
+			<span class="text-neutral-400">{{ threadDate(thread.created_at) }}</span>
+		</NSpace>
+
+		<NSpace class="mt-4">
+
+			<RouterLink :to="{ name: 'thread.view', params: { id: thread.id } }"
+				class="text-xl">
+				{{ thread.title }}
+			</RouterLink>
+		</NSpace>
+
+
 
 
 		<template #footer>
-			<NSpace justify="space-between">
+			<!-- <NSpace justify="space-between"
+				align="center"> -->
 
-				<LikeDislikeButton :thread="thread" />
+			<LikeDislikeButton :thread="thread" />
 
 
-				<!-- date -->
-				<div>
+			<!-- date -->
+			<!-- <NSpace vertical>
+					<span></span>
 					<span class="text-neutral-400">{{ threadDate(thread.created_at) }}</span>
-				</div>
-			</NSpace>
+				</NSpace>
+			</NSpace> -->
 		</template>
 	</NCard>
 </template>

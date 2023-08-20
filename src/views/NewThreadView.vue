@@ -15,6 +15,7 @@ import {
 	useMessage,
 	useLoadingBar,
 } from 'naive-ui';
+import router from '../router';
 
 const msg = useMessage();
 const loading = useLoadingBar();
@@ -23,7 +24,7 @@ const newThreadFormRef = ref();
 const newThreadFormModel = ref({
 	title: '',
 	content: '',
-	category: null,
+	categoryId: null,
 });
 const newThreadFormRules = {
 	title: [
@@ -57,12 +58,22 @@ function handleSubmitNewThread() {
 		loading.start();
 		try {
 			const thread = newThreadFormModel.value;
-			await threadApi.store(thread);
+			const res = await threadApi.store(thread);
 			msg.success('Thread created');
 			loading.finish();
+
+			const newThreadId = res.data.id;
+
+			// console.log(res);
+			router.push(
+				{
+					name: 'thread.view',
+					params: { id: newThreadId }
+				});
 		} catch (err) {
 			loading.error();
 			msg.error('Failed to submit');
+			console.error("failed submit thread: ", err);
 		}
 
 
@@ -83,8 +94,6 @@ async function getCategories() {
 			value: cat.id.toString(),
 		};
 	});
-
-	console.log(categories.value);
 }
 
 onMounted(() => {
@@ -108,9 +117,9 @@ onMounted(() => {
 		</NFormItem>
 
 		<NFormItem label="Category"
-			path="category">
+			path="categoryId">
 			<NSelect placeholder="Select category"
-				v-model:value="newThreadFormModel.category"
+				v-model:value="newThreadFormModel.categoryId"
 				:options="categories"
 				filterable />
 		</NFormItem>

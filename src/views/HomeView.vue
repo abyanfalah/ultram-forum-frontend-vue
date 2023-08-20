@@ -43,5 +43,6 @@ onMounted(() => {
 	<ThreadCard v-for="thread in threads"
 		:key="thread.id"
 		:thread="thread"
+		:showAuthor="true"
 		class="my-4" />
 </template>
