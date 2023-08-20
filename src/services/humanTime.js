@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function threadDate(dateTime) {
 	return new Date(dateTime).toLocaleString('en-us', {
 		year: 'numeric',
@@ -8,4 +10,8 @@ export function threadDate(dateTime) {
 		hour: 'numeric',
 		minute: 'numeric',
 	});
+}
+
+export function timesAgo(dateTime) {
+	return dateTime;
 }

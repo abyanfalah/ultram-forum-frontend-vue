@@ -3,6 +3,7 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 import Tiptap from '../components/TiptapTexteditor.vue';
 import renderIcon from '../services/renderIcon';
 import threadApi from '../services/apis/backend/threadApi';
+import slugify from 'slugify';
 
 
 import {
@@ -22,9 +23,9 @@ const loading = useLoadingBar();
 
 const newThreadFormRef = ref();
 const newThreadFormModel = ref({
-	title: '',
-	content: '',
-	categoryId: null,
+	title: 'asdf',
+	content: 'asdf',
+	categoryId: '1',
 });
 const newThreadFormRules = {
 	title: [
@@ -57,10 +58,13 @@ function handleSubmitNewThread() {
 
 		loading.start();
 		try {
-			const thread = newThreadFormModel.value;
+			const thread = Object.assign({}, newThreadFormModel.value);
+			thread.slug = slugify(thread.title);
 			const res = await threadApi.store(thread);
 			msg.success('Thread created');
 			loading.finish();
+
+			return console.log(res);
 
 			const newThreadId = res.data.id;
 
@@ -75,10 +79,7 @@ function handleSubmitNewThread() {
 			msg.error('Failed to submit');
 			console.error("failed submit thread: ", err);
 		}
-
-
 	});
-
 }
 
 
@@ -90,7 +91,6 @@ async function getCategories() {
 	categories.value = categoryList.map(cat => {
 		return {
 			label: cat.name,
-			// value: "asdf",
 			value: cat.id.toString(),
 		};
 	});

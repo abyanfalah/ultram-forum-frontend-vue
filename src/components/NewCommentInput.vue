@@ -4,34 +4,89 @@ import {
 	NInput,
 	NFormItem,
 	NButton,
+	useMessage,
+	useLoadingBar,
 } from 'naive-ui';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import renderIcon from '../services/renderIcon';
+import postApi from '../services/apis/backend/postApi';
+import router from '../router';
+
+
+const msg = useMessage();
+const loading = useLoadingBar();
+
+const props = defineProps(['threadId', 'parentPostId']);
+const emmits = defineEmits(['createdNewPost']);
+
+const commentMode = ref(false);
 
 const formRef = ref();
 const formModel = ref({
-	comment: ''
+	content: '',
+	threadId: '',
+	parentPostId: '',
 });
 const formRules = {
-	comment: {
+	content: {
 		required: true,
 		message: 'Comment is required!',
-		// trigger: ['input', 'blur']
+		trigger: ['input']
 	}
 };
 
-const commentMode = ref(false)
 
+
+function handleSendComment() {
+	formModel.value.threadId = props.threadId;
+	formModel.value.parentPostId = props.parentPostId ?? null;
+
+
+
+	formRef.value?.validate(async (err) => {
+		loading.start();
+		if (err) {
+			msg.error('Invalid comment');
+			loading.error();
+			return;
+		}
+
+		try {
+			const comment = formModel.value;
+			const data = (await postApi.store(comment)).data;
+			const newPost = {
+				threadId: data.thread_id,
+				parentPostId: data.parent_post_id,
+				userId: data.user_id,
+				content: data.content,
+				updatedAt: data.update_at,
+				likes: data.likes,
+				dislikes: data.dislikes,
+			};
+
+			emmits('createdNewPost', newPost);
+			formModel.value.content = '';
+			commentMode.value = false;
+			msg.success('Comment sent');
+			loading.finish();
+		} catch (e) {
+			msg.error(`Failed sending comment`);
+			// msg.error(`Failed sending comment: ${e.message}`);
+			console.log(e);
+			loading.error();
+		}
+	});
+}
 </script>
 
 <template>
 	<NForm ref="formRef"
 		:model="formModel"
 		:rules="formRules">
-		<NFormItem path="comment">
+		<NFormItem path="content">
 			<NInput type="textarea"
-				v-model:value="formModel.comment"
+				v-model:value="formModel.content"
 				placeholder="Type your comment here"
 				:rows="(commentMode ? 8 : 1)"
 				@focus="commentMode = true">
@@ -43,8 +98,10 @@ const commentMode = ref(false)
 				@click="commentMode = false"
 				type="tertiary"
 				:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
+
 			<NButton v-show="commentMode"
 				type="primary"
+				@click="handleSendComment"
 				:render-icon="() => renderIcon('fe:paper-plane')">Send comment</NButton>
 		</div>
 

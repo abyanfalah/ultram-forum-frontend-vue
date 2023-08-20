@@ -8,7 +8,7 @@ import {
 import { threadDate } from '../services/humanTime';
 // import { Icon } from '@iconify/vue';
 // import { h } from 'vue';
-import LikeDislikeButton from './LikeDislikeButton.vue';
+import LikeDislikeThreadButton from './LikeDislikeThreadButton.vue';
 
 const props = defineProps(['thread', 'showAuthor']);
 
@@ -44,18 +44,7 @@ const props = defineProps(['thread', 'showAuthor']);
 
 
 		<template #footer>
-			<!-- <NSpace justify="space-between"
-				align="center"> -->
-
-			<LikeDislikeButton :thread="thread" />
-
-
-			<!-- date -->
-			<!-- <NSpace vertical>
-					<span></span>
-					<span class="text-neutral-400">{{ threadDate(thread.created_at) }}</span>
-				</NSpace>
-			</NSpace> -->
+			<LikeDislikeThreadButton :thread="thread" />
 		</template>
 	</NCard>
 </template>

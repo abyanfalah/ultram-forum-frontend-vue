@@ -3,27 +3,43 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 import threadApi from '../services/apis/backend/threadApi';
 import { threadDate } from '../services/humanTime';
 import NewCommentInput from '../components/NewCommentInput.vue';
-import LikeDislikeButton from '../components/LikeDislikeButton.vue';
+import LikeDislikeThreadButton from '../components/LikeDislikeThreadButton.vue';
+import PostCard from '../components/PostCard.vue';
 
 import {
 	NSpace,
 	NAvatar,
-	NDivider
+	NDivider,
+	NCard
 } from 'naive-ui';
 import { useAuthStore } from '../stores/authStore';
+import postApi from '../services/apis/backend/postApi';
 
 const props = defineProps(['id']);
 const authStore = useAuthStore();
 
 const thread = ref();
+const posts = ref([]);
 
 async function getThread() {
 	const data = (await threadApi.get(props.id)).data;
 	thread.value = data;
 }
 
+async function getThreadPosts() {
+	const data = (await postApi.getByThreadId(props.id)).data;
+	posts.value = data;
+	console.log(posts.value);
+}
+
+function pushPost(post) {
+	console.log(post);
+	posts.value.push(post);
+}
+
 onBeforeMount(() => {
 	getThread();
+	getThreadPosts();
 })
 
 
@@ -48,13 +64,17 @@ onBeforeMount(() => {
 	<!-- thread -->
 	<h1 class="text-xl">{{ thread?.title }}</h1>
 	<p class="my-4">{{ thread?.content }}</p>
-	<LikeDislikeButton :thread="thread" />
+	<LikeDislikeThreadButton :thread="thread" />
 	<!---->
 
 	<NDivider></NDivider>
 
 	<!-- comment input -->
-	<NewCommentInput />
+	<NewCommentInput class="mb-4"
+		:threadId="props.id"
+		@created-new-post="pushPost" />
 
 	<!-- comments -->
+	<PostCard v-for="post in posts"
+		:post="post" />
 </template>
