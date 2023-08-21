@@ -4,6 +4,7 @@ import {
 	NCard,
 	NSpace,
 	useMessage,
+	NAvatar,
 } from 'naive-ui';
 import { threadDate } from '../services/humanTime';
 // import { Icon } from '@iconify/vue';
@@ -25,7 +26,13 @@ const props = defineProps(['thread', 'showAuthor']);
 		</template> -->
 
 		<NSpace justify="space-between">
-			<div>
+			<div class=" flex space-x-2 items-center text-neutral-400">
+				<NAvatar src="/img/miku.jpg"
+					fallback-src="/img/user-default.svg"
+					size="small"
+					role="button"
+					round
+					@click=""></NAvatar>
 				<span>user</span>
 				<!-- <span v-if="showAuthor == true">user</span> -->
 			</div>

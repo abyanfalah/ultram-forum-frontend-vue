@@ -24,6 +24,7 @@ const posts = ref([]);
 async function getThread() {
 	const data = (await threadApi.get(props.slug)).data;
 	thread.value = data;
+	console.log(thread.value);
 }
 
 async function getThreadPosts() {
