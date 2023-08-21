@@ -5,10 +5,9 @@ import {
 	NSpin,
 	useMessage
 } from 'naive-ui';
-import { h, onBeforeMount, onMounted, ref } from 'vue';
+import { computed, h, onBeforeMount, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import reactionApi from '../services/apis/backend/reactionApi';
-import { replaceStep } from '@tiptap/pm/transform';
 
 const msg = useMessage();
 
@@ -19,15 +18,19 @@ const busy = ref(false);
 const threadReactions = ref({
 	likes: 0,
 	dislikes: 0,
+	userReaction: null,
 });
 
 let reactions = [];
 
+
 function updateReactionsCount(reactionsCountData) {
 	threadReactions.value.likes = reactionsCountData.likes;
 	threadReactions.value.dislikes = reactionsCountData.dislikes;
+	threadReactions.value.userReaction = reactionsCountData.userReaction ?? null;
 
 	console.log(reactionsCountData);
+	console.log(threadReactions.value);
 }
 
 async function getReactionsCount() {
@@ -70,7 +73,7 @@ async function reactToThread(isLiking) {
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
 				@click="reactToThread(true)"
-				:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined' })">
+				:render-icon="() => h(Icon, { icon: (threadReactions.userReaction === 1 ? 'ant-design:like-filled' : 'ant-design:like-outlined') })">
 				{{ threadReactions.likes }}
 			</NButton>
 		</div>
@@ -78,7 +81,7 @@ async function reactToThread(isLiking) {
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
 				@click="reactToThread(false)"
-				:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined', verticalFlip: true })">
+				:render-icon="() => h(Icon, { icon: (threadReactions.userReaction === 0 ? 'ant-design:like-filled' : 'ant-design:like-outlined'), verticalFlip: true })">
 				{{ threadReactions.dislikes }}
 			</NButton>
 		</div>
