@@ -34,7 +34,7 @@ const props = defineProps(['thread', 'showAuthor']);
 
 		<NSpace class="mt-4">
 
-			<RouterLink :to="{ name: 'thread.view', params: { id: thread.id } }"
+			<RouterLink :to="{ name: 'thread.view', params: { slug: thread.slug } }"
 				class="text-xl">
 				{{ thread.title }}
 			</RouterLink>

@@ -42,8 +42,6 @@ function handleSendComment() {
 	formModel.value.threadId = props.threadId;
 	formModel.value.parentPostId = props.parentPostId ?? null;
 
-
-
 	formRef.value?.validate(async (err) => {
 		loading.start();
 		if (err) {
@@ -53,16 +51,17 @@ function handleSendComment() {
 		}
 
 		try {
-			const comment = formModel.value;
+			const comment = Object.assign({}, formModel.value);
 			const data = (await postApi.store(comment)).data;
+
+			console.log(data);
+
 			const newPost = {
 				threadId: data.thread_id,
 				parentPostId: data.parent_post_id,
 				userId: data.user_id,
 				content: data.content,
 				updatedAt: data.update_at,
-				likes: data.likes,
-				dislikes: data.dislikes,
 			};
 
 			emmits('createdNewPost', newPost);

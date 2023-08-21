@@ -49,6 +49,13 @@ export const useAuthStore = defineStore('auth',
 				return router.replace({ name: 'auth' });
 			}
 
+			// in case for something needs to be added when 401
+			if (statusCode == 401) {
+				isLogin.value = false;
+				// msg.error('Logout error: no token');
+				return router.replace({ name: 'auth' });
+			}
+
 			// msg.error('Logout failed');
 			// return router.replace({ name: 'auth' });
 		}

@@ -2,16 +2,40 @@
 import {
 	NSpace,
 	NButton,
-
 } from 'naive-ui';
-import { h } from 'vue';
+import { h, onBeforeMount, ref } from 'vue';
 import { Icon } from '@iconify/vue';
+import reactionApi from '../services/apis/backend/reactionApi';
+
+
 
 const props = defineProps(['post']);
+const postReactions = ref({
+	likes: 0,
+	dislikes: 0,
+});
 
-console.log(props.post);
+let reactions = [];
+
+onBeforeMount(() => {
+	reactions = props.post.post_reactions;
+	// console.log(reactions);
+
+	if (reactions.length) {
+		reactions.forEach(r => {
+			console.log(r);
+		});
+	} else {
+		console.log('no reactions yet');
+	}
+});
+
+function likeThisPost() {
+	reactionApi.postReactions();
+}
 
 </script>
+
 
 <template>
 	<!-- likes/dislikes -->

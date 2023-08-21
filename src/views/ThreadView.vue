@@ -15,25 +15,24 @@ import {
 import { useAuthStore } from '../stores/authStore';
 import postApi from '../services/apis/backend/postApi';
 
-const props = defineProps(['id']);
+const props = defineProps(['slug']);
 const authStore = useAuthStore();
 
-const thread = ref();
+const thread = ref({});
 const posts = ref([]);
 
 async function getThread() {
-	const data = (await threadApi.get(props.id)).data;
+	const data = (await threadApi.get(props.slug)).data;
 	thread.value = data;
 }
 
 async function getThreadPosts() {
-	const data = (await postApi.getByThreadId(props.id)).data;
+	const data = (await postApi.getByThreadSlug(props.slug)).data;
 	posts.value = data;
-	console.log(posts.value);
+	// console.log(posts.value);
 }
 
 function pushPost(post) {
-	console.log(post);
 	posts.value.push(post);
 }
 
@@ -62,16 +61,17 @@ onBeforeMount(() => {
 	</NSpace>
 
 	<!-- thread -->
-	<h1 class="text-xl">{{ thread?.title }}</h1>
-	<p class="my-4">{{ thread?.content }}</p>
-	<LikeDislikeThreadButton :thread="thread" />
+	<h1 class="text-xl">{{ thread.title }}</h1>
+	<p class="my-4">{{ thread.content }}</p>
+	<LikeDislikeThreadButton v-if="thread?.id"
+		:thread="thread" />
 	<!---->
 
 	<NDivider></NDivider>
 
 	<!-- comment input -->
 	<NewCommentInput class="mb-4"
-		:threadId="props.id"
+		:threadId="thread.id"
 		@created-new-post="pushPost" />
 
 	<!-- comments -->
