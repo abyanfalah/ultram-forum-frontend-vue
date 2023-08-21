@@ -8,12 +8,12 @@ axios.defaults.withCredentials = true;
 
 export default {
 
-	async getThreadReactions(threadId) {
+	async getThreadReactions(threadSlug) {
 		await axios.get(`${api.defaults.baseURL}/sanctum/csrf-cookie`);
-		return api.get(`${url}/thread/${threadId}`);
+		return api.get(`${url}/thread/${threadSlug}`);
 	},
 
-	async threadReactions(threadId, isLiking) {
+	async submitThreadReaction(threadId, isLiking) {
 		await axios.get(`${api.defaults.baseURL}/sanctum/csrf-cookie`);
 		return api.post(`${url}/thread`, { threadId, isLiking });
 	},

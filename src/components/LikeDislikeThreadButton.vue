@@ -8,6 +8,7 @@ import {
 import { h, onBeforeMount, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import reactionApi from '../services/apis/backend/reactionApi';
+import { replaceStep } from '@tiptap/pm/transform';
 
 const msg = useMessage();
 
@@ -22,51 +23,52 @@ const threadReactions = ref({
 
 let reactions = [];
 
-onBeforeMount(() => {
-	reactions = props.thread.thread_reactions;
-	// console.log(reactions);
+function updateReactionsCount(reactionsCountData) {
+	threadReactions.value.likes = reactionsCountData.likes;
+	threadReactions.value.dislikes = reactionsCountData.dislikes;
 
-	if (reactions.length) {
-		reactions.forEach(r => {
-			r.is_liking ? threadReactions.value.likes++ : threadReactions.value.dislikes++;
-		});
-	} else {
-		console.log('no reactions yet');
-	}
+	console.log(reactionsCountData);
+}
+
+async function getReactionsCount() {
+	const { data } = await reactionApi.getThreadReactions(props.thread.slug);
+	updateReactionsCount(data);
+
+}
+
+
+onBeforeMount(() => {
+	getReactionsCount();
 });
 
 
 async function reactToThread(isLiking) {
 	busy.value = true;
 	try {
-		const reactionResponse = (await reactionApi.threadReactions(props.thread.id, isLiking)).data;
 
-		if (reactionResponse == 'stored') {
-			return isLiking ? threadReactions.value.likes++ : threadReactions.value.dislikes++;
-		}
-
-		if (reactionResponse == 'updated') {
-			if (isLiking) { threadReactions.value.likes++; threadReactions.value.dislikes--; }
-		}
-
-
+		const { data } = await reactionApi.submitThreadReaction(props.thread.id, isLiking);
+		updateReactionsCount(data);
 	} catch (err) {
 		msg.error('Failed submitting reaction');
 		console.error(err);
 	}
-	busy.value = false;
+
+	setTimeout(() => { busy.value = false; }, 500);
+	// busy.value = false;
 }
 
 </script>
 
 <template>
 	<!-- likes/dislikes -->
-	<NSpace class="text-neutral-400">
-		<div class="transition hover:scale-110 ease-out">
-			<NSpin v-if="busy" />
+	<NSpin v-if="busy"
+		size="small" />
 
-			<NButton v-else
-				text
+	<NSpace v-else
+		class="text-neutral-400">
+
+		<div class="transition hover:scale-110 ease-out">
+			<NButton text
 				@click="reactToThread(true)"
 				:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined' })">
 				{{ threadReactions.likes }}
