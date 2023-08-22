@@ -28,15 +28,11 @@ function updateReactionsCount(reactionsCountData) {
 	threadReactions.value.likes = reactionsCountData.likes;
 	threadReactions.value.dislikes = reactionsCountData.dislikes;
 	threadReactions.value.userReaction = reactionsCountData.userReaction ?? null;
-
-	console.log(reactionsCountData);
-	console.log(threadReactions.value);
 }
 
 async function getReactionsCount() {
 	const { data } = await reactionApi.getThreadReactions(props.thread.slug);
 	updateReactionsCount(data);
-
 }
 
 
@@ -48,7 +44,6 @@ onBeforeMount(() => {
 async function reactToThread(isLiking) {
 	busy.value = true;
 	try {
-
 		const { data } = await reactionApi.submitThreadReaction(props.thread.id, isLiking);
 		updateReactionsCount(data);
 	} catch (err) {
@@ -56,8 +51,7 @@ async function reactToThread(isLiking) {
 		console.error(err);
 	}
 
-	setTimeout(() => { busy.value = false; }, 500);
-	// busy.value = false;
+	busy.value = false;
 }
 
 </script>

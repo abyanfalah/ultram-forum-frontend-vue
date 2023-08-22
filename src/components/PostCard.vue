@@ -38,7 +38,7 @@ const props = defineProps(['post', 'showAuthor']);
 		<template #footer>
 			<NSpace justify="space-between">
 				<LikeDislikePostButton :post="post" />
-				<span>reply</span>
+				<NButton>Reply</NButton>
 			</NSpace>
 		</template>
 	</NCard>

@@ -2,10 +2,15 @@
 import {
 	NSpace,
 	NButton,
+	useMessage,
+	NSpin,
 } from 'naive-ui';
 import { h, onBeforeMount, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import reactionApi from '../services/apis/backend/reactionApi';
+
+const busy = ref(false);
+const msg = useMessage();
 
 
 
@@ -13,25 +18,40 @@ const props = defineProps(['post']);
 const postReactions = ref({
 	likes: 0,
 	dislikes: 0,
+	userReaction: null,
 });
 
 let reactions = [];
 
-onBeforeMount(() => {
-	reactions = props.post.post_reactions;
-	// console.log(reactions);
+function updateReactionsCount(reactionsCountData) {
+	postReactions.value.likes = reactionsCountData.likes;
+	postReactions.value.dislikes = reactionsCountData.dislikes;
+	postReactions.value.userReaction = reactionsCountData.userReaction ?? null;
 
-	if (reactions.length) {
-		reactions.forEach(r => {
-			console.log(r);
-		});
-	} else {
-		console.log('no reactions yet');
-	}
+	// console.log(reactionsCountData);
+	// console.log(postReactions.value);
+}
+
+async function getReactionsCount() {
+	const { data } = await reactionApi.getPostReactions(props.post.id);
+	const res = await reactionApi.getPostReactions(props.post.id);
+	updateReactionsCount(data);
+}
+
+onBeforeMount(() => {
+	getReactionsCount();
 });
 
-function likeThisPost() {
-	reactionApi.postReactions();
+async function reactToPost(isLiking) {
+	busy.value = true;
+	try {
+		const { data } = await reactionApi.submitPostReaction(props.post.id, isLiking);
+		updateReactionsCount(data);
+	} catch (err) {
+		msg.error('Failed submitting reaction');
+		console.error(err);
+	}
+	busy.value = false;
 }
 
 </script>
@@ -39,18 +59,24 @@ function likeThisPost() {
 
 <template>
 	<!-- likes/dislikes -->
-	<NSpace class="text-neutral-400">
+	<NSpin v-if="busy"
+		size="small" />
+
+	<NSpace v-else
+		class="text-neutral-400">
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
-				:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined' })">
-				{{ post?.likes }}
+				@click="reactToPost(true)"
+				:render-icon="() => h(Icon, { icon: (postReactions.userReaction === 1 ? 'ant-design:like-filled' : 'ant-design:like-outlined') })">
+				{{ postReactions.likes }}
 			</NButton>
 		</div>
 
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
-				:render-icon="() => h(Icon, { icon: 'ant-design:like-outlined', verticalFlip: true })">
-				{{ post?.dislikes }}
+				@click="reactToPost(false)"
+				:render-icon="() => h(Icon, { icon: (postReactions.userReaction === 0 ? 'ant-design:like-filled' : 'ant-design:like-outlined'), verticalFlip: true })">
+				{{ postReactions.dislikes }}
 			</NButton>
 		</div>
 
