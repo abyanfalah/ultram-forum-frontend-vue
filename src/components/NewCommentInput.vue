@@ -12,6 +12,7 @@ import { Icon } from '@iconify/vue';
 import renderIcon from '../services/renderIcon';
 import postApi from '../services/apis/backend/postApi';
 import router from '../router';
+import { useAuthStore } from '../stores/authStore';
 
 
 const msg = useMessage();
@@ -53,6 +54,7 @@ function handleSendComment() {
 		try {
 			const comment = Object.assign({}, formModel.value);
 			const data = (await postApi.store(comment)).data;
+			console.log(data);
 
 			const newPost = {
 				id: data.id,
@@ -61,6 +63,7 @@ function handleSendComment() {
 				userId: data.user_id,
 				content: data.content,
 				updatedAt: data.update_at,
+				authorName: useAuthStore().user.name,
 			};
 
 			emmits('createdNewPost', newPost);
@@ -91,16 +94,19 @@ function handleSendComment() {
 			</NInput>
 		</NFormItem>
 
-		<div class="flex justify-end space-x-2">
-			<NButton v-show="commentMode"
-				@click="commentMode = false"
-				type="tertiary"
-				:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
+		<div class="flex justify-start space-x-2">
 
 			<NButton v-show="commentMode"
 				type="primary"
 				@click="handleSendComment"
 				:render-icon="() => renderIcon('fe:paper-plane')">Send comment</NButton>
+
+			<NButton v-show="commentMode"
+				@click="commentMode = false"
+				type="tertiary"
+				:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
+
+
 		</div>
 
 

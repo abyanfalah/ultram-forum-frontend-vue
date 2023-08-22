@@ -6,9 +6,10 @@ import {
 	NSpace,
 	useMessage,
 } from 'naive-ui';
-import { threadDate } from '../services/humanTime';
+import { threadDate, timesAgo } from '../services/humanTime';
 import LikeDislikePostButton from './LikeDislikePostButton.vue';
-import { timesAgo } from '../services/humanTime';
+import UserAvatar from './UserAvatar.vue';
+
 
 const props = defineProps(['post', 'showAuthor']);
 
@@ -20,12 +21,10 @@ const props = defineProps(['post', 'showAuthor']);
 		:bordered="false">
 		<NSpace justify="space-between">
 			<div class="flex items-center space-x-2">
-				<NAvatar size="small"
-					round></NAvatar>
-				<span class="font-bold">user</span>
-				<!-- <span v-if="showAuthor == true">user</span> -->
+				<UserAvatar :user="post.user" />
+				<span class="font-bold">{{ post.user.name }}</span>
 			</div>
-			<span class="text-neutral-400">{{ timesAgo(post.updatedAt) }}</span>
+			<span class="text-neutral-400">{{ threadDate(post.updated_at) }}</span>
 		</NSpace>
 
 		<p class="mt-4">
