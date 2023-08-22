@@ -29,7 +29,6 @@ async function getThread() {
 async function getThreadPosts() {
 	const data = (await postApi.getByThreadSlug(props.slug)).data;
 	posts.value = data;
-	console.log(posts.value);
 }
 
 function pushPost(post) {

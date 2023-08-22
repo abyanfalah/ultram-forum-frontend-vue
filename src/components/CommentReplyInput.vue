@@ -7,7 +7,7 @@ import {
 	useMessage,
 	useLoadingBar,
 } from 'naive-ui';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import renderIcon from '../services/renderIcon';
 import postApi from '../services/apis/backend/postApi';
@@ -18,8 +18,8 @@ import { useAuthStore } from '../stores/authStore';
 const msg = useMessage();
 const loading = useLoadingBar();
 
-const props = defineProps(['threadId', 'parentPostId']);
-const emmits = defineEmits(['createdNewPost']);
+const props = defineProps(['parentPost']);
+const emmits = defineEmits(['createdNewReply', 'replyValueChange']);
 
 const commentMode = ref(false);
 
@@ -79,32 +79,38 @@ function handleSendComment() {
 		}
 	});
 }
+
+emmits('replyValueChange', 0);
+
+watch(() => formModel.value.content, (newVal) => {
+	emmits('replyValueChange', newVal.length);
+
+});
+
 </script>
 
 <template>
 	<NForm ref="formRef"
 		:model="formModel"
 		:rules="formRules">
-		<NFormItem path="content">
+		<NFormItem class="p-0"
+			path="content">
 			<NInput type="textarea"
 				v-model:value="formModel.content"
-				placeholder="Type your comment here"
-				:rows="(commentMode ? 8 : 1)"
+				placeholder="Type your reply here"
 				@focus="commentMode = true">
 			</NInput>
 		</NFormItem>
 
 		<div class="flex justify-start space-x-2">
 
-			<NButton v-show="commentMode"
-				type="primary"
+			<NButton type="primary"
 				@click="handleSendComment"
-				:render-icon="() => renderIcon('fe:paper-plane')">Send comment</NButton>
+				:render-icon="() => renderIcon('fe:paper-plane')">Send reply</NButton>
 
-			<NButton v-show="commentMode"
-				@click="commentMode = false"
+			<!-- <NButton @click="commentMode = false"
 				type="tertiary"
-				:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
+				:render-icon="() => renderIcon('fe:close')">Cancel</NButton> -->
 
 
 		</div>
