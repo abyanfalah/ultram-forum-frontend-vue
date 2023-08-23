@@ -8,7 +8,7 @@ import { useAuthStore } from './stores/authStore';
 import { useStore } from './stores/store';
 import Navbar from './components/Navbar.vue';
 import Sidebar from './components/Sidebar.vue';
-
+import Footer from './components/Footer.vue';
 
 import {
 	NDialogProvider,
@@ -22,6 +22,7 @@ import {
 import {
 	NLayoutSider,
 	NLayoutHeader,
+	NLayoutFooter,
 	NLayout,
 	useNotification,
 	darkTheme,
@@ -58,11 +59,15 @@ onBeforeMount(async () => {
 				<NLoadingBarProvider>
 					<NNotificationProvider>
 
-						<!-- content -->
+						<!-- app -->
+						<NLayout>
+
+						</NLayout>
 						<NLayout has-sider
 							embedded
 							position="absolute"
 							class="min-h-screen">
+
 							<!-- sidebar -->
 							<NLayoutSider v-if="authStore.isLogin"
 								:native-scrollbar="false"
@@ -92,11 +97,20 @@ onBeforeMount(async () => {
 										class="">
 										<RouterView />
 									</main>
+
+									<!-- footer -->
+									<NLayoutFooter>
+										<Footer />
+									</NLayoutFooter>
 								</NLayoutContent>
 
+
 							</NLayout>
+
+
 						</NLayout>
-						<!-- end of content -->
+						<!-- end of app -->
+
 
 					</NNotificationProvider>
 				</NLoadingBarProvider>

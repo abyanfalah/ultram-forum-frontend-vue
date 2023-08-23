@@ -85,16 +85,19 @@ function pushReply(reply) {
 		class="ps-4 mt-4 border-l"
 		:class="store.isBrightTheme ? 'border-l-neutral-100' : 'border-l-neutral-800'">
 
+		<!-- post card header -->
 		<NSpace justify="space-between">
 			<div class="flex items-center space-x-2">
 				<UserAvatar :user="post.user" />
 				<span class="font-bold">{{ post.user.name }}</span>
+				<span class="text-neutral-400 text-xs">{{ threadDate(post.updated_at) }}</span>
+
 			</div>
-			<span class="text-neutral-400">{{ threadDate(post.updated_at) }}</span>
 		</NSpace>
 
 		<NSpace>
-			<p class="">{{ post.content }}</p>
+			<p class="whitespace-pre-line">{{ post.content }}</p>
+			<!-- <pre class="">{{ post.content }}</pre> -->
 		</NSpace>
 
 		<NSpace justify="">
@@ -113,6 +116,7 @@ function pushReply(reply) {
 			</NButton> -->
 		</NSpace>
 
+
 		<div ref="CommentReplyInputWrapperRef">
 			<CommentReplyInput v-if="replyMode"
 				:parentPost="post"
@@ -128,7 +132,9 @@ function pushReply(reply) {
 	</NSpace>
 
 
-	<NDivider v-if="isParentPost" />
+	<!-- <NDivider v-if="isParentPost" /> -->
+	<div v-if="isParentPost"
+		class="my-10"></div>
 
 	<!-- replies -->
 </template>

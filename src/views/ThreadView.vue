@@ -81,24 +81,25 @@ onBeforeMount(() => {
 		<!-- user detail and time -->
 		<NSpace justify="space-between"
 			class="mb-4">
-			<div class=" flex space-x-2 items-center text-neutral-400">
+			<div class=" flex space-x-2 items-center ">
 				<NAvatar src="/img/miku.jpg"
 					fallback-src="/img/user-default.svg"
 					size="small"
 					role="button"
 					round
 					@click=""></NAvatar>
-				<span>{{ authStore.user.name }}</span>
+				<span class="font-bold">{{ authStore.user.name }}</span>
 			</div>
 			<span class="text-neutral-400">{{ threadDate(thread?.created_at) }}</span>
 		</NSpace>
 
 		<!-- thread -->
 		<h1 class="text-xl">{{ thread.title }}</h1>
-		<p class="my-4">{{ thread.content }}</p>
+		<p class="my-4 whitespace-pre-line">{{ thread.content }}</p>
+		<!-- <pre>{{ thread.content }}</pre> -->
 
 		<!-- lorem -->
-		<div>
+		<div class="hidden">
 			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora natus at, qui delectus, minima praesentium iure
 				est corrupti accusantium ab mollitia dignissimos voluptate explicabo odit deleniti repellendus atque nemo quae in
 				perspiciatis, laborum molestiae. At corrupti sapiente optio voluptas, modi, quam culpa consequatur ipsam ut atque
@@ -144,4 +145,7 @@ onBeforeMount(() => {
 	<PostCard v-for="post in posts"
 		:post="post" />
 	<!--  -->
+
+	<!-- bottom spacer -->
+	<!-- <div class="my-[500px]"></div> -->
 </template>
