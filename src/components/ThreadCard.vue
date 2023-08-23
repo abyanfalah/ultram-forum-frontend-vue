@@ -33,7 +33,7 @@ const props = defineProps(['thread', 'showAuthor']);
 					role="button"
 					round
 					@click=""></NAvatar>
-				<span>user</span>
+				<span>{{ thread.user.name }}</span>
 				<!-- <span v-if="showAuthor == true">user</span> -->
 			</div>
 			<span class="text-neutral-400">{{ threadDate(thread.created_at) }}</span>

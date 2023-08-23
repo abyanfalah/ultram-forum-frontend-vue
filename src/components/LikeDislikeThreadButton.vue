@@ -38,6 +38,9 @@ async function getReactionsCount() {
 
 onBeforeMount(() => {
 	// getReactionsCount();
+	threadReactions.value.likes = props.thread.likes_count;
+	threadReactions.value.dislikes = props.thread.dislikes_count;
+	threadReactions.value.userReaction = props.thread.is_reacted_by_user_count;
 	console.log(props.thread);
 });
 
