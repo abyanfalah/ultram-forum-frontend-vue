@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import {
 	NButton,
 	NCard,
@@ -14,14 +14,19 @@ import LikeDislikePostButton from './LikeDislikePostButton.vue';
 import UserAvatar from './UserAvatar.vue';
 import CommentReplyInput from './CommentReplyInput.vue';
 import renderIcon from '../services/renderIcon';
+import ChildPostCard from './PostCard.vue';
+import { useStore } from '../stores/store';
+
 
 const dialog = useDialog();
 const msg = useMessage();
+const store = useStore();
 
 const props = defineProps(['post', 'showAuthor']);
 const replyMode = ref(false);
 const replyLength = ref(0);
-const replyCancelRequiresConfirmation = ref(false);
+
+const replies = ref([]);
 
 function toggleReplyInput() {
 	if (!replyMode.value) {
@@ -51,11 +56,29 @@ function setReplyLength(length) {
 
 
 
+onBeforeMount(() => {
+	console.log('masuk ke props, jadii gini', props.post);
+	replies.value = props.post.post_replies;
+});
+
+function pushReply(reply) {
+	console.log('balesannya nih', reply);
+	replies.value.push(reply);
+	replyMode.value = false;
+}
+
+function checkdata() {
+	console.log('coba cek datanya', props.post);
+}
+
 </script>
 
 <template>
-	<!-- alt post format layout -->
-	<NSpace vertical>
+	<!-- post -->
+
+	<NSpace vertical
+		class="ps-4 mt-4 border-l"
+		:class="store.isBrightTheme ? 'border-l-neutral-100' : 'border-l-neutral-800'">
 
 		<NSpace justify="space-between">
 			<div class="flex items-center space-x-2">
@@ -66,11 +89,12 @@ function setReplyLength(length) {
 		</NSpace>
 
 		<NSpace>
-			<p class="mt-4">{{ post.content }}</p>
+			<p>{{ post.content }}</p>
 		</NSpace>
 
 		<NSpace justify="">
 			<LikeDislikePostButton :post="post" />
+
 			<NButton quaternary
 				size="small"
 				:type="replyMode ? 'error' : 'default'"
@@ -78,12 +102,25 @@ function setReplyLength(length) {
 				:render-icon="() => renderIcon((replyMode ? 'fe:close' : 'bx:reply'))">
 				<span>{{ replyMode ? 'Cancel reply' : 'Reply' }}</span>
 			</NButton>
-			<!-- reply comment comp if reply mode == true -->
+
+			<!-- <NButton @click="checkdata">
+				check data
+			</NButton> -->
 		</NSpace>
+
 		<CommentReplyInput v-if="replyMode"
 			:parentPost="post"
+			@created-new-reply="pushReply"
 			@reply-value-change="setReplyLength" />
 
-		<NDivider />
+		<div class="ms-1">
+			<ChildPostCard v-for="reply in replies"
+				:post="reply" />
+		</div>
 	</NSpace>
+
+
+	<!-- <NDivider v-if="post.parent_post_id == null" /> -->
+
+	<!-- replies -->
 </template>

@@ -54,16 +54,17 @@ function handleSendComment() {
 		try {
 			const comment = Object.assign({}, formModel.value);
 			const data = (await postApi.store(comment)).data;
-			console.log(data);
 
+			console.log('data balesannya', data);
 			const newPost = {
 				id: data.id,
-				threadId: data.thread_id,
-				parentPostId: data.parent_post_id,
-				userId: data.user_id,
+				thread_id: data.thread_id,
+				parent_post_id: data.parent_post_id,
+				user_id: data.user_id,
 				content: data.content,
-				updatedAt: data.update_at,
-				authorName: useAuthStore().user.name,
+				updated_at: data.updated_at,
+				user: useAuthStore().user,
+				post_replies: [],
 			};
 
 			emmits('createdNewPost', newPost);

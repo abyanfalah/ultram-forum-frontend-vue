@@ -21,8 +21,6 @@ const loading = useLoadingBar();
 const props = defineProps(['parentPost']);
 const emmits = defineEmits(['createdNewReply', 'replyValueChange']);
 
-const commentMode = ref(false);
-
 const formRef = ref();
 const formModel = ref({
 	content: '',
@@ -32,48 +30,55 @@ const formModel = ref({
 const formRules = {
 	content: {
 		required: true,
-		message: 'Comment is required!',
+		message: 'Reply is required!',
 		trigger: ['input']
 	}
 };
 
 
 
-function handleSendComment() {
-	formModel.value.threadId = props.threadId;
-	formModel.value.parentPostId = props.parentPostId ?? null;
+function handleSendReply() {
+	formModel.value.parentPostId = props.parentPost.id;
+	formModel.value.threadId = props.parentPost.thread_id;
+
+
 
 	formRef.value?.validate(async (err) => {
 		loading.start();
 		if (err) {
-			msg.error('Invalid comment');
+			msg.error('Invalid reply');
 			loading.error();
 			return;
 		}
 
 		try {
-			const comment = Object.assign({}, formModel.value);
-			const data = (await postApi.store(comment)).data;
-			console.log(data);
+			const reply = Object.assign({}, formModel.value);
 
-			const newPost = {
+			console.log('formModel', formModel.value);
+			console.log('reply', reply);
+			console.log('props.parentpost', props.parentPost);
+
+			const data = (await postApi.store(reply)).data;
+
+			const newReply = {
 				id: data.id,
-				threadId: data.thread_id,
-				parentPostId: data.parent_post_id,
-				userId: data.user_id,
+				thread_id: data.thread_id,
+				parent_post_id: data.parent_post_id,
+				user_id: data.user_id,
 				content: data.content,
-				updatedAt: data.update_at,
-				authorName: useAuthStore().user.name,
+				updated_at: data.updated_at,
+				user: useAuthStore().user,
+				post_replies: [],
 			};
 
-			emmits('createdNewPost', newPost);
+			console.log('new repy', newReply);
+
+			emmits('createdNewReply', newReply);
 			formModel.value.content = '';
-			commentMode.value = false;
-			msg.success('Comment sent');
+			msg.success('Reply sent');
 			loading.finish();
 		} catch (e) {
-			msg.error(`Failed sending comment`);
-			// msg.error(`Failed sending comment: ${e.message}`);
+			msg.error(`Failed sending reply`);
 			console.log(e);
 			loading.error();
 		}
@@ -97,18 +102,17 @@ watch(() => formModel.value.content, (newVal) => {
 			path="content">
 			<NInput type="textarea"
 				v-model:value="formModel.content"
-				placeholder="Type your reply here"
-				@focus="commentMode = true">
+				placeholder="Type your reply here">
 			</NInput>
 		</NFormItem>
 
 		<div class="flex justify-start space-x-2">
 
 			<NButton type="primary"
-				@click="handleSendComment"
+				@click="handleSendReply"
 				:render-icon="() => renderIcon('fe:paper-plane')">Send reply</NButton>
 
-			<!-- <NButton @click="commentMode = false"
+			<!-- <NButton @click="replyMode = false"
 				type="tertiary"
 				:render-icon="() => renderIcon('fe:close')">Cancel</NButton> -->
 

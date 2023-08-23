@@ -41,8 +41,9 @@ async function getThread() {
 async function getThreadPosts() {
 	try {
 		isLoadingPost.value = true;
-		const data = (await postApi.getByThreadSlug(props.slug)).data;
+		const data = (await postApi.getParentByThreadSlug(props.slug)).data;
 		posts.value = data;
+		console.log('posts value', posts.value);
 	} catch (error) {
 		msg.error('Failed retrieving comments');
 	} finally {
@@ -107,6 +108,7 @@ onBeforeMount(() => {
 		v-show="isLoadingPost">
 		<NSpin></NSpin>
 	</div>
+
 	<PostCard v-for="post in posts"
 		:post="post" />
 	<!--  -->

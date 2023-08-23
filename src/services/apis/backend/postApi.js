@@ -26,6 +26,11 @@ export default {
 		return api.get(`${url}/thread/${threadSlug}`);
 	},
 
+	async getParentByThreadSlug(threadSlug) {
+		await axios.get(`${api.defaults.baseURL}/sanctum/csrf-cookie`);
+		return api.get(`${url}/thread/${threadSlug}/parent`);
+	},
+
 
 	async getByUserId(userId) {
 		await axios.get(`${api.defaults.baseURL}/sanctum/csrf-cookie`);

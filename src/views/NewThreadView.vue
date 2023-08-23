@@ -63,13 +63,11 @@ function handleSubmitNewThread() {
 			const res = await threadApi.store(thread);
 			msg.success('Thread created');
 			loading.finish();
-			const newThreadSlug = res.data.slug;
 
-			console.log(res.data);
 			router.replace(
 				{
 					name: 'thread.view',
-					params: { slug: newThreadSlug }
+					params: { slug: res.data.slug }
 				});
 		} catch (err) {
 			loading.error();
