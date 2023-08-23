@@ -71,8 +71,6 @@ function handleSendReply() {
 				post_replies: [],
 			};
 
-			console.log('new repy', newReply);
-
 			emmits('createdNewReply', newReply);
 			formModel.value.content = '';
 			msg.success('Reply sent');

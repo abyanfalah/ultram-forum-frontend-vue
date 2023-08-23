@@ -57,12 +57,11 @@ function setReplyLength(length) {
 
 
 onBeforeMount(() => {
-	console.log('masuk ke props, jadii gini', props.post);
 	replies.value = props.post.post_replies;
 });
 
 function pushReply(reply) {
-	console.log('balesannya nih', reply);
+	// console.log('balesannya nih', reply);
 	replies.value.push(reply);
 	replyMode.value = false;
 }
