@@ -63,7 +63,7 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-	console.log(props.post);
+	// console.log(props.post);
 });
 
 function pushReply(reply) {
@@ -94,7 +94,7 @@ function checkdata() {
 		</NSpace>
 
 		<NSpace>
-			<p>{{ post.content }}</p>
+			<p class="">{{ post.content }}</p>
 		</NSpace>
 
 		<NSpace justify="">

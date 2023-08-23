@@ -55,7 +55,7 @@ function handleSendComment() {
 			const comment = Object.assign({}, formModel.value);
 			const data = (await postApi.store(comment)).data;
 
-			console.log('data balesannya', data);
+			// console.log('data balesannya', data);
 			const newPost = {
 				id: data.id,
 				thread_id: data.thread_id,

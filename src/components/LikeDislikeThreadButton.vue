@@ -15,47 +15,33 @@ const props = defineProps(['thread']);
 const busy = ref(false);
 
 
-const threadReactions = ref({
-	likes: 0,
-	dislikes: 0,
-	userReaction: null,
-});
-
-let reactions = [];
-
-
 function updateReactionsCount(reactionsCountData) {
-	threadReactions.value.likes = reactionsCountData.likes;
-	threadReactions.value.dislikes = reactionsCountData.dislikes;
-	threadReactions.value.userReaction = reactionsCountData.userReaction ?? null;
+	props.thread.likes_count = reactionsCountData.likes_count;
+	props.thread.dislikes_count = reactionsCountData.dislikes_count;
+	props.thread.my_reaction = reactionsCountData.my_reaction;
 }
 
-async function getReactionsCount() {
-	const { data } = await reactionApi.getThreadReactions(props.thread.slug);
-	updateReactionsCount(data);
-}
+
 
 
 onBeforeMount(() => {
 	// getReactionsCount();
-	threadReactions.value.likes = props.thread.likes_count;
-	threadReactions.value.dislikes = props.thread.dislikes_count;
-	threadReactions.value.userReaction = props.thread.is_reacted_by_user_count;
-	console.log(props.thread);
+	// console.log(props.thread);
 });
 
 
 async function reactToThread(isLiking) {
-	busy.value = true;
 	try {
+		busy.value = true;
 		const { data } = await reactionApi.submitThreadReaction(props.thread.id, isLiking);
+		// console.log('thisss', data);
 		updateReactionsCount(data);
 	} catch (err) {
 		msg.error('Failed submitting reaction');
 		console.error(err);
+	} finally {
+		busy.value = false;
 	}
-
-	busy.value = false;
 }
 
 </script>
@@ -71,16 +57,16 @@ async function reactToThread(isLiking) {
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
 				@click="reactToThread(true)"
-				:render-icon="() => h(Icon, { icon: (threadReactions.userReaction === 1 ? 'ant-design:like-filled' : 'ant-design:like-outlined') })">
-				{{ threadReactions.likes }}
+				:render-icon="() => h(Icon, { icon: (thread.my_reaction?.is_liking === 1 ? 'ant-design:like-filled' : 'ant-design:like-outlined') })">
+				{{ thread.likes_count }}
 			</NButton>
 		</div>
 
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
 				@click="reactToThread(false)"
-				:render-icon="() => h(Icon, { icon: (threadReactions.userReaction === 0 ? 'ant-design:like-filled' : 'ant-design:like-outlined'), verticalFlip: true })">
-				{{ threadReactions.dislikes }}
+				:render-icon="() => h(Icon, { icon: (thread.my_reaction?.is_liking === 0 ? 'ant-design:like-filled' : 'ant-design:like-outlined'), verticalFlip: true })">
+				{{ thread.dislikes_count }}
 			</NButton>
 		</div>
 

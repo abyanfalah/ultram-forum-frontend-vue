@@ -38,12 +38,12 @@ async function getThread() {
 	}
 }
 
-async function getThreadPosts() {
+async function getThreadParentPosts() {
 	try {
 		isLoadingPost.value = true;
 		const data = (await postApi.getParentByThreadSlug(props.slug)).data;
 		posts.value = data;
-		console.log('posts value', posts.value);
+		// console.log('posts value', posts.value);
 	} catch (error) {
 		msg.error('Failed retrieving comments');
 	} finally {
@@ -57,7 +57,7 @@ function pushPost(post) {
 
 onBeforeMount(() => {
 	getThread();
-	getThreadPosts();
+	getThreadParentPosts();
 })
 
 

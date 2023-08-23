@@ -24,22 +24,14 @@ const postReactions = ref({
 let reactions = [];
 
 function updateReactionsCount(reactionsCountData) {
-	postReactions.value.likes = reactionsCountData.likes;
-	postReactions.value.dislikes = reactionsCountData.dislikes;
-	postReactions.value.userReaction = reactionsCountData.userReaction ?? null;
 
-	// console.log(reactionsCountData);
-	// console.log(postReactions.value);
-}
-
-async function getReactionsCount() {
-	const { data } = await reactionApi.getPostReactions(props.post.id);
-	const res = await reactionApi.getPostReactions(props.post.id);
-	updateReactionsCount(data);
+	props.post.likes_count = reactionsCountData.likes_count;
+	props.post.dislikes_count = reactionsCountData.dislikes_count;
+	props.post.my_reaction = reactionsCountData.my_reaction;
 }
 
 onBeforeMount(() => {
-	getReactionsCount();
+	// getReactionsCount();
 });
 
 async function reactToPost(isLiking) {
@@ -67,16 +59,16 @@ async function reactToPost(isLiking) {
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
 				@click="reactToPost(true)"
-				:render-icon="() => h(Icon, { icon: (postReactions.userReaction === 1 ? 'ant-design:like-filled' : 'ant-design:like-outlined') })">
-				{{ postReactions.likes }}
+				:render-icon="() => h(Icon, { icon: (post.my_reaction?.is_liking === 1 ? 'ant-design:like-filled' : 'ant-design:like-outlined') })">
+				{{ post.likes_count }}
 			</NButton>
 		</div>
 
 		<div class="transition hover:scale-110 ease-out">
 			<NButton text
 				@click="reactToPost(false)"
-				:render-icon="() => h(Icon, { icon: (postReactions.userReaction === 0 ? 'ant-design:like-filled' : 'ant-design:like-outlined'), verticalFlip: true })">
-				{{ postReactions.dislikes }}
+				:render-icon="() => h(Icon, { icon: (post.my_reaction?.is_liking === 0 ? 'ant-design:like-filled' : 'ant-design:like-outlined'), verticalFlip: true })">
+				{{ post.dislikes_count }}
 			</NButton>
 		</div>
 
