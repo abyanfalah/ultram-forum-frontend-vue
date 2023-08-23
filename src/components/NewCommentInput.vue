@@ -88,7 +88,6 @@ function handleSendComment() {
 function focusCommentInput() {
 	commentMode.value = true;
 	formWrapperRef.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
 }
 </script>
 

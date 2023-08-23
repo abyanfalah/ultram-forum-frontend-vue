@@ -21,6 +21,8 @@ const loading = useLoadingBar();
 const props = defineProps(['parentPost']);
 const emmits = defineEmits(['createdNewReply', 'replyValueChange']);
 
+
+
 const formRef = ref();
 const formModel = ref({
 	content: '',
@@ -89,7 +91,6 @@ watch(() => formModel.value.content, (newVal) => {
 	emmits('replyValueChange', newVal.length);
 
 });
-
 </script>
 
 <template>

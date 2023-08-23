@@ -23,6 +23,8 @@ const dialog = useDialog();
 const msg = useMessage();
 const store = useStore();
 
+const CommentReplyInputWrapperRef = ref();
+
 const props = defineProps(['post', 'showAuthor']);
 const replyMode = ref(false);
 const replyLength = ref(0);
@@ -31,7 +33,9 @@ const replies = ref([]);
 
 function toggleReplyInput() {
 	if (!replyMode.value) {
-		return replyMode.value = true;
+		replyMode.value = true;
+		CommentReplyInputWrapperRef.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		return;
 	}
 
 	if (replyLength.value > 0) {
@@ -72,10 +76,6 @@ function pushReply(reply) {
 	replyMode.value = false;
 }
 
-function checkdata() {
-	console.log('coba cek datanya', props.post);
-}
-
 </script>
 
 <template>
@@ -113,10 +113,13 @@ function checkdata() {
 			</NButton> -->
 		</NSpace>
 
-		<CommentReplyInput v-if="replyMode"
-			:parentPost="post"
-			@created-new-reply="pushReply"
-			@reply-value-change="setReplyLength" />
+		<div ref="CommentReplyInputWrapperRef">
+			<CommentReplyInput v-if="replyMode"
+				:parentPost="post"
+				@created-new-reply="pushReply"
+				@reply-value-change="setReplyLength" />
+		</div>
+
 
 		<div class="ms-1">
 			<ChildPostCard v-for="reply in replies"
