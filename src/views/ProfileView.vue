@@ -20,7 +20,7 @@ onMounted(async () => {
 	myPosts.value = (await postApi.getByUserId(user.id)).data;
 
 	// console.log('threads', myThreads.value);
-	console.log('posts', myPosts.value);
+	// console.log('posts', myPosts.value);
 });
 </script>
 
@@ -78,8 +78,13 @@ onMounted(async () => {
 			</NSpace>
 
 			<div v-else>
-				you got a post
+				you do have post(s), but maybe i'll disable this feature, i guess.
 			</div>
+
+		</NTabPane>
+
+		<NTabPane name="Pictures">
+			<span>Coming soon...</span>
 
 		</NTabPane>
 	</NTabs>

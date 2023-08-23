@@ -99,9 +99,12 @@ onBeforeMount(async () => {
 									</main>
 
 									<!-- footer -->
-									<NLayoutFooter>
+									<!-- <NLayoutFooter>
 										<Footer />
-									</NLayoutFooter>
+									</NLayoutFooter> -->
+									<div class="bg-primary rounded-t-3xl">
+										<Footer />
+									</div>
 								</NLayoutContent>
 
 
