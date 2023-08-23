@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import {
 	NButton,
 	NCard,
@@ -8,6 +8,7 @@ import {
 	NSpace,
 	useMessage,
 	useDialog,
+	pProps,
 } from 'naive-ui';
 import { threadDate, timesAgo } from '../services/humanTime';
 import LikeDislikePostButton from './LikeDislikePostButton.vue';
@@ -54,10 +55,15 @@ function setReplyLength(length) {
 	replyLength.value = length;
 }
 
+const isParentPost = computed(() => props.post.parent_post_id === null);
 
 
 onBeforeMount(() => {
 	replies.value = props.post.post_replies;
+});
+
+onMounted(() => {
+	console.log(props.post);
 });
 
 function pushReply(reply) {
@@ -119,7 +125,7 @@ function checkdata() {
 	</NSpace>
 
 
-	<!-- <NDivider v-if="post.parent_post_id == null" /> -->
+	<NDivider v-if="isParentPost" />
 
 	<!-- replies -->
 </template>

@@ -37,7 +37,8 @@ async function getReactionsCount() {
 
 
 onBeforeMount(() => {
-	getReactionsCount();
+	// getReactionsCount();
+	console.log(props.thread);
 });
 
 
