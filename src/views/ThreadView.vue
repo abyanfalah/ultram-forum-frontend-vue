@@ -21,6 +21,7 @@ const props = defineProps(['slug']);
 const authStore = useAuthStore();
 const msg = useMessage();
 
+const commentInputRef = ref(null);
 const thread = ref({});
 const posts = ref([]);
 const isLoadingPost = ref(false);
@@ -55,10 +56,16 @@ function pushPost(post) {
 	posts.value.push(post);
 }
 
+function focusToCommentInput() {
+	// console.log(commentInputRef.value);
+	// commentInputRef.value.scrollIntoView();
+}
+
 onBeforeMount(() => {
 	getThread();
 	getThreadParentPosts();
 })
+
 
 
 </script>
@@ -89,6 +96,29 @@ onBeforeMount(() => {
 		<!-- thread -->
 		<h1 class="text-xl">{{ thread.title }}</h1>
 		<p class="my-4">{{ thread.content }}</p>
+
+		<!-- lorem -->
+		<div>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora natus at, qui delectus, minima praesentium iure
+				est corrupti accusantium ab mollitia dignissimos voluptate explicabo odit deleniti repellendus atque nemo quae in
+				perspiciatis, laborum molestiae. At corrupti sapiente optio voluptas, modi, quam culpa consequatur ipsam ut atque
+				doloribus corporis ipsa iste in omnis reprehenderit ex quos provident eligendi officiis alias, rem tempora
+				deserunt?
+				Temporibus, modi accusamus! Ab cupiditate deleniti quaerat, eius iusto modi quasi accusantium aliquam itaque
+				expedita ex minima nostrum totam non obcaecati quos perspiciatis consequatur. Consequuntur unde debitis fuga
+				accusantium quibusdam quos! Repellat ipsam quisquam reprehenderit laborum animi, dolores saepe ullam voluptatem
+				soluta, hic corporis laudantium numquam illo incidunt facilis id, blanditiis quae officiis vitae? Id, esse commodi
+				alias animi optio eaque. Minus, molestias nesciunt perspiciatis earum dolore consequuntur cupiditate dolor animi
+				dicta molestiae itaque, fugit voluptate recusandae beatae totam eius rerum. Accusantium aliquam consectetur
+				dolore,
+				voluptatibus iure nemo cum praesentium doloremque placeat libero totam repellendus veritatis quod distinctio ut
+				id.
+				Dolor odio, omnis, iste eius repellat blanditiis labore excepturi enim corrupti, soluta repellendus possimus.
+				Quibusdam, officiis accusantium error, veniam in provident quae velit maxime voluptates amet debitis dicta
+				repellendus! Pariatur facilis laborum perferendis doloribus maxime accusamus et cupiditate!</p>
+		</div>
+
+
 		<LikeDislikeThreadButton v-if="thread?.id"
 			:thread="thread" />
 		<!---->
@@ -99,8 +129,10 @@ onBeforeMount(() => {
 
 	<!-- comment input -->
 	<NewCommentInput class="mb-4"
+		ref="commentInputRef"
 		:threadId="thread.id"
-		@created-new-post="pushPost" />
+		@created-new-post="pushPost"
+		@comment-mode="focusToCommentInput" />
 	<!--  -->
 
 	<!-- comment section -->

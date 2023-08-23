@@ -5,6 +5,8 @@ export const useStore = defineStore('store', () => {
 	const isBrightTheme = ref(false);
 	const isCollapsedSidebar = ref(false);
 
+	const headerOffset = 45;
+
 	return {
 		isBrightTheme,
 		isCollapsedSidebar,

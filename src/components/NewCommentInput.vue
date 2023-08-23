@@ -13,16 +13,20 @@ import renderIcon from '../services/renderIcon';
 import postApi from '../services/apis/backend/postApi';
 import router from '../router';
 import { useAuthStore } from '../stores/authStore';
+import { useStore } from '../stores/store';
 
 
 const msg = useMessage();
 const loading = useLoadingBar();
-
+const store = useStore();
 const props = defineProps(['threadId', 'parentPostId']);
-const emmits = defineEmits(['createdNewPost']);
+const emits = defineEmits(['createdNewPost', 'commentMode']);
 
 const commentMode = ref(false);
+const commentInputElement = document.querySelector("#newCommentInput");
 
+
+const formWrapperRef = ref();
 const formRef = ref();
 const formModel = ref({
 	content: '',
@@ -67,7 +71,7 @@ function handleSendComment() {
 				post_replies: [],
 			};
 
-			emmits('createdNewPost', newPost);
+			emits('createdNewPost', newPost);
 			formModel.value.content = '';
 			commentMode.value = false;
 			msg.success('Comment sent');
@@ -80,36 +84,45 @@ function handleSendComment() {
 		}
 	});
 }
+
+function focusCommentInput() {
+	commentMode.value = true;
+	formWrapperRef.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+}
 </script>
 
 <template>
-	<NForm ref="formRef"
-		:model="formModel"
-		:rules="formRules">
-		<NFormItem path="content">
-			<NInput type="textarea"
-				v-model:value="formModel.content"
-				placeholder="Type your comment here"
-				:rows="(commentMode ? 8 : 1)"
-				@focus="commentMode = true">
-			</NInput>
-		</NFormItem>
+	<div ref="formWrapperRef">
+		<NForm ref="formRef"
+			:model="formModel"
+			:rules="formRules"
+			id="newCommentInput">
+			<NFormItem path="content">
+				<NInput type="textarea"
+					v-model:value="formModel.content"
+					placeholder="Type your comment here"
+					:rows="(commentMode ? 8 : 1)"
+					@focus="focusCommentInput">
+				</NInput>
+			</NFormItem>
 
-		<div class="flex justify-start space-x-2">
+			<div class="flex justify-start space-x-2">
 
-			<NButton v-show="commentMode"
-				type="primary"
-				@click="handleSendComment"
-				:render-icon="() => renderIcon('fe:paper-plane')">Send comment</NButton>
+				<NButton v-show="commentMode"
+					type="primary"
+					@click="handleSendComment"
+					:render-icon="() => renderIcon('fe:paper-plane')">Send comment</NButton>
 
-			<NButton v-show="commentMode"
-				@click="commentMode = false"
-				type="tertiary"
-				:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
-
-
-		</div>
+				<NButton v-show="commentMode"
+					@click="commentMode = false"
+					type="tertiary"
+					:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
 
 
-	</NForm>
+			</div>
+
+
+		</NForm>
+	</div>
 </template>

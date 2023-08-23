@@ -26,6 +26,4 @@ app.use(pinia);
 useAuthStore().checkAuth();
 
 app.use(router);
-
-
 app.mount('#app');

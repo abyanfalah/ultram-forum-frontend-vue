@@ -34,7 +34,7 @@ async function getAllThreads() {
 		isLoadingThreads.value = false;
 	}
 
-	console.log(threads.value);
+	// console.log(threads.value);
 }
 
 
