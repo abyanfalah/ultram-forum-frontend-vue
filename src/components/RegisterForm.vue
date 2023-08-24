@@ -7,6 +7,9 @@ import {
 	NInput,
 	NButton,
 	useMessage,
+	NResult,
+	NModal,
+	NCard,
 } from 'naive-ui';
 import authApi from '../services/apis/backend/authApi';
 
@@ -15,17 +18,30 @@ const msg = useMessage();
 
 const busy = ref(false);
 const busyCheckingUsername = ref(false);
-let timeout;
-let usernameIsAvailable = true;
+const busyCheckingEmail = ref(false);
+// const showRegisterSuccessModal = ref(false);
+const showRegisterSuccessModal = ref(true);
+
+let usernameCheckTimeout;
+let emailCheckTimeout;
+
+
 
 
 const registerFormRef = ref();
 const registerFormModel = ref({
-	username: '',
-	email: '',
-	password: '',
-	passwordConfirm: '',
+	username: 'Tanya.Blanda-Stanton2',
+	email: 'your.email+fakedata30686@gmail.com',
+	password: '_JqpWGcJ6GHWv__',
+	passwordConfirm: '_JqpWGcJ6GHWv__',
 });
+
+// const registerFormModel = ref({
+// 	username: '',
+// 	email: '',
+// 	password: '',
+// 	passwordConfirm: '',
+// });
 
 
 const registerFormRules = ref({
@@ -38,7 +54,7 @@ const registerFormRules = ref({
 		{
 			validator: isUniqueUsername,
 			message: "This username is already taken by someone :(",
-			trigger: ["input", "blur"],
+			trigger: ["input"],
 		},
 	],
 	email: [
@@ -50,8 +66,14 @@ const registerFormRules = ref({
 		{
 			validator: isValidEmail,
 			message: "Email is not valid!",
-			trigger: ["blur"],
+			trigger: ["blur", "input"],
 		},
+		{
+			validator: isUniqueEmail,
+			message: "Email is registered. Try login.",
+			trigger: ["input",]
+		},
+
 	],
 	password: [
 		{
@@ -61,7 +83,7 @@ const registerFormRules = ref({
 		},
 		{
 			validator: passwordIsEightCharacterLong,
-			message: "Password should be at least 8 characters long!",
+			message: "Use at least 8 characters!",
 			trigger: ["blur"],
 		},
 	],
@@ -83,20 +105,16 @@ const registerFormRules = ref({
 function isUniqueUsername() {
 	if (!registerFormModel.value.username) return;
 
-	if (timeout) {
-		clearTimeout(timeout);
+	if (usernameCheckTimeout) {
+		clearTimeout(usernameCheckTimeout);
 	};
 
 	return new Promise((resolve, reject) => {
 		busyCheckingUsername.value = true;
 
-		let o = Math.random();
-		o = Math.floor(o * 10);
-
-		timeout = setTimeout(async () => {
+		usernameCheckTimeout = setTimeout(async () => {
 			try {
 				const res = await authApi.checkUsernameAvailability(registerFormModel.value.username);
-				console.log(res);
 
 				if (res.data === 1) {
 					resolve(true);
@@ -105,10 +123,41 @@ function isUniqueUsername() {
 				}
 
 			} catch (err) {
-				msg.error(err.response?.message);
+				msg.error('error checking username');
+				console.log(err);
+			} finally {
+				busyCheckingUsername.value = false;
 			}
-			busyCheckingUsername.value = false;
-		}, 500);
+		}, 300);
+	});
+
+};
+
+function isUniqueEmail() {
+	if (!registerFormModel.value.email) return;
+
+	if (emailCheckTimeout) {
+		clearTimeout(emailCheckTimeout);
+	};
+
+	return new Promise((resolve, reject) => {
+		busyCheckingEmail.value = true;
+
+		emailCheckTimeout = setTimeout(async () => {
+			try {
+				const res = await authApi.checkEmailAvailability(registerFormModel.value.email);
+				if (res.data === 1) {
+					resolve(true);
+				} else {
+					reject(false);
+				}
+
+			} catch (err) {
+				msg.error('error checking email');
+				console.log(err);
+			}
+			busyCheckingEmail.value = false;
+		}, 300);
 	});
 
 };
@@ -141,8 +190,10 @@ function isValidPasswordConfirm() {
 
 
 function handleRegister() {
-	console.log(registerFormModel.value);
-	registerFormRef.value?.validate((err) => {
+	// console.log(registerFormModel.value);
+	return showRegisterSuccessModal.value = true;
+
+	registerFormRef.value?.validate(async (err) => {
 		if (err) return msg.error("Invalid form!");
 
 		const credentials = {
@@ -151,7 +202,22 @@ function handleRegister() {
 			password: registerFormModel.value.password,
 		};
 
+		try {
+			busy.value = true;
+			const registerResponse = await authApi.register(credentials);
+			console.log(res);
 
+			if (registerResponse?.status == 204 || registerResponse?.status == 200) {
+				// show modal success
+
+
+			}
+
+		} catch (err) {
+			msg.error(err.response?.data.message);
+		} finally {
+			busy.value = false;
+		}
 
 
 
@@ -163,47 +229,67 @@ function handleRegister() {
 </script>
 
 <template>
-	<NForm ref="registerFormRef"
-		:model="registerFormModel"
-		:rules="registerFormRules"
-		class="my-4">
+	<div>
+		<NForm ref="registerFormRef"
+			:model="registerFormModel"
+			:rules="registerFormRules"
+			class="my-4">
 
-		<NFormItemRow path="username"
-			label="Username">
-			<NInput v-model:value="registerFormModel.username"
-				placeholder="Username"
-				type="text"
-				:loading="busyCheckingUsername"
-				ref="usernameInput" />
-		</NFormItemRow>
+			<NFormItemRow path="username"
+				label="Username">
+				<NInput v-model:value="registerFormModel.username"
+					placeholder="Username"
+					type="text"
+					:loading="busyCheckingUsername"
+					ref="usernameInput" />
+			</NFormItemRow>
 
 
-		<NFormItemRow path="email"
-			label="Email">
-			<NInput v-model:value="registerFormModel.email"
-				placeholder="example@mail.com"
-				type="email" />
-		</NFormItemRow>
+			<NFormItemRow path="email"
+				label="Email">
+				<NInput v-model:value="registerFormModel.email"
+					placeholder="example@mail.com"
+					:loading="busyCheckingEmail"
+					type="email" />
+			</NFormItemRow>
 
-		<NFormItemRow path="password"
-			label="Password">
-			<NInput v-model:value="registerFormModel.password"
-				placeholder="Password"
-				type="password" />
-		</NFormItemRow>
+			<NFormItemRow path="password"
+				label="Password">
+				<NInput v-model:value="registerFormModel.password"
+					placeholder="Password"
+					show-password-on="click"
+					type="password" />
+			</NFormItemRow>
 
-		<NFormItemRow path="passwordConfirm"
-			label="Confirm password">
-			<NInput v-model:value="registerFormModel.passwordConfirm"
-				placeholder="Confirm password"
-				type="password" />
-		</NFormItemRow>
-	</NForm>
+			<NFormItemRow path="passwordConfirm"
+				label="Confirm password">
+				<NInput v-model:value="registerFormModel.passwordConfirm"
+					placeholder="Confirm password"
+					type="password" />
+			</NFormItemRow>
+		</NForm>
 
-	<NButton @click="handleRegister"
-		type="primary"
-		block
-		strong>
-		Register
-	</NButton>
+		<NButton @click="handleRegister"
+			type="primary"
+			block
+			:loading="busy"
+			strong>
+			Register
+		</NButton>
+	</div>
+
+	<NModal v-model:show="showRegisterSuccessModal">
+		<NCard class="max-w-md">
+			<NResult status="success"
+				title="Registration success!"
+				description="Check your email to verify your account.">
+
+				<template #footer>
+					<NButton block
+						type="primary"
+						@click="showRegisterSuccessModal = false">OK</NButton>
+				</template>
+			</NResult>
+		</NCard>
+	</NModal>
 </template>

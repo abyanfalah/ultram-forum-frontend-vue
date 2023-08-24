@@ -29,13 +29,16 @@ export default {
 		return api.post(`${url}/logout`);
 	},
 
-	register() {
-		return api.post(`${url}/register`);
+	register(credential) {
+		return api.post(`${url}/register`, credential);
 	},
 
 	checkUsernameAvailability(username) {
 		return api.post(`${url}/is-available-username`, { username });
 	},
 
+	checkEmailAvailability(email) {
+		return api.post(`${url}/is-available-email`, { email });
+	},
 
 };

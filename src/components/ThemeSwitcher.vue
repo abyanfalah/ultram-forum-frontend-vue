@@ -4,11 +4,10 @@ import { Icon } from '@iconify/vue';
 import { useStore } from '../stores/store';
 
 import {
-	NSwitch,
+	NSwitch, useLoadingBar,
 } from 'naive-ui';
 
 const store = useStore();
-
 
 </script>
 

@@ -38,26 +38,29 @@ import ThemeSwitcher from '../components/ThemeSwitcher.vue';
 			<h2>Please login or register</h2>
 		</NSpace>
 
-		<NCard>
-			<div class="min-w-[300px]">
-				<NTabs default-value="register"
-					size="large"
-					animated>
+		<div class="min-h-[70dvh]">
+			<NCard>
+				<div class="min-w-[350px]">
+					<NTabs default-value="register"
+						size="large"
+						animated>
 
-					<NTabPane name="login"
-						tab="Login">
-						<LoginForm />
-					</NTabPane>
+						<NTabPane name="login"
+							tab="Login">
+							<LoginForm />
+						</NTabPane>
 
-					<NTabPane name="register"
-						tab="Register">
-						<RegisterForm />
-					</NTabPane>
+						<NTabPane name="register"
+							tab="Register">
+							<RegisterForm />
+						</NTabPane>
 
-				</NTabs>
-			</div>
+					</NTabs>
+				</div>
 
-		</NCard>
+			</NCard>
+		</div>
+
 
 
 
