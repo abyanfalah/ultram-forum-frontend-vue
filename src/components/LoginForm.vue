@@ -16,6 +16,8 @@ import router from '../router';
 const msg = useMessage();
 const notif = useNotification();
 
+const busy = ref(false);
+
 const loginFormRef = ref();
 const loginFormModel = ref({
 	email: '',
@@ -64,21 +66,27 @@ function handleLogin() {
 		};
 
 		try {
+			busy.value = true;
 			const loginResponse = await authApi.login(credentials);
 			console.log('login: ', loginResponse);
 
 			if (loginResponse?.status == 204 || loginResponse?.status == 200) {
 				authStore.isLogin = true;
 
-
 				router.replace({ name: 'home' });
 				msg.success('Welcome!', { closable: true });
 			}
 
 		} catch (err) {
-			msg.error(`Login failed: ${err.message}`);
-			// console.log(err);
+			return msg.error(err.response?.data.message);
+
+			// if (err.response.status == 422) {
+			// 	msg.error('Invalid credentials');
+			// }
+		} finally {
+			busy.value = false;
 		}
+
 	});
 }
 
@@ -115,7 +123,8 @@ onMounted(() => {
 	<NButton @click="handleLogin"
 		type="primary"
 		block
-		strong>
+		strong
+		:loading="busy">
 		Login
 	</NButton>
 </template>

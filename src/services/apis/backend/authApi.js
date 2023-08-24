@@ -2,6 +2,7 @@ import axios from "axios";
 import backendApi from "./api";
 import { useAuthStore } from "../../../stores/authStore";
 import router from "../../../router";
+
 const api = backendApi;
 const url = api.defaults.baseURL;
 
@@ -26,6 +27,14 @@ export default {
 
 	logout() {
 		return api.post(`${url}/logout`);
+	},
+
+	register() {
+		return api.post(`${url}/register`);
+	},
+
+	checkUsernameAvailability(username) {
+		return api.post(`${url}/is-available-username`, { username });
 	},
 
 

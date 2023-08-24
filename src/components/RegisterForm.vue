@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import {
 	NForm,
@@ -8,16 +8,37 @@ import {
 	NButton,
 	useMessage,
 } from 'naive-ui';
+import authApi from '../services/apis/backend/authApi';
+
 
 const msg = useMessage();
 
-const registerFormRef = ref(null);
-const registerFormInputs = ref({
+const busy = ref(false);
+const busyCheckingUsername = ref(false);
+let timeout;
+let usernameIsAvailable = true;
+
+
+const registerFormRef = ref();
+const registerFormModel = ref({
+	username: '',
 	email: '',
 	password: '',
 	passwordConfirm: '',
 });
 const registerFormRules = ref({
+	username: [
+		{
+			required: true,
+			message: "Username is required!",
+			trigger: ["input", "blur"],
+		},
+		{
+			validator: test,
+			message: "This username is already taken by someone :(",
+			trigger: ["input", 'blur'],
+		},
+	],
 	email: [
 		{
 			required: true,
@@ -50,14 +71,52 @@ const registerFormRules = ref({
 		},
 		{
 			validator: isValidPasswordConfirm,
-			message: "Password doesn't match!",
+			message: "Doesn't match your original password!",
 			trigger: ["blur"],
 		},
 	],
 });
 
+function test() {
+	if (!registerFormModel.value.username) return;
+	let res = false;
+	setTimeout(() => {
+		return true;
+	}, 3000);
+
+}
+
+async function isUniqueUsername() {
+	if (!registerFormModel.value.username) return;
+
+	if (timeout) {
+		clearTimeout(timeout);
+		busyCheckingUsername.value = false;
+	};
+
+	let result;
+
+	console.log('start waiting');
+	timeout = setTimeout(async () => {
+		try {
+			busyCheckingUsername.value = true;
+			const res = await authApi.checkUsernameAvailability(registerFormModel.value.username);
+			usernameIsAvailable = res.data == 1;
+			result = res.data == 1;
+			console.log(result);
+		} catch (err) {
+			msg.error(err.response?.data.message);
+		} finally {
+			busyCheckingUsername.value = false;
+		}
+	}, 500);
+
+	console.log('finished waiting');
+
+}
+
 function isValidEmail() {
-	const email = registerFormInputs.value.email;
+	const email = registerFormModel.value.email;
 
 	if (!email) return;
 
@@ -66,7 +125,7 @@ function isValidEmail() {
 }
 
 function passwordIsEightCharacterLong() {
-	const password = registerFormInputs.value.password;
+	const password = registerFormModel.value.password;
 	if (!password) return;
 
 	return password.length > 7;
@@ -74,18 +133,30 @@ function passwordIsEightCharacterLong() {
 }
 
 function isValidPasswordConfirm() {
-	const password = registerFormInputs.value.password;
-	const passwordConfirm = registerFormInputs.value.passwordConfirm;
+	const password = registerFormModel.value.password;
+	const passwordConfirm = registerFormModel.value.passwordConfirm;
 	if (!passwordConfirm) return;
 
 	return password === passwordConfirm;
 }
 
+
 function handleRegister() {
+	console.log(registerFormModel.value);
 	registerFormRef.value?.validate((err) => {
 		if (err) return msg.error("Invalid form!");
 
-		msg.success("Form is valid!");
+		const credentials = {
+			username: registerFormModel.value.username,
+			email: registerFormModel.value.email,
+			password: registerFormModel.value.password,
+		};
+
+
+
+
+
+
 	});
 }
 
@@ -94,24 +165,38 @@ function handleRegister() {
 
 <template>
 	<NForm ref="registerFormRef"
-		:model="registerFormInputs"
-		:rules="registerFormRules">
+		:model="registerFormModel"
+		:rules="registerFormRules"
+		class="my-4">
+
+		<NFormItemRow path="username"
+			label="Username">
+			<NInput v-model:value="registerFormModel.username"
+				placeholder="Username"
+				type="text"
+				:loading="busyCheckingUsername"
+				ref="usernameInput" />
+		</NFormItemRow>
+
 
 		<NFormItemRow path="email"
 			label="Email">
-			<NInput placeholder="example@mail.com"
+			<NInput v-model:value="registerFormModel.email"
+				placeholder="example@mail.com"
 				type="email" />
 		</NFormItemRow>
 
 		<NFormItemRow path="password"
 			label="Password">
-			<NInput placeholder="Password"
+			<NInput v-model:value="registerFormModel.password"
+				placeholder="Password"
 				type="password" />
 		</NFormItemRow>
 
 		<NFormItemRow path="passwordConfirm"
 			label="Confirm password">
-			<NInput placeholder="Confirm password"
+			<NInput v-model:value="registerFormModel.passwordConfirm"
+				placeholder="Confirm password"
 				type="password" />
 		</NFormItemRow>
 	</NForm>

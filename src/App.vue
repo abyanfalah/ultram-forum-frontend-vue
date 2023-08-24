@@ -93,8 +93,8 @@ onBeforeMount(async () => {
 								<NLayoutContent :native-scrollbar="false"
 									position="absolute"
 									:style="{ top: authStore.isLogin ? '4.3rem' : null }">
-									<main :class="{ 'p-4 max-w-[800px]  mx-auto': authStore.isLogin }"
-										class="">
+									<main class="min-h-[90dvh]"
+										:class="{ 'p-4 max-w-[800px]  mx-auto': authStore.isLogin }">
 										<RouterView />
 									</main>
 

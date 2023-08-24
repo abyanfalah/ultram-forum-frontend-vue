@@ -100,7 +100,7 @@ function confirmLogout() {
 
 
 				<!-- notification -->
-				<NDropdown trigger="click"
+				<!-- <NDropdown trigger="click"
 					@select="(key, option) => { option.action() }"
 					:show-arrow="false"
 					size="medium"
@@ -110,7 +110,7 @@ function confirmLogout() {
 						circle
 						:render-icon="() => renderIcon('fe:bell')" />
 				</NDropdown>
-
+ -->
 
 
 

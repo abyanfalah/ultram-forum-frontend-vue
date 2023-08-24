@@ -22,7 +22,7 @@ import ThemeSwitcher from '../components/ThemeSwitcher.vue';
 </script>
 
 <template>
-	<NSpace class="min-h-screen "
+	<NSpace class="min-h-screen"
 		vertical
 		justify="center"
 		align="center">
@@ -33,15 +33,14 @@ import ThemeSwitcher from '../components/ThemeSwitcher.vue';
 
 
 		<NSpace vertical
-			align="center"
-			class=" my-10">
+			align="center">
 			<h1 class="text-2xl font-bold">Welcome!</h1>
 			<h2>Please login or register</h2>
 		</NSpace>
 
 		<NCard>
-			<div>
-				<NTabs default-value="login"
+			<div class=" my-10 min-w-[300px]">
+				<NTabs default-value="register"
 					size="large"
 					animated>
 
