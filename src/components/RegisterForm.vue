@@ -26,6 +26,8 @@ const registerFormModel = ref({
 	password: '',
 	passwordConfirm: '',
 });
+
+
 const registerFormRules = ref({
 	username: [
 		{
@@ -34,9 +36,9 @@ const registerFormRules = ref({
 			trigger: ["input", "blur"],
 		},
 		{
-			validator: test,
+			validator: isUniqueUsername,
 			message: "This username is already taken by someone :(",
-			trigger: ["input", 'blur'],
+			trigger: ["input", "blur"],
 		},
 	],
 	email: [
@@ -77,43 +79,40 @@ const registerFormRules = ref({
 	],
 });
 
-function test() {
-	if (!registerFormModel.value.username) return;
-	let res = false;
-	setTimeout(() => {
-		return true;
-	}, 3000);
 
-}
-
-async function isUniqueUsername() {
+function isUniqueUsername() {
 	if (!registerFormModel.value.username) return;
 
 	if (timeout) {
 		clearTimeout(timeout);
-		busyCheckingUsername.value = false;
 	};
 
-	let result;
+	return new Promise((resolve, reject) => {
+		busyCheckingUsername.value = true;
 
-	console.log('start waiting');
-	timeout = setTimeout(async () => {
-		try {
-			busyCheckingUsername.value = true;
-			const res = await authApi.checkUsernameAvailability(registerFormModel.value.username);
-			usernameIsAvailable = res.data == 1;
-			result = res.data == 1;
-			console.log(result);
-		} catch (err) {
-			msg.error(err.response?.data.message);
-		} finally {
+		let o = Math.random();
+		o = Math.floor(o * 10);
+
+		timeout = setTimeout(async () => {
+			try {
+				const res = await authApi.checkUsernameAvailability(registerFormModel.value.username);
+				console.log(res);
+
+				if (res.data === 1) {
+					resolve(true);
+				} else {
+					reject(false);
+				}
+
+			} catch (err) {
+				msg.error(err.response?.message);
+			}
 			busyCheckingUsername.value = false;
-		}
-	}, 500);
+		}, 500);
+	});
 
-	console.log('finished waiting');
+};
 
-}
 
 function isValidEmail() {
 	const email = registerFormModel.value.email;
