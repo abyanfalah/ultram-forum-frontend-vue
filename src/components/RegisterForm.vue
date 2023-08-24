@@ -20,7 +20,7 @@ const busy = ref(false);
 const busyCheckingUsername = ref(false);
 const busyCheckingEmail = ref(false);
 // const showRegisterSuccessModal = ref(false);
-const showRegisterSuccessModal = ref(true);
+const showRegisterSuccessModal = ref(false);
 
 let usernameCheckTimeout;
 let emailCheckTimeout;
@@ -191,7 +191,7 @@ function isValidPasswordConfirm() {
 
 function handleRegister() {
 	// console.log(registerFormModel.value);
-	return showRegisterSuccessModal.value = true;
+	// return showRegisterSuccessModal.value = true;
 
 	registerFormRef.value?.validate(async (err) => {
 		if (err) return msg.error("Invalid form!");
@@ -205,16 +205,20 @@ function handleRegister() {
 		try {
 			busy.value = true;
 			const registerResponse = await authApi.register(credentials);
-			console.log(res);
+			console.log(registerResponse);
 
-			if (registerResponse?.status == 204 || registerResponse?.status == 200) {
-				// show modal success
+			if (registerResponse?.status == 204 || registerResponse?.status == 200 || registerResponse?.status == 201) {
+				showRegisterSuccessModal.value = true;
 
-
+				registerFormModel.value.username = '';
+				registerFormModel.value.email = '';
+				registerFormModel.value.password = '';
+				registerFormModel.value.passwordConfirm = '';
 			}
 
 		} catch (err) {
-			msg.error(err.response?.data.message);
+			msg.error('Registration failed');
+			console.error(err);
 		} finally {
 			busy.value = false;
 		}
@@ -274,7 +278,9 @@ function handleRegister() {
 			block
 			:loading="busy"
 			strong>
-			Register
+			<span>
+				{{ busy ? "Registering" : "Register" }}
+			</span>
 		</NButton>
 	</div>
 
@@ -282,11 +288,11 @@ function handleRegister() {
 		<NCard class="max-w-md">
 			<NResult status="success"
 				title="Registration success!"
-				description="Check your email to verify your account.">
+				description="Check your email inbox to verify your account and proceed using this platform.">
 
 				<template #footer>
 					<NButton block
-						type="primary"
+						type="success"
 						@click="showRegisterSuccessModal = false">OK</NButton>
 				</template>
 			</NResult>

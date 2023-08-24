@@ -17,6 +17,7 @@ import {
 	NLoadingBarProvider,
 	NConfigProvider,
 	NLayoutContent,
+	NThemeEditor,
 } from "naive-ui";
 
 import {
@@ -38,6 +39,28 @@ const theme = computed(() => {
 });
 
 
+const brightThemeOverride = {
+	"common": {
+		"primaryColor": "#4000FFFF",
+		"primaryColorHover": "#593EA7FF",
+		"primaryColorPressed": "#1D026FFF",
+		"primaryColorSuppl": "#4A3686FF"
+	}
+};
+
+const darkThemeOverride = {
+	"common": {
+		"primaryColor": "#897CFFFF",
+		"primaryColorHover": "#9F95FFFF",
+		"primaryColorPressed": "#6D5DFFFF",
+		"primaryColorSuppl": "#4B3FB7FF"
+	}
+};
+
+const themeOverrides = computed(() => {
+	return store.isBrightTheme ? brightThemeOverride : darkThemeOverride;
+});
+
 // router.replace('/thread/new');
 // router.replace('/testpage');
 const sidebarPosition = computed(() => {
@@ -52,8 +75,15 @@ onBeforeMount(async () => {
 
 </script>
 
+
 <template>
-	<NConfigProvider :theme="theme">
+	<NConfigProvider :theme-overrides="themeOverrides"
+		:theme="theme">
+
+		<!-- THEME EDITOR -->
+		<!-- <NThemeEditor /> -->
+		<!--  -->
+
 		<NMessageProvider>
 			<NDialogProvider>
 				<NLoadingBarProvider>
@@ -102,7 +132,7 @@ onBeforeMount(async () => {
 									<!-- <NLayoutFooter>
 										<Footer />
 									</NLayoutFooter> -->
-									<div class="bg-primary rounded-t-3xl">
+									<div>
 										<Footer />
 									</div>
 								</NLayoutContent>
@@ -119,6 +149,7 @@ onBeforeMount(async () => {
 				</NLoadingBarProvider>
 			</NDialogProvider>
 		</NMessageProvider>
+
 	</NConfigProvider>
 </template>
 

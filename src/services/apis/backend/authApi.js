@@ -29,7 +29,8 @@ export default {
 		return api.post(`${url}/logout`);
 	},
 
-	register(credential) {
+	async register(credential) {
+		await axios.get(`${url}/sanctum/csrf-cookie`);
 		return api.post(`${url}/register`, credential);
 	},
 

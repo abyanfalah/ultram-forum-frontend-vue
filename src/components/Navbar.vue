@@ -9,16 +9,18 @@ import {
 	useDialog,
 } from 'naive-ui';
 import { Icon } from '@iconify/vue';
-import { h, ref } from 'vue';
+import { computed, h, ref } from 'vue';
 import renderIcon from '../services/renderIcon';
 import { useAuthStore } from '../stores/authStore';
 import authApi from '../services/apis/backend/authApi';
 import router from '../router';
+import { useStore } from '../stores/store';
 
 const msg = useMessage();
 const dialog = useDialog();
 
 const authStore = useAuthStore();
+const store = useStore();
 
 const userMenuOptions = ref([
 	{
@@ -72,6 +74,14 @@ function confirmLogout() {
 
 }
 
+const logoClass = computed(() => {
+	if (store.isBrightTheme) {
+		return 'bg-primary text-white hover:bg-white hover:text-primary border border-primary';
+	} else {
+		return 'bg-primary-dark text-black hover:bg-[#18181C] hover:text-primary-dark border border-primary-dark';
+	}
+})
+
 
 </script>
 
@@ -80,8 +90,8 @@ function confirmLogout() {
 		<NSpace justify="space-between"
 			align="center">
 			<RouterLink :to="{ name: 'home' }">
-				<span
-					class="font-bold py-1 px-4 bg-white text-primary rounded hover:bg-primary hover:text-white hover:scale-110 transition ease-out">Ultram</span>
+				<span class="font-bold py-1 px-4 rounded hover:scale-110 transition ease-out"
+					:class="logoClass">Ultram</span>
 			</RouterLink>
 
 			<NSpace align="center">

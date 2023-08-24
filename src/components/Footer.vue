@@ -1,7 +1,12 @@
-<script setup></script>
+<script setup>
+
+import { useStore } from '../stores/store';
+const store = useStore();
+</script>
 
 <template>
-	<div class="py-[100px] flex justify-center font-bold text-xl shadow text-white">
-		Ultram forum.
+	<div class="py-[100px] flex justify-center font-bold text-xl shadow rounded-t-xl"
+		:class="[store.isBrightTheme ? 'bg-primary text-white' : 'bg-primary-dark text-black',]">
+		<span>Ultram forum</span>
 	</div>
-</template>
+</template >
