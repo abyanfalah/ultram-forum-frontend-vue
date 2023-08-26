@@ -88,7 +88,7 @@ onBeforeMount(() => {
 					role="button"
 					round
 					@click=""></NAvatar>
-				<span class="font-bold">{{ authStore.user.name }}</span>
+				<span class="font-bold">{{ thread?.user?.name }}</span>
 			</div>
 			<span class="text-neutral-400">{{ threadDate(thread?.created_at) }}</span>
 		</NSpace>
@@ -96,7 +96,8 @@ onBeforeMount(() => {
 		<!-- thread -->
 		<h1 class="text-xl">{{ thread.title }}</h1>
 		<p class="my-4 whitespace-pre-line">{{ thread.content }}</p>
-		<!-- <pre>{{ thread.content }}</pre> -->
+
+		<pre>{{ thread }}</pre>
 
 		<!-- lorem -->
 		<div class="hidden">

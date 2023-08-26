@@ -89,10 +89,19 @@ const logoClass = computed(() => {
 	<nav class="px-4 py-4 ">
 		<NSpace justify="space-between"
 			align="center">
-			<RouterLink :to="{ name: 'home' }">
-				<span class="font-bold py-1 px-4 rounded hover:scale-110 transition ease-out"
-					:class="logoClass">Ultram</span>
-			</RouterLink>
+
+			<div class="flex items-center space-x-2">
+				<NButton :render-icon="() => renderIcon('fe:menu')"
+					secondary
+					@click="store.isCollapsedSidebar = !store.isCollapsedSidebar" />
+
+				<!-- logo -->
+				<RouterLink :to="{ name: 'home' }">
+					<span class="font-bold py-1 px-4 rounded hover:scale-110 transition ease-out"
+						:class="logoClass">Ultram</span>
+				</RouterLink>
+
+			</div>
 
 			<NSpace align="center">
 

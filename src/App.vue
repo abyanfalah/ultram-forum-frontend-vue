@@ -64,8 +64,7 @@ const themeOverrides = computed(() => {
 // router.replace('/thread/new');
 // router.replace('/testpage');
 const sidebarPosition = computed(() => {
-	// if mobile absolute
-	return "absolute";
+	return store.isAbsoluteSidebar ? 'absolute' : 'relative';
 });
 
 onBeforeMount(async () => {
@@ -102,6 +101,7 @@ onBeforeMount(async () => {
 							<NLayoutSider v-if="authStore.isLogin"
 								:native-scrollbar="false"
 								show-trigger="bar"
+								width="200"
 								:position="sidebarPosition"
 								@collapse="store.isCollapsedSidebar = true"
 								@expand="store.isCollapsedSidebar = false"

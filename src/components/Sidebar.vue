@@ -32,26 +32,39 @@ const shortcuts = ref([
 </script>
 
 <template>
-	<div class="p-4">
+	<div class="p-4"
+		style="z-index: 999;">
+		<div class="flex justify-end">
+			<NButton type="secondary"
+				block
+				@click="store.isCollapsedSidebar = true"
+				:render-icon="() => renderIcon('fe:arrow-left')">Close sidebar</NButton>
+		</div>
+
 		<NDivider>Shortcuts</NDivider>
-		<!-- <NMenu :options="shortcuts"
-			ref="shortcutsRef"
-			v-model:value="selectedShortcut">
-		</NMenu> -->
 
 
 		<!-- options -->
 		<!-- <NDivider /> -->
-		<NDivider dashed>Quick settings</NDivider>
-
 		<!-- dark mode -->
-		<div class="flex w-full justify-between items-center">
-			<span>Theme</span>
-			<ThemeSwitcher />
+
+		<div class="flex flex-col space-y-4">
+			<div class="flex w-full justify-between items-center">
+				<span>Theme</span>
+				<ThemeSwitcher />
+			</div>
+
+			<div class="flex w-full justify-between items-center">
+				<span>Absolute sidebar</span>
+				<NSwitch v-model:value="store.isAbsoluteSidebar" />
+
+			</div>
+
 		</div>
 
 		<NSpace vertical
-			justify="end">
+			justify="end"
+			class="mt-4">
 
 			<RouterLink :to="{ name: 'testpage' }">
 				<NButton>
