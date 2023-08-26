@@ -68,7 +68,8 @@ function handleLogin() {
 		try {
 			busy.value = true;
 			const loginResponse = await authApi.login(credentials);
-			console.log('login: ', loginResponse);
+			// console.log('login: ', loginResponse);
+			authStore.checkAuth();
 
 			if (loginResponse?.status == 204 || loginResponse?.status == 200) {
 				authStore.isLogin = true;
@@ -124,6 +125,7 @@ onMounted(() => {
 		type="primary"
 		block
 		strong
+		:disabled="busy"
 		:loading="busy">
 		Login
 	</NButton>

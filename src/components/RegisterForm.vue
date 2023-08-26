@@ -12,9 +12,12 @@ import {
 	NCard,
 } from 'naive-ui';
 import authApi from '../services/apis/backend/authApi';
+import { useAuthStore } from '../stores/authStore';
+import router from '../router';
 
 
 const msg = useMessage();
+const authStore = useAuthStore();
 
 const busy = ref(false);
 const busyCheckingUsername = ref(false);
@@ -26,7 +29,12 @@ let usernameCheckTimeout;
 let emailCheckTimeout;
 
 
-
+function closeRegisterSuccessModal() {
+	showRegisterSuccessModal.value = false;
+	authStore.isLogin = true;
+	router.replace({ name: 'profile' });
+	// useAuthStore().checkAuth();
+}
 
 const registerFormRef = ref();
 const registerFormModel = ref({
@@ -190,9 +198,6 @@ function isValidPasswordConfirm() {
 
 
 function handleRegister() {
-	// console.log(registerFormModel.value);
-	// return showRegisterSuccessModal.value = true;
-
 	registerFormRef.value?.validate(async (err) => {
 		if (err) return msg.error("Invalid form!");
 
@@ -205,7 +210,9 @@ function handleRegister() {
 		try {
 			busy.value = true;
 			const registerResponse = await authApi.register(credentials);
-			console.log(registerResponse);
+			console.log('registerResponse', registerResponse);
+			authStore.user = registerResponse.data;
+
 
 			if (registerResponse?.status == 204 || registerResponse?.status == 200 || registerResponse?.status == 201) {
 				showRegisterSuccessModal.value = true;
@@ -215,6 +222,7 @@ function handleRegister() {
 				registerFormModel.value.password = '';
 				registerFormModel.value.passwordConfirm = '';
 			}
+
 
 		} catch (err) {
 			msg.error('Registration failed');
@@ -276,6 +284,7 @@ function handleRegister() {
 		<NButton @click="handleRegister"
 			type="primary"
 			block
+			:disabled="busy"
 			:loading="busy"
 			strong>
 			<span>
@@ -293,7 +302,7 @@ function handleRegister() {
 				<template #footer>
 					<NButton block
 						type="primary"
-						@click="showRegisterSuccessModal = false">OK</NButton>
+						@click="closeRegisterSuccessModal">OK</NButton>
 				</template>
 			</NResult>
 		</NCard>

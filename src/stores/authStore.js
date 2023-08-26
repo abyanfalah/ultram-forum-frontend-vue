@@ -20,7 +20,6 @@ export const useAuthStore = defineStore('auth',
 				if (isLogin.value === false) {
 					user.value = Object.assign({});
 					return res;
-
 				}
 			} catch (error) {
 
@@ -32,7 +31,7 @@ export const useAuthStore = defineStore('auth',
 
 		async function logout() {
 			const res = await authApi.logout();
-			console.log('logout: ', res);
+			// console.log('logout: ', res);
 
 			const statusCode = res?.status ?? null;
 
@@ -40,6 +39,7 @@ export const useAuthStore = defineStore('auth',
 				isLogin.value = false;
 				// msg.success('Logout success!');
 				return router.replace({ name: 'auth' });
+				user.value = Object.assign({});
 			}
 
 			// in case for something needs to be added when 419

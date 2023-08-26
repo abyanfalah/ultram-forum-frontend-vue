@@ -12,6 +12,7 @@ export default {
 			const res = await api.get(`${url}/api/userdata`);
 			useAuthStore().user = res.data;
 			// console.log(res);
+			// router.replace({ name: 'home' });
 			return true;
 		} catch (err) {
 			console.log('checkAuth: unauthorized');

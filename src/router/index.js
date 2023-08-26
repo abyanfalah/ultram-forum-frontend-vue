@@ -48,6 +48,12 @@ const router = createRouter({
 			component: () => import('../views/TestPage.vue'),
 			meta: { requiresAuth: true },
 		},
+		// {
+		// 	path: '/verifiy/:token',
+		// 	name: 'testpage',
+		// 	component: () => import('../views/TestPage.vue'),
+		// 	meta: { requiresAuth: true },
+		// },
 		{
 			path: '/auth',
 			name: 'auth',
@@ -58,7 +64,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	const isLogin = useAuthStore().isLogin;
+	const authStore = useAuthStore();
+	const isLogin = authStore.isLogin;
 	// console.log('isLogin: ', isLogin);
 
 	if (!isLogin && to.meta.requiresAuth) { return next({ name: 'auth' }); }
