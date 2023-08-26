@@ -292,7 +292,7 @@ function handleRegister() {
 
 				<template #footer>
 					<NButton block
-						type="success"
+						type="primary"
 						@click="showRegisterSuccessModal = false">OK</NButton>
 				</template>
 			</NResult>

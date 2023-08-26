@@ -1,5 +1,5 @@
 <script setup>
-import { NButton, NSpace, NTabPane, NTabs } from 'naive-ui';
+import { NButton, NSpace, NTabPane, NTabs, useMessage } from 'naive-ui';
 import { useAuthStore } from '../stores/authStore';
 import { useStore } from '../stores/store';
 import renderIcon from '../services/renderIcon';
@@ -11,6 +11,7 @@ import ThreadCard from '../components/ThreadCard.vue';
 const authStore = useAuthStore();
 const store = useStore();
 const user = authStore.user;
+const msg = useMessage();
 
 const myThreads = ref([]);
 const myPosts = ref([]);
@@ -50,7 +51,8 @@ onMounted(async () => {
 
 		<!-- profile btns -->
 		<div>
-			<NButton :render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
+			<NButton @click="() => msg.info('Coming soon')"
+				:render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
 		</div>
 	</NSpace>
 
