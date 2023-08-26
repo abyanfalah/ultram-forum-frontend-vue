@@ -25,19 +25,34 @@ const props = defineProps(['thread', 'showAuthor']);
 			</RouterLink>
 		</template> -->
 
-		<NSpace justify="space-between">
-			<div class=" flex space-x-2 items-center text-neutral-400">
-				<NAvatar src="/img/miku.jpg"
-					fallback-src="/img/user-default.svg"
-					size="small"
-					role="button"
-					round
-					@click=""></NAvatar>
-				<span>{{ thread.user.name }}</span>
-				<!-- <span v-if="showAuthor == true">user</span> -->
-			</div>
-			<span class="text-neutral-400">{{ threadDate(thread.created_at) }}</span>
+		<!-- user detail and time -->
+		<NSpace v-if="thread?.user"
+			justify="space-between"
+			class="mb-4">
+
+			<NButton text>
+				<RouterLink :to="{
+					name: 'profile',
+					params: { username: thread?.user?.username }
+				}"
+					class=" flex space-x-2 items-center ">
+					<NAvatar src="/img/miku.jpg"
+						fallback-src="/img/user-default.svg"
+						size="small"
+						role="button"
+						round
+						@click=""></NAvatar>
+					<span class="">{{ thread?.user?.name }}</span>
+
+				</RouterLink>
+			</NButton>
+
+
+
+			<span class="text-neutral-400">{{ threadDate(thread?.created_at) }}</span>
 		</NSpace>
+
+
 
 		<NSpace class="mt-4">
 

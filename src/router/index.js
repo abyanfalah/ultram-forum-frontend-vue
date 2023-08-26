@@ -17,6 +17,7 @@ const router = createRouter({
 			component: () => import('../views/ProfileView.vue'),
 			meta: { requiresAuth: true },
 		},
+
 		{
 			path: '/me/thread',
 			name: 'me.thread',
@@ -59,6 +60,15 @@ const router = createRouter({
 			name: 'auth',
 			component: () => import('../views/AuthView.vue'),
 			meta: { requiresAuth: false },
+		},
+
+		// must place this as last route
+		{
+			path: '/:username',
+			name: 'profile',
+			component: () => import('../views/ProfileView.vue'),
+			meta: { requiresAuth: true },
+			props: true,
 		},
 	]
 });

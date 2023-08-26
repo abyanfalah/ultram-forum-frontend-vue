@@ -11,6 +11,9 @@ export default {
 	// 	return api.get(url);
 	// },
 
+	getByUsername(username) {
+		return api.get(`${url}/${username}`);
+	}
 
 
 

@@ -12,7 +12,8 @@ import {
 	NSpin,
 	NDivider,
 	NCard,
-	useMessage
+	useMessage,
+	NButton
 } from 'naive-ui';
 import { useAuthStore } from '../stores/authStore';
 import postApi from '../services/apis/backend/postApi';
@@ -78,18 +79,31 @@ onBeforeMount(() => {
 	</div>
 
 	<div>
+
 		<!-- user detail and time -->
-		<NSpace justify="space-between"
+		<NSpace v-if="thread?.user"
+			justify="space-between"
 			class="mb-4">
-			<div class=" flex space-x-2 items-center ">
-				<NAvatar src="/img/miku.jpg"
-					fallback-src="/img/user-default.svg"
-					size="small"
-					role="button"
-					round
-					@click=""></NAvatar>
-				<span class="font-bold">{{ thread?.user?.name }}</span>
-			</div>
+
+			<NButton text>
+				<RouterLink :to="{
+					name: 'profile',
+					params: { username: thread?.user?.username }
+				}"
+					class=" flex space-x-2 items-center ">
+					<NAvatar src="/img/miku.jpg"
+						fallback-src="/img/user-default.svg"
+						size="small"
+						role="button"
+						round
+						@click=""></NAvatar>
+					<span class="font-bold">{{ thread?.user?.name }}</span>
+
+				</RouterLink>
+			</NButton>
+
+
+
 			<span class="text-neutral-400">{{ threadDate(thread?.created_at) }}</span>
 		</NSpace>
 

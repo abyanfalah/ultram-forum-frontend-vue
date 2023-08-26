@@ -35,7 +35,7 @@ const shortcuts = ref([
 	<div class="p-4"
 		style="z-index: 999;">
 		<div class="flex justify-end">
-			<NButton type="secondary"
+			<NButton quaternary
 				block
 				@click="store.isCollapsedSidebar = true"
 				:render-icon="() => renderIcon('fe:arrow-left')">Close sidebar</NButton>

@@ -27,14 +27,14 @@ const userMenuOptions = ref([
 		label: 'Profile',
 		key: 'profile',
 		icon: () => renderIcon('fe:user'),
-		action: () => router.push({ name: 'profile' }),
+		action: () => router.push({ name: 'profile', params: { username: authStore.user.username } }),
 	},
-	{
-		label: 'My threads',
-		key: 'mythread',
-		icon: () => renderIcon('fe:comments'),
-		action: () => router.push({ name: 'me.thread' }),
-	},
+	// {
+	// 	label: 'My threads',
+	// 	key: 'mythread',
+	// 	icon: () => renderIcon('fe:comments'),
+	// 	action: () => router.push({ name: 'me.thread' }),
+	// },
 	{
 		type: 'divider'
 	},
@@ -91,8 +91,8 @@ const logoClass = computed(() => {
 			align="center">
 
 			<div class="flex items-center space-x-2">
-				<NButton :render-icon="() => renderIcon('fe:menu')"
-					secondary
+				<NButton quaternary
+					:render-icon="() => renderIcon('fe:bar')"
 					@click="store.isCollapsedSidebar = !store.isCollapsedSidebar" />
 
 				<!-- logo -->

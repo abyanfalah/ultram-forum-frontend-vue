@@ -6,6 +6,14 @@ export const useStore = defineStore('store', () => {
 	const isCollapsedSidebar = ref(false);
 	const isAbsoluteSidebar = ref(false);
 
+	const getPrimaryBgColor = computed(() => {
+		return isBrightTheme.value ? "bg-primary text-white" : "bg-primary-dark text-black";
+	});
+
+	const getPrimaryTextColor = computed(() => {
+		return isBrightTheme.value ? "text-primary " : "text-primary-dark ";
+	});
+
 	const headerOffset = 45;
 
 	return {
@@ -13,6 +21,8 @@ export const useStore = defineStore('store', () => {
 		isCollapsedSidebar,
 		isAbsoluteSidebar,
 		headerOffset,
+		getPrimaryBgColor,
+		getPrimaryTextColor,
 	};
 },
 	{

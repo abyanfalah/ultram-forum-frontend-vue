@@ -32,7 +32,7 @@ let emailCheckTimeout;
 function closeRegisterSuccessModal() {
 	showRegisterSuccessModal.value = false;
 	authStore.isLogin = true;
-	router.replace({ name: 'profile' });
+	router.replace({ name: 'profile', params: { username: authStore.user.username } });
 	// useAuthStore().checkAuth();
 }
 
@@ -293,7 +293,8 @@ function handleRegister() {
 		</NButton>
 	</div>
 
-	<NModal v-model:show="showRegisterSuccessModal">
+	<NModal v-model:show="showRegisterSuccessModal"
+		:mask-closable="false">
 		<NCard class="max-w-md">
 			<NResult status="success"
 				title="Registration success!"

@@ -7,21 +7,33 @@ import { computed, onMounted, ref } from 'vue';
 import threadApi from '../services/apis/backend/threadApi';
 import postApi from '../services/apis/backend/postApi';
 import ThreadCard from '../components/ThreadCard.vue';
+import userApi from '../services/apis/backend/userApi';
+
+const props = defineProps(['username', 'user']);
+
 
 const authStore = useAuthStore();
 const store = useStore();
-const user = authStore.user;
+const user = ref({});
 const msg = useMessage();
 
-const myThreads = ref([]);
-const myPosts = ref([]);
+const userThreads = ref([]);
+const userPosts = ref([]);
+
+const isMe = computed(() => {
+	return user.value.username === authStore.user.username;
+});
 
 onMounted(async () => {
-	myThreads.value = (await threadApi.getByUserId(user.id)).data;
-	myPosts.value = (await postApi.getByUserId(user.id)).data;
+	if (props?.username === authStore.user.username) {
+		user.value = authStore.user;
+	} else {
+		const res = await userApi.getByUsername(props.username);
+		user.value = res.data;
+	}
 
-	// console.log('threads', myThreads.value);
-	// console.log('posts', myPosts.value);
+	userThreads.value = (await threadApi.getByUserId(user.value.id)).data;
+	userPosts.value = (await postApi.getByUserId(user.value.id)).data;
 });
 </script>
 
@@ -47,10 +59,14 @@ onMounted(async () => {
 
 
 	<NSpace justify="space-between">
-		<p class="text-2xl">{{ user.name }}</p>
+		<div>
+			<p class="text-2xl">{{ user.name }}</p>
+			<p class="font-bold"
+				:class="[store.getPrimaryTextColor,]">@{{ user.username }}</p>
+		</div>
 
 		<!-- profile btns -->
-		<div>
+		<div v-if="isMe">
 			<NButton @click="() => msg.info('Coming soon')"
 				:render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
 		</div>
@@ -61,12 +77,12 @@ onMounted(async () => {
 	<NTabs animated>
 		<NTabPane name="Threads">
 
-			<NSpace v-if="myThreads.length < 1">
+			<NSpace v-if="userThreads.length < 1">
 				You haven't make any thread yet...
 			</NSpace>
 
 			<ThreadCard v-else
-				v-for="thread in myThreads"
+				v-for="thread in userThreads"
 				:key="thread.id"
 				:thread="thread"
 				class="my-4" />
@@ -75,7 +91,7 @@ onMounted(async () => {
 
 		<NTabPane name="Posts">
 
-			<NSpace v-if="myPosts.length < 1">
+			<NSpace v-if="userPosts.length < 1">
 				You haven't make any post yet...
 			</NSpace>
 
