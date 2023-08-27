@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { computed, onBeforeMount, onMounted, ref } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView, useRoute } from 'vue-router';
 import authApi from './services/apis/backend/authApi';
 import router from './router';
 import { useAuthStore } from './stores/authStore';
@@ -32,6 +32,7 @@ import {
 
 const authStore = useAuthStore();
 const store = useStore();
+const route = useRoute();
 
 const theme = computed(() => {
 	if (useStore().isBrightTheme) return null;
@@ -125,7 +126,7 @@ onBeforeMount(async () => {
 									:style="{ top: authStore.isLogin ? '4.3rem' : null }">
 									<main class="min-h-[90dvh]"
 										:class="{ 'p-4 max-w-[800px]  mx-auto': authStore.isLogin }">
-										<RouterView />
+										<RouterView :key="route.path" />
 									</main>
 
 									<!-- footer -->
