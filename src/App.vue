@@ -129,10 +129,7 @@ onBeforeMount(async () => {
 										<RouterView :key="route.path" />
 									</main>
 
-									<!-- footer -->
-									<!-- <NLayoutFooter>
-										<Footer />
-									</NLayoutFooter> -->
+
 									<div>
 										<Footer />
 									</div>
