@@ -75,9 +75,6 @@ onMounted(async () => {
 			<div class="my-2">
 				<FollowCount :user="user" />
 			</div>
-
-
-
 		</div>
 
 		<!-- profile btns -->
