@@ -45,7 +45,7 @@ async function getThreadParentPosts() {
 		isLoadingPost.value = true;
 		const data = (await postApi.getParentByThreadSlug(props.slug)).data;
 		posts.value = data;
-		// console.log('posts value', posts.value);
+		console.log('posts value', posts.value);
 	} catch (error) {
 		msg.error('Failed retrieving comments');
 	} finally {
@@ -111,7 +111,7 @@ onBeforeMount(() => {
 		<h1 class="text-xl">{{ thread.title }}</h1>
 		<p class="my-4 whitespace-pre-line">{{ thread.content }}</p>
 
-		<pre>{{ thread }}</pre>
+		<!-- <pre>{{ thread }}</pre> -->
 
 		<!-- lorem -->
 		<div class="hidden">

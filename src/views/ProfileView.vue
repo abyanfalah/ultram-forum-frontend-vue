@@ -1,5 +1,12 @@
 <script setup>
-import { NButton, NSpace, NTabPane, NTabs, useMessage } from 'naive-ui';
+import {
+	NButton,
+	NSpace,
+	NDropdown,
+	NTabPane,
+	NTabs,
+	useMessage
+} from 'naive-ui';
 import { useAuthStore } from '../stores/authStore';
 import { useStore } from '../stores/store';
 import renderIcon from '../services/renderIcon';
@@ -28,6 +35,41 @@ const isMe = computed(() => {
 	return user.value.username === authStore.user.username;
 });
 
+
+
+const profilePicOptions = [
+
+	{
+		label: "Change",
+		key: "change",
+		icon: () => renderIcon('fe:edit'),
+		disabled: () => isMe.value == false,
+	},
+	{
+		label: "View",
+		key: "view",
+		icon: () => renderIcon('fe:eye'),
+	},
+
+];
+
+const coverPicOptions = [
+	{
+		label: "Change",
+		key: "change",
+		icon: () => renderIcon('fe:edit'),
+		disabled: () => isMe.value == false,
+	},
+	{
+		label: "View",
+		key: "view",
+		icon: () => renderIcon('fe:eye'),
+	},
+
+];
+
+
+
 onMounted(async () => {
 	if (props?.username === authStore.user.username) {
 		user.value = authStore.user;
@@ -46,21 +88,39 @@ onMounted(async () => {
 <template>
 	<!-- cover image -->
 	<div class="relative mb-[5rem]">
-		<img class="w-full h-[30%] object-cover rounded"
-			src="/img/cover/default.jpg"
-			alt="">
 
-		<div class="absolute -bottom-[3rem] w-full  flex justify-start px-4">
-			<div class="rounded-full overflow-clip p-[4px] transition ease-out duration-500"
-				:class="[store.isBrightTheme ? 'bg-white' : 'bg-dark']">
+		<div class="group rounded transition-all ease-out "
+			:class="[store.isBrightTheme ? ' bg-primary' : ' bg-primary-dark',]">
 
-
-
-				<img src="/img/miku.jpg"
-					class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
+			<NDropdown show-arrow
+				trigger="click"
+				:options="coverPicOptions">
+				<img class=" object-cover w-full h-[30%] rounded  transition ease-out  "
+					src="/img/cover/default.jpg"
+					role="button"
 					alt="">
-			</div>
+			</NDropdown>
+		</div>
 
+
+
+
+
+		<!-- profile image -->
+		<div class="absolute  -bottom-[3rem]  flex rounded-full justify-start ms-4">
+			<div class="group  transition ease-out">
+				<div class=" rounded-full  overflow-clip p-[4px] transition ease-out  "
+					:class="[store.isBrightTheme ? 'bg-white group-hover:bg-primary' : 'bg-dark group-hover:bg-primary-dark',]">
+					<NDropdown show-arrow
+						trigger="click"
+						:options="profilePicOptions">
+						<img src="/img/miku.jpg"
+							class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
+							role="button"
+							alt="">
+					</NDropdown>
+				</div>
+			</div>
 		</div>
 
 	</div>
@@ -96,7 +156,7 @@ onMounted(async () => {
 			</NSpace>
 
 			<ThreadCard v-else
-				v-for="thread in userThreads"
+				v-for="   thread    in    userThreads   "
 				:key="thread.id"
 				:thread="thread"
 				class="my-4" />

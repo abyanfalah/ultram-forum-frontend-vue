@@ -71,6 +71,9 @@ function handleSendReply() {
 				updated_at: data.updated_at,
 				user: useAuthStore().user,
 				post_replies: [],
+				likes_count: 0,
+				dislikes_count: 0,
+				my_reaction: null,
 			};
 
 			emmits('createdNewReply', newReply);

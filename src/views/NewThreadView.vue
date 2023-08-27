@@ -59,7 +59,13 @@ function handleSubmitNewThread() {
 		loading.start();
 		try {
 			const thread = Object.assign({}, newThreadFormModel.value);
-			thread.slug = slugify(thread.title, { lower: true });
+			thread.slug = slugify(
+				thread.title,
+				{
+					lower: true,
+					strict: true,
+					trim: true,
+				});
 			const res = await threadApi.store(thread);
 			msg.success('Thread created');
 			loading.finish();
