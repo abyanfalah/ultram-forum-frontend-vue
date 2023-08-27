@@ -65,7 +65,7 @@ function confirmLogout() {
 	dialog.error({
 		title: 'Logout',
 		content: 'Are you sure?',
-		positiveText: 'Proceed',
+		positiveText: 'Logout',
 		positiveButtonProps: { renderIcon: () => renderIcon('fe:logout') },
 		onPositiveClick: () => authStore.logout(),
 		negativeText: 'Cancel',

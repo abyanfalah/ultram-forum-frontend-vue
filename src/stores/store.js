@@ -1,7 +1,13 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+import router from '../router';
+import { useAuthStore } from './authStore';
+
+
 
 export const useStore = defineStore('store', () => {
+	const authStore = useAuthStore();
+
 	const isBrightTheme = ref(false);
 	const isCollapsedSidebar = ref(false);
 	const isAbsoluteSidebar = ref(false);
@@ -16,6 +22,27 @@ export const useStore = defineStore('store', () => {
 
 	const headerOffset = 45;
 
+	function goToMyProfilePage(isReplaceRoute) {
+		isReplaceRoute = isReplaceRoute || false;
+
+		if (isReplaceRoute) {
+			return router.replace({
+				name: 'profile',
+				params: { username: authStore.user.username }
+			});
+		}
+
+		return router.push({
+			name: 'profile',
+			params: { username: authStore.user.username }
+		});
+	}
+
+	const profilePage = ref({
+		name: 'profile',
+		params: { username: authStore.user.username }
+	});
+
 	return {
 		isBrightTheme,
 		isCollapsedSidebar,
@@ -23,6 +50,8 @@ export const useStore = defineStore('store', () => {
 		headerOffset,
 		getPrimaryBgColor,
 		getPrimaryTextColor,
+		goToMyProfilePage,
+		profilePage,
 	};
 },
 	{

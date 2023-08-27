@@ -70,18 +70,20 @@ onMounted(async () => {
 		<div>
 			<p class="text-2xl">{{ user.name }}</p>
 			<p class="font-bold">@{{ user.username }}</p>
+			<p>{{ user.bio }}</p>
 
 			<div class="my-2">
 				<FollowCount :user="user" />
 			</div>
+
+
 
 		</div>
 
 		<!-- profile btns -->
 		<div v-if="isMe">
 			<RouterLink :to="{ name: 'profile.edit' }">
-				<NButton @click="() => msg.info('Coming soon')"
-					:render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
+				<NButton :render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
 			</RouterLink>
 
 		</div>
