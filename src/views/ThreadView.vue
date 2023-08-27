@@ -5,6 +5,7 @@ import { threadDate } from '../services/humanTime';
 import NewCommentInput from '../components/NewCommentInput.vue';
 import LikeDislikeThreadButton from '../components/LikeDislikeThreadButton.vue';
 import PostCard from '../components/PostCard.vue';
+import UserAvatarWithName from './UserAvatarWithName.vue';
 
 import {
 	NSpace,
@@ -84,23 +85,7 @@ onBeforeMount(() => {
 		<NSpace v-if="thread?.user"
 			justify="space-between"
 			class="mb-4">
-
-			<NButton text>
-				<RouterLink :to="{
-					name: 'profile',
-					params: { username: thread?.user?.username }
-				}"
-					class=" flex space-x-2 items-center ">
-					<NAvatar src="/img/miku.jpg"
-						fallback-src="/img/user-default.svg"
-						size="small"
-						role="button"
-						round
-						@click=""></NAvatar>
-					<span class="font-bold">{{ thread?.user?.name }}</span>
-
-				</RouterLink>
-			</NButton>
+			<UserAvatarWithName :user="thread?.user" />
 
 
 
