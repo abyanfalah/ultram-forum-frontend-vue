@@ -17,7 +17,7 @@ import CommentReplyInput from './CommentReplyInput.vue';
 import renderIcon from '../services/renderIcon';
 import ChildPostCard from './PostCard.vue';
 import { useStore } from '../stores/store';
-
+import UserAvatarWithName from '../views/UserAvatarWithName.vue';
 
 const dialog = useDialog();
 const msg = useMessage();
@@ -88,8 +88,8 @@ function pushReply(reply) {
 		<!-- post card header -->
 		<NSpace justify="space-between">
 			<div class="flex items-center space-x-2">
-				<UserAvatar :user="post.user" />
-				<span class="font-bold">{{ post.user.name }}</span>
+				<UserAvatarWithName :user="post?.user" />
+
 				<span class="text-neutral-400 text-xs">{{ threadDate(post.updated_at) }}</span>
 
 			</div>
