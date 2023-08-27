@@ -4,14 +4,10 @@ import { useAuthStore } from '../stores/authStore';
 import { useStore } from '../stores/store';
 import renderIcon from '../services/renderIcon';
 import { computed, onMounted, ref } from 'vue';
-
-import ThreadCard from '../components/ThreadCard.vue';
-import FollowCount from '../components/FollowCount.vue';
-
 import threadApi from '../services/apis/backend/threadApi';
 import postApi from '../services/apis/backend/postApi';
+import ThreadCard from '../components/ThreadCard.vue';
 import userApi from '../services/apis/backend/userApi';
-
 
 const props = defineProps(['username', 'user']);
 
@@ -38,8 +34,6 @@ onMounted(async () => {
 
 	userThreads.value = (await threadApi.getByUserId(user.value.id)).data;
 	userPosts.value = (await postApi.getByUserId(user.value.id)).data;
-
-	console.log(user.value);
 });
 </script>
 
@@ -57,7 +51,7 @@ onMounted(async () => {
 
 
 				<img src="/img/miku.jpg"
-					class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
+					class=" w-[8rem] h-[8rem] rounded-full object-cover"
 					alt="">
 			</div>
 
@@ -69,21 +63,14 @@ onMounted(async () => {
 	<NSpace justify="space-between">
 		<div>
 			<p class="text-2xl">{{ user.name }}</p>
-			<p class="font-bold">@{{ user.username }}</p>
-
-			<div class="my-2">
-				<FollowCount :user="user" />
-			</div>
-
+			<p class="font-bold"
+				:class="[store.getPrimaryTextColor,]">@{{ user.username }}</p>
 		</div>
 
 		<!-- profile btns -->
 		<div v-if="isMe">
-			<RouterLink :to="{ name: 'profile.edit' }">
-				<NButton @click="() => msg.info('Coming soon')"
-					:render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
-			</RouterLink>
-
+			<NButton @click="() => msg.info('Coming soon')"
+				:render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
 		</div>
 	</NSpace>
 

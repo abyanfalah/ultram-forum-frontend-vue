@@ -41,7 +41,7 @@ import ThemeSwitcher from '../components/ThemeSwitcher.vue';
 		<div class="min-h-[70dvh]">
 			<NCard>
 				<div class="min-w-[350px]">
-					<NTabs default-value="register"
+					<NTabs default-value="login"
 						size="large"
 						animated>
 

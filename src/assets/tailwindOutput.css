@@ -582,6 +582,11 @@ video {
   margin-bottom: 500px;
 }
 
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .-mb-10 {
   margin-bottom: -2.5rem;
 }
@@ -623,6 +628,14 @@ video {
   height: 8rem;
 }
 
+.h-\[4rem\] {
+  height: 4rem;
+}
+
+.h-\[5rem\] {
+  height: 5rem;
+}
+
 .min-h-\[70dvh\] {
   min-height: 70dvh;
 }
@@ -635,10 +648,6 @@ video {
   min-height: 100vh;
 }
 
-.w-\[80\%\] {
-  width: 80%;
-}
-
 .w-\[8rem\] {
   width: 8rem;
 }
@@ -647,8 +656,20 @@ video {
   width: 100%;
 }
 
+.w-\[4rem\] {
+  width: 4rem;
+}
+
+.w-\[5rem\] {
+  width: 5rem;
+}
+
 .min-w-\[350px\] {
   min-width: 350px;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
 }
 
 .max-w-\[800px\] {
@@ -661,22 +682,6 @@ video {
 
 .max-w-md {
   max-width: 28rem;
-}
-
-.max-w-\[80\%\] {
-  max-width: 80%;
-}
-
-.max-w-xl {
-  max-width: 36rem;
-}
-
-.max-w-2xl {
-  max-width: 42rem;
-}
-
-.max-w-3xl {
-  max-width: 48rem;
 }
 
 .flex-col {
@@ -713,6 +718,12 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .overflow-clip {
@@ -860,14 +871,22 @@ video {
   color: rgb(163 163 163 / var(--tw-text-opacity));
 }
 
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 .text-neutral-500 {
   --tw-text-opacity: 1;
   color: rgb(115 115 115 / var(--tw-text-opacity));
 }
 
-.text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+.text-primary {
+  color: #4000FFFF;
+}
+
+.text-primary-dark {
+  color: #897CFFFF;
 }
 
 .shadow-2xl {
@@ -933,4 +952,22 @@ video {
 
 .hover\:text-primary-dark:hover {
   color: #897CFFFF;
+}
+
+@media (min-width: 768px) {
+  .md\:h-\[5rem\] {
+    height: 5rem;
+  }
+
+  .md\:h-\[8rem\] {
+    height: 8rem;
+  }
+
+  .md\:w-\[5rem\] {
+    width: 5rem;
+  }
+
+  .md\:w-\[8rem\] {
+    width: 8rem;
+  }
 }

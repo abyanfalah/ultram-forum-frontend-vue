@@ -79,6 +79,7 @@ function handleLogin() {
 			}
 
 		} catch (err) {
+			console.error(err);
 			return msg.error(err.response?.data.message);
 
 			// if (err.response.status == 422) {
