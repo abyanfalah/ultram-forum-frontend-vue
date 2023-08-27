@@ -27,7 +27,7 @@ const userMenuOptions = ref([
 		label: 'Profile',
 		key: 'profile',
 		icon: () => renderIcon('fe:user'),
-		action: () => router.push({ name: 'profile', params: { username: authStore.user.username } }),
+		action: () => store.goToMyProfilePage(false),
 	},
 	// {
 	// 	label: 'My threads',
