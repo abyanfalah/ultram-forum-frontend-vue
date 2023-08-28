@@ -31,24 +31,11 @@ function toggleFollowUser() {
 </script>
 
 <template>
-	<div v-if="isMe == false">
-		<NButton v-if="isFollowed == false"
-			@click="toggleFollowUser"
-			type="primary"
-			:loading="busy"
-			:render-icon="() => renderIcon('fe:user-plus')">
-			Follow
-		</NButton>
-
-		<NButton v-else
-			@click="toggleFollowUser"
-			type="default"
-			:loading="busy"
-			:render-icon="() => renderIcon('fe:check')">
-			Following
-		</NButton>
-
-
-
-	</div>
+	<NButton v-if="isMe == false"
+		@click="toggleFollowUser"
+		:type="isFollowed ? 'default' : 'primary'"
+		:loading="busy"
+		:render-icon="() => renderIcon(isFollowed ? 'fe:check' : 'fe:user-plus')">
+		{{ isFollowed ? 'Following' : 'Follow' }}
+	</NButton>
 </template>
