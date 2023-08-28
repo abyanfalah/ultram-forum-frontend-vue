@@ -68,9 +68,7 @@ function saveChanges() {
 			console.log(editUserResponse);
 
 			authStore.user = editUserResponse.data;
-			console.log(authStore.user);
-
-
+			// console.log(authStore.user);
 
 			router.replace({
 				name: 'profile',
@@ -90,8 +88,6 @@ function saveChanges() {
 }
 
 function cancelEdit() {
-	console.log(isNoChanges.value);
-
 	if (isNoChanges.value == false) {
 		return dialog.warning({
 			title: 'Cancel edit?',

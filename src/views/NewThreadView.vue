@@ -136,7 +136,8 @@ onMounted(() => {
 		</NFormItem>
 
 		<NSpace justify="end">
-			<NButton :render-icon="() => renderIcon('fe:plus')"
+			<NButton type="primary"
+				:render-icon="() => renderIcon('fe:plus')"
 				@click="handleSubmitNewThread">
 				Create new thread
 			</NButton>

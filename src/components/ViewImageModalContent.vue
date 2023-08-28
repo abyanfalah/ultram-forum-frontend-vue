@@ -23,7 +23,7 @@ const emits = defineEmits(['close'])
 	<div class="px-4 space-y-2">
 
 		<img class="object-cover w-full rounded  "
-			src="/img/cover/default.jpg"
+			:src="imgUrl"
 			alt="">
 
 		<NSpace justify="end"

@@ -33,6 +33,7 @@ const userMenuOptions = ref([
 	// 	label: 'My threads',
 	// 	key: 'mythread',
 	// 	icon: () => renderIcon('fe:comments'),
+	// 	// action: () => alert('why'),
 	// 	action: () => router.push({ name: 'me.thread' }),
 	// },
 	{

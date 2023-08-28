@@ -5,13 +5,15 @@ import {
 	NDropdown,
 	NTabPane,
 	NTabs,
-	useMessage
+	useMessage,
+	NModal,
 } from 'naive-ui';
 import { useAuthStore } from '../stores/authStore';
 import { useStore } from '../stores/store';
 import renderIcon from '../services/renderIcon';
 import { computed, onMounted, ref } from 'vue';
 
+import ViewImageModalContent from '../components/ViewImageModalContent.vue';
 import ThreadCard from '../components/ThreadCard.vue';
 import FollowCount from '../components/FollowCount.vue';
 
@@ -36,9 +38,8 @@ const isMe = computed(() => {
 });
 
 
-
-const profilePicOptions = [
-
+const isViewingProfilePic = ref(false);
+const profilePicOptions = ref([
 	{
 		label: "Change",
 		key: "change",
@@ -49,11 +50,12 @@ const profilePicOptions = [
 		label: "View",
 		key: "view",
 		icon: () => renderIcon('fe:eye'),
+		action: () => isViewingProfilePic.value = true,
 	},
+]);
 
-];
-
-const coverPicOptions = [
+const isViewingCoverPic = ref(false);
+const coverPicOptions = ref([
 	{
 		label: "Change",
 		key: "change",
@@ -64,9 +66,12 @@ const coverPicOptions = [
 		label: "View",
 		key: "view",
 		icon: () => renderIcon('fe:eye'),
+		action: () => isViewingCoverPic.value = true,
+
 	},
 
-];
+]);
+
 
 
 
@@ -81,7 +86,7 @@ onMounted(async () => {
 	userThreads.value = (await threadApi.getByUserId(user.value.id)).data;
 	userPosts.value = (await postApi.getByUserId(user.value.id)).data;
 
-	console.log(user.value);
+	// console.log(user.value);
 });
 </script>
 
@@ -94,6 +99,7 @@ onMounted(async () => {
 
 			<NDropdown show-arrow
 				trigger="click"
+				@select="(key, option) => { option.action() }"
 				:options="coverPicOptions">
 				<img class=" object-cover w-full h-[30%] rounded  transition ease-out  "
 					src="/img/cover/default.jpg"
@@ -112,6 +118,7 @@ onMounted(async () => {
 				<div class=" rounded-full  overflow-clip p-[4px] transition ease-out  "
 					:class="[store.isBrightTheme ? 'bg-white group-hover:bg-primary' : 'bg-dark group-hover:bg-primary-dark',]">
 					<NDropdown show-arrow
+						@select="(key, option) => { option.action() }"
 						trigger="click"
 						:options="profilePicOptions">
 						<img src="/img/miku.jpg"
@@ -180,4 +187,19 @@ onMounted(async () => {
 
 		</NTabPane>
 	</NTabs>
+
+
+	<!-- modals -->
+
+	<!-- profile pic -->
+	<NModal v-model:show="isViewingProfilePic">
+		<ViewImageModalContent imgUrl="/img/miku.jpg"
+			@close="isViewingProfilePic = false" />
+	</NModal>
+
+	<!-- cover pic -->
+	<NModal v-model:show="isViewingCoverPic">
+		<ViewImageModalContent imgUrl="/img/cover/default.jpg"
+			@close="isViewingCoverPic = false" />
+	</NModal>
 </template>
