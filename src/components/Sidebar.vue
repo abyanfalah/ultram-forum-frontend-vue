@@ -67,7 +67,8 @@ const shortcuts = ref([
 			class="mt-4">
 
 			<RouterLink :to="{ name: 'testpage' }">
-				<NButton>
+				<NButton block
+					type="primary">
 					Testpage
 				</NButton>
 			</RouterLink>

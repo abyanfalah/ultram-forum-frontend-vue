@@ -1,27 +1,32 @@
 <script setup>
-import { onMounted, ref, render } from 'vue';
-import threadApi from '../services/apis/backend/threadApi';
-import axios from 'axios';
-import authApi from '../services/apis/backend/authApi';
-import RequiresEmailVerificationCard from '../components/RequiresEmailVerificationCard.vue';
 import {
 	NDivider,
 	NModal,
 	NButton,
 	NSpace,
 } from 'naive-ui';
+import { onBeforeMount, onMounted, ref } from 'vue';
+import RequiresEmailVerificationCard from '../components/RequiresEmailVerificationCard.vue';
 import renderIcon from '../services/renderIcon';
-import ViewImageModalContent from '../components/ViewImageModalContent.vue';
+import UserCard from '../components/UserCard.vue';
+import userApi from '../services/apis/backend/userApi';
 
-const showModal = ref(false)
+
+const users = ref([]);
+
+onBeforeMount(async () => {
+	users.value = (await userApi.getAll()).data;
+	// console.log(users.value);
+})
+
 
 </script>
 
 <template>
 	<!-- <RequiresEmailVerificationCard /> -->
 
-	<NButton @click="showModal = true">Show modal</NButton>
-	<NModal v-model:show="showModal">
-		<ViewImageModalContent @close="showModal = false" />
-	</NModal>
+	<UserCard v-for="user in users"
+		:key="user.id"
+		:user="user"
+		class="mb-2" />
 </template>

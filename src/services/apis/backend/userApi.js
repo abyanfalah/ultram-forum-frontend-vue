@@ -9,9 +9,9 @@ const authStore = useAuthStore();
 axios.defaults.withCredentials = true;
 
 export default {
-	// getAll() {
-	// 	return api.get(url);
-	// },
+	getAll() {
+		return api.get(url);
+	},
 
 	getByUsername(username) {
 		return api.get(`${url}/${username}`);

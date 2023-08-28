@@ -93,8 +93,8 @@ function handleLogin() {
 }
 
 onMounted(() => {
-	loginFormModel.value.email = 'test@example.com';
-	loginFormModel.value.password = 'password';
+	loginFormModel.value.email = 'abyan@gmail.com';
+	loginFormModel.value.password = 'scootermania';
 });
 
 </script>

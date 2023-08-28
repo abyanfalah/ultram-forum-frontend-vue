@@ -12,7 +12,7 @@ import { useAuthStore } from '../stores/authStore';
 import { useStore } from '../stores/store';
 import renderIcon from '../services/renderIcon';
 import { computed, onMounted, ref } from 'vue';
-
+import FollowButton from './FollowButton.vue';
 import ViewImageModalContent from '../components/ViewImageModalContent.vue';
 import ThreadCard from '../components/ThreadCard.vue';
 import FollowCount from '../components/FollowCount.vue';
@@ -149,7 +149,10 @@ onMounted(async () => {
 			<RouterLink :to="{ name: 'profile.edit' }">
 				<NButton :render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
 			</RouterLink>
+		</div>
 
+		<div v-else>
+			<FollowButton :user="user" />
 		</div>
 	</NSpace>
 
