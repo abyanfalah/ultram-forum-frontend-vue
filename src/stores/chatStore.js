@@ -7,7 +7,7 @@ export const useChatStore = defineStore(
 	'chat',
 	() => {
 
-		const conversationId = ref(null);
+		const conversationId = ref(1);
 
 		function goToConversation(convId) {
 			conversationId.value = convId;
