@@ -1,18 +1,20 @@
 <script setup>
 import { useDialog, useMessage } from 'naive-ui';
 import { useChatStore } from '../stores/chatStore';
-import { onBeforeMount, onMounted, onUnmounted } from 'vue';
+import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import router from '../router';
 import { onBeforeRouteLeave } from 'vue-router';
+import conversationApi from '../services/apis/backend/conversationApi';
 
 
 const dialog = useDialog();
 const msg = useMessage();
 const chatStore = useChatStore();
 
+const messages = ref([]);
+const conversation = ref();
 
 function checkConversationId() {
-	// console.log(chatStore.conversationId);
 	if (!chatStore.conversationId) {
 		msg.error('Who are you trying to chat with?');
 		chatStore.conversationId = null;
@@ -20,8 +22,19 @@ function checkConversationId() {
 	}
 }
 
+async function getConversations() {
+	try {
+		const res = conversationApi.getConversationMessages();
+		console.log(res);
+	} catch (error) {
+
+	}
+}
+
 onMounted(() => {
 	checkConversationId();
+	getConversations();
+
 });
 
 onUnmounted(() => {
