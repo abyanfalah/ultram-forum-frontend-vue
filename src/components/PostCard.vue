@@ -17,7 +17,7 @@ import CommentReplyInput from './CommentReplyInput.vue';
 import renderIcon from '../services/renderIcon';
 import ChildPostCard from './PostCard.vue';
 import { useStore } from '../stores/store';
-import UserAvatarWithName from '../views/UserAvatarWithName.vue';
+import UserAvatarWithName from '../components/UserAvatarWithName.vue';
 
 const dialog = useDialog();
 const msg = useMessage();

@@ -14,7 +14,7 @@ const props = defineProps(['user', 'avatarSize', 'withUsername']);
 			params: { username: user?.username }
 		}"
 			class=" flex space-x-2 items-center ">
-			<NAvatar src="/img/miku.jpg"
+			<NAvatar src="/img/egg.png"
 				fallback-src="/img/user-default.svg"
 				:size="avatarSize ?? 'small'"
 				role="button"

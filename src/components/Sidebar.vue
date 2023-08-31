@@ -10,12 +10,18 @@ import {
 	NMenu,
 	NSpace,
 	NButton,
+	useMessage,
+	NPopconfirm,
 } from 'naive-ui';
 import { h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const store = useStore();
-
+const msg = useMessage();
+function migrate() {
+	store.migrate();
+	msg.info('Migrated');
+}
 
 const shortcutsRef = ref();
 const selectedShortcut = ref();
@@ -72,6 +78,16 @@ const shortcuts = ref([
 					Testpage
 				</NButton>
 			</RouterLink>
+
+			<NPopconfirm @positive-click="migrate">
+				Migrate the db?
+				<template #trigger>
+					<NButton block
+						type="warning">
+						Migrate
+					</NButton>
+				</template>
+			</NPopconfirm>
 
 		</NSpace>
 

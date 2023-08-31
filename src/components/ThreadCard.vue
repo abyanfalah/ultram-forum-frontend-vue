@@ -7,7 +7,7 @@ import {
 	NAvatar,
 } from 'naive-ui';
 import { threadDate } from '../services/humanTime';
-import UserAvatarWithName from '../views/UserAvatarWithName.vue';
+import UserAvatarWithName from '../components/UserAvatarWithName.vue';
 import LikeDislikeThreadButton from './LikeDislikeThreadButton.vue';
 
 const props = defineProps(['thread', 'showAuthor']);

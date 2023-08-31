@@ -11,6 +11,8 @@ export const useAuthStore = defineStore('auth',
 
 		const user = ref({});
 		const isLogin = ref(false);
+		const myId = computed(() => user.value.id);
+
 
 		async function checkAuth() {
 			try {
@@ -22,11 +24,8 @@ export const useAuthStore = defineStore('auth',
 					return res;
 				}
 			} catch (error) {
-
+				console.log('check auth error: ', error);
 			}
-
-
-			// else { router.replace({ name: 'home' }); }
 		}
 
 		async function logout() {
@@ -65,6 +64,7 @@ export const useAuthStore = defineStore('auth',
 			isLogin,
 			checkAuth,
 			logout,
+			myId,
 		};
 	},
 	{ persist: true }

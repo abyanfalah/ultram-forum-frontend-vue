@@ -7,12 +7,14 @@ import {
 	NTabs,
 	useMessage,
 	NModal,
+	NCarousel,
 } from 'naive-ui';
+import { useChatStore } from '../stores/chatStore';
 import { useAuthStore } from '../stores/authStore';
 import { useStore } from '../stores/store';
 import renderIcon from '../services/renderIcon';
 import { computed, onMounted, ref } from 'vue';
-import FollowButton from './FollowButton.vue';
+import FollowButton from '../components/FollowButton.vue';
 import ViewImageModalContent from '../components/ViewImageModalContent.vue';
 import ThreadCard from '../components/ThreadCard.vue';
 import FollowCount from '../components/FollowCount.vue';
@@ -20,32 +22,30 @@ import FollowCount from '../components/FollowCount.vue';
 import threadApi from '../services/apis/backend/threadApi';
 import postApi from '../services/apis/backend/postApi';
 import userApi from '../services/apis/backend/userApi';
+import conversationApi from '../services/apis/backend/conversationApi';
+import router from '../router';
 
 
 const props = defineProps(['username', 'user']);
-
+const isMe = computed(() => {
+	return user.value.username === authStore.user.username;
+});
 
 const authStore = useAuthStore();
 const store = useStore();
+const chatStore = useChatStore();
+
 const user = ref({});
 const msg = useMessage();
 
 const userThreads = ref([]);
 const userPosts = ref([]);
 
-const isMe = computed(() => {
-	return user.value.username === authStore.user.username;
-});
+
 
 
 const isViewingProfilePic = ref(false);
 const profilePicOptions = ref([
-	{
-		label: "Change",
-		key: "change",
-		icon: () => renderIcon('fe:edit'),
-		disabled: () => isMe.value == false,
-	},
 	{
 		label: "View",
 		key: "view",
@@ -57,12 +57,6 @@ const profilePicOptions = ref([
 const isViewingCoverPic = ref(false);
 const coverPicOptions = ref([
 	{
-		label: "Change",
-		key: "change",
-		icon: () => renderIcon('fe:edit'),
-		disabled: () => isMe.value == false,
-	},
-	{
 		label: "View",
 		key: "view",
 		icon: () => renderIcon('fe:eye'),
@@ -72,40 +66,105 @@ const coverPicOptions = ref([
 
 ]);
 
+function setMenuOptions() {
+	if (isMe.value == true) {
+		profilePicOptions.value.push({
+			label: "Change",
+			key: "change",
+			icon: () => renderIcon('fe:edit'),
+			disabled: () => isMe.value == false,
+		});
 
+		coverPicOptions.value.push({
+			label: "Change",
+			key: "change",
+			icon: () => renderIcon('fe:edit'),
+			disabled: () => isMe.value == false,
+		});
+	}
+}
 
-
-onMounted(async () => {
+async function getUserData() {
 	if (props?.username === authStore.user.username) {
 		user.value = authStore.user;
 	} else {
 		const res = await userApi.getByUsername(props.username);
 		user.value = res.data;
 	}
-
 	userThreads.value = (await threadApi.getByUserId(user.value.id)).data;
 	userPosts.value = (await postApi.getByUserId(user.value.id)).data;
+}
 
-	// console.log(user.value);
+async function goToChat() {
+	// check if i have a conv with this guy already.
+	// but let's just create one directly for now.
+
+	// if so, then go there
+
+	// if not, make one, and go there.
+
+
+}
+
+async function makeConv() {
+	try {
+		const myId = authStore.myId;
+		const secondPersonId = user.value.id;
+
+		const res = await conversationApi.createNewConversation([myId, secondPersonId]);
+		console.log(res);
+		chatStore.conversationId = res.data;
+
+		router.push({ name: 'chat' });
+
+	} catch (error) {
+		console.error('error make conv: ', error);
+	}
+}
+
+const coverImgUrl = ref();
+
+function seeCover(imgUrl) {
+	coverImgUrl.value = imgUrl;
+	isViewingCoverPic.value = true;
+}
+
+onMounted(async () => {
+	await getUserData();
+	setMenuOptions();
+	console.log(user.value);
 });
 </script>
 
 <template>
 	<!-- cover image -->
 	<div class="relative mb-[5rem]">
-
 		<div class="group rounded transition-all ease-out "
 			:class="[store.isBrightTheme ? ' bg-primary' : ' bg-primary-dark',]">
 
-			<NDropdown show-arrow
+			<!-- <NDropdown show-arrow
 				trigger="click"
 				@select="(key, option) => { option.action() }"
 				:options="coverPicOptions">
-				<img class=" object-cover w-full h-[30%] rounded  transition ease-out  "
-					src="/img/cover/default.jpg"
+
+			</NDropdown> -->
+
+			<NCarousel show-arrow
+				:show-dots="false"
+				dot-type="line"
+				dot-placement="bottom"
+				autoplay
+				class="rounded w-full h-[30vh]">
+				<img v-for="i in 40"
+					class=" object-cover w-full mx-auto rounded  transition ease-out  "
+					:src="`/img/cover/cover${i}.png`"
 					role="button"
-					alt="">
-			</NDropdown>
+					style="height: 20vh;"
+					alt=""
+					@click="seeCover(`/img/cover/cover${i}.png`)">
+			</NCarousel>
+
+
 		</div>
 
 
@@ -121,7 +180,7 @@ onMounted(async () => {
 						@select="(key, option) => { option.action() }"
 						trigger="click"
 						:options="profilePicOptions">
-						<img src="/img/miku.jpg"
+						<img src="/img/egg.png"
 							class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
 							role="button"
 							alt="">
@@ -151,9 +210,12 @@ onMounted(async () => {
 			</RouterLink>
 		</div>
 
-		<div v-else>
+		<!-- button for other's profile -->
+		<NSpace v-else>
+			<NButton @click="makeConv"
+				:render-icon="() => renderIcon('fe:mail')">Message</NButton>
 			<FollowButton :user="user" />
-		</div>
+		</NSpace>
 	</NSpace>
 
 	<!-- thread / post history -->
@@ -196,13 +258,13 @@ onMounted(async () => {
 
 	<!-- profile pic -->
 	<NModal v-model:show="isViewingProfilePic">
-		<ViewImageModalContent imgUrl="/img/miku.jpg"
+		<ViewImageModalContent imgUrl="/img/egg.png"
 			@close="isViewingProfilePic = false" />
 	</NModal>
 
 	<!-- cover pic -->
 	<NModal v-model:show="isViewingCoverPic">
-		<ViewImageModalContent imgUrl="/img/cover/default.jpg"
+		<ViewImageModalContent :imgUrl="coverImgUrl"
 			@close="isViewingCoverPic = false" />
 	</NModal>
 </template>

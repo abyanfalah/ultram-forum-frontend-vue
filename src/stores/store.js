@@ -2,10 +2,13 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import router from '../router';
 import { useAuthStore } from './authStore';
-
+import axios from 'axios';
 
 
 export const useStore = defineStore('store', () => {
+	const ax = axios;
+	// ====
+
 	const authStore = useAuthStore();
 
 	const isBrightTheme = ref(false);
@@ -43,7 +46,14 @@ export const useStore = defineStore('store', () => {
 		params: { username: authStore.user.username }
 	});
 
+
+	async function migrate() {
+		await ax.get('http://localhost:8000/migrate');
+	}
+
 	return {
+		migrate,
+
 		isBrightTheme,
 		isCollapsedSidebar,
 		isAbsoluteSidebar,

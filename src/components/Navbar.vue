@@ -106,7 +106,7 @@ const logoClass = computed(() => {
 
 			<NSpace align="center">
 
-				<!-- add post -->
+				<!-- add stuff -->
 				<NDropdown trigger="click"
 					@select="(key, option) => { option.action() }"
 					:show-arrow="false"
@@ -114,36 +114,22 @@ const logoClass = computed(() => {
 					animated
 					:options="addPostOptions">
 					<NButton text
-						circle
 						:render-icon="() => renderIcon('fe:plus')" />
 				</NDropdown>
 
-
-				<!-- notification -->
-				<!-- <NDropdown trigger="click"
-					@select="(key, option) => { option.action() }"
-					:show-arrow="false"
-					size="medium"
-					animated
-					:options="userMenuOptions">
+				<RouterLink :to="{ name: 'chat.list' }">
 					<NButton text
-						circle
-						:render-icon="() => renderIcon('fe:bell')" />
-				</NDropdown>
- -->
-
-
-
+						:render-icon="() => renderIcon('fe:mail')"></NButton>
+				</RouterLink>
 
 				<!-- profile menu -->
 				<div>
 					<NDropdown trigger="click"
 						@select="(key, option) => { option.action() }"
 						:show-arrow="false"
-						size="medium"
 						animated
 						:options="userMenuOptions">
-						<NAvatar src="/img/miku.jpg"
+						<NAvatar src="/img/egg.png"
 							fallback-src="/img/user-default.svg"
 							size="small"
 							role="button"

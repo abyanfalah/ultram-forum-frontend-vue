@@ -17,13 +17,14 @@ const router = createRouter({
 			component: () => import('../views/ProfileEditView.vue'),
 			meta: { requiresAuth: true },
 		},
-
 		{
 			path: '/me/thread',
 			name: 'me.thread',
 			component: () => import('../views/MyThreadView.vue'),
 			meta: { requiresAuth: true },
 		},
+
+		// ========================================= THREAD
 		{
 			path: '/thread/new',
 			name: 'thread.new',
@@ -37,6 +38,10 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 			props: true,
 		},
+
+
+		// ========================================= MISC
+
 		{
 			path: '/about',
 			name: 'about',
@@ -61,6 +66,20 @@ const router = createRouter({
 			component: () => import('../views/AuthView.vue'),
 			meta: { requiresAuth: false },
 		},
+		// ========================================= CHAT
+		{
+			path: '/chat/list',
+			name: 'chat.list',
+			component: () => import('../views/ConversationListView.vue'),
+			meta: { requiresAuth: true },
+		},
+		{
+			path: '/chat',
+			name: 'chat',
+			component: () => import('../views/ChatRoomView.vue'),
+			meta: { requiresAuth: true },
+		},
+
 
 		// must place this as last route
 		{
@@ -70,6 +89,12 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 			props: true,
 		},
+		// {
+		// 	path: '/:username/chat',
+		// 	name: 'chat.private',
+		// 	component: () => import('../views/ChatRoomPrivateView.vue'),
+		// 	meta: { requiresAuth: true },
+		// },
 	]
 });
 

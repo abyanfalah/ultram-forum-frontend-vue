@@ -6,12 +6,12 @@ import {
 
 } from 'naive-ui';
 
-import UserAvatarWithName from '../views/UserAvatarWithName.vue';
+import UserAvatarWithName from '../components/UserAvatarWithName.vue';
 import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import renderIcon from '../services/renderIcon';
 import FollowCount from './FollowCount.vue';
-
+import FollowButton from '../components/FollowButton.vue';
 
 const props = defineProps(['user']);
 const isMe = computed(() => props.user.id == useAuthStore().user.id)
@@ -33,16 +33,8 @@ const isMe = computed(() => props.user.id == useAuthStore().user.id)
 				<FollowCount :user="user" />
 			</NSpace>
 
-
-			<!-- follow button -->
-			<NButton type="primary"
-				:render-icon="() => renderIcon('fe:user-plus')"
-				v-if="isMe == false">
-				Follow
-			</NButton>
-
+			<FollowButton :user="user" />
 		</NSpace>
-
 
 
 	</NCard>

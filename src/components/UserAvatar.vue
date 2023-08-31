@@ -10,7 +10,7 @@ const props = defineProps(['user', 'size'])
 
 <template>
 	<NAvatar :src="`img`"
-		fallback-src="/img/miku.jpg"
+		fallback-src="/img/egg.png"
 		size="small"
 		role="button"
 		round>

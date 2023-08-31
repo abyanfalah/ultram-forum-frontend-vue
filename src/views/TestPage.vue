@@ -17,7 +17,9 @@ const users = ref([]);
 onBeforeMount(async () => {
 	users.value = (await userApi.getAll()).data;
 	// console.log(users.value);
+	users.value.forEach((u) => console.log(u));
 })
+
 
 
 </script>

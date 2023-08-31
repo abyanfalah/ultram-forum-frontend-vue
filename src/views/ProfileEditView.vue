@@ -126,7 +126,7 @@ onMounted(() => {
 		<div class="absolute -bottom-[3rem] w-full  flex justify-start px-4">
 			<div class="rounded-full overflow-clip p-[4px] transition ease-out duration-500"
 				:class="[store.isBrightTheme ? 'bg-white' : 'bg-dark']">
-				<img src="/img/miku.jpg"
+				<img src="/img/egg.png"
 					class=" w-[8rem] h-[8rem] rounded-full object-cover"
 					alt="">
 			</div>
