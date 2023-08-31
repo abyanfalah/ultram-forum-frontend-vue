@@ -91,8 +91,8 @@ async function getUserData() {
 		const res = await userApi.getByUsername(props.username);
 		user.value = res.data;
 	}
-	userThreads.value = (await threadApi.getByUserId(user.value.id)).data;
-	userPosts.value = (await postApi.getByUserId(user.value.id)).data;
+	userThreads.value = (await threadApi.getByUserId(user.value.id))?.data ?? [];
+	userPosts.value = (await postApi.getByUserId(user.value.id))?.data ?? [];
 }
 
 async function goToChat() {

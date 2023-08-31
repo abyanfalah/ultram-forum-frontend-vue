@@ -155,7 +155,9 @@ onMounted(() => {
 			<NButton type="primary"
 				@click="saveChanges"
 				:loading="busy"
-				:render-icon="() => renderIcon('fe:check')">Save changes</NButton>
+				:render-icon="() => busy ? null : renderIcon('fe:check')">
+				{{ busy ? "Saving" : "Save changes" }}
+			</NButton>
 
 			<NButton @click="cancelEdit"
 				:render-icon="() => renderIcon('fe:close')">Cancel</NButton>

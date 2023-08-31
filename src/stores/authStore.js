@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth',
 
 		const user = ref({});
 		const isLogin = ref(false);
-		const myId = computed(() => user.value.id);
+		const myId = computed(() => user.value?.id ?? null);
 
 
 		async function checkAuth() {
@@ -30,15 +30,14 @@ export const useAuthStore = defineStore('auth',
 
 		async function logout() {
 			const res = await authApi.logout();
-			// console.log('logout: ', res);
 
 			const statusCode = res?.status ?? null;
 
 			if (statusCode == 204 || statusCode == 200) {
 				isLogin.value = false;
 				// msg.success('Logout success!');
-				return router.replace({ name: 'auth' });
 				user.value = Object.assign({});
+				return router.replace({ name: 'auth' });
 			}
 
 			// in case for something needs to be added when 419
@@ -52,6 +51,7 @@ export const useAuthStore = defineStore('auth',
 			if (statusCode == 401) {
 				isLogin.value = false;
 				// msg.error('Logout error: no token');
+				user.value = Object.assign({});
 				return router.replace({ name: 'auth' });
 			}
 
@@ -59,11 +59,21 @@ export const useAuthStore = defineStore('auth',
 			// return router.replace({ name: 'auth' });
 		}
 
+		async function clientSideLogout() {
+			isLogin.value = false;
+			user.value = Object.assign({});
+			router.replace({ name: 'auth' });
+			console.clear();
+			console.log('Session expired. You are logged out.');
+			return;
+		}
+
 		return {
 			user,
 			isLogin,
 			checkAuth,
 			logout,
+			clientSideLogout,
 			myId,
 		};
 	},
