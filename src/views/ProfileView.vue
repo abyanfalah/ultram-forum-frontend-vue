@@ -156,10 +156,10 @@ onMounted(async () => {
 				autoplay
 				class="rounded w-full h-[30vh]">
 				<img v-for="i in 40"
-					class=" object-cover w-full mx-auto rounded  transition ease-out  "
+					class=" object-cover w-full mx-auto rounded transition ease-out  "
 					:src="`/img/cover/cover${i}.png`"
 					role="button"
-					style="height: 20vh;"
+					style="height: 30vh;"
 					alt=""
 					@click="seeCover(`/img/cover/cover${i}.png`)">
 			</NCarousel>

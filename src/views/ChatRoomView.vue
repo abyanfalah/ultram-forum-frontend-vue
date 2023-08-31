@@ -1,5 +1,11 @@
 <script setup>
-import { useDialog, useMessage } from 'naive-ui';
+import {
+	NLayout,
+	NLayoutContent,
+	NLayoutFooter,
+	useDialog,
+	useMessage,
+} from 'naive-ui';
 import { useChatStore } from '../stores/chatStore';
 import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import router from '../router';
@@ -51,15 +57,23 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-	<!-- wrapper -->
-	<div class="relative h-[90vh] bg-green-500">
-		<!-- message displayer -->
-		<div class="bg-blue-500">
-			asdf
-		</div>
+	<NLayout position="absolute">
 
-		<div class="">
+		<NLayoutContent position="absolute"
+			:native-scrollbar="false"
+			style="margin-bottom: 4rem;">
+			<div class="p-4">
+				<p v-for="i in 100"
+					:class="i % 2 == 0 ? 'text-right' : null">content</p>
+			</div>
+
+
+
+
+		</NLayoutContent>
+
+		<NLayoutFooter position="absolute">
 			<MessageInput />
-		</div>
-	</div>
+		</NLayoutFooter>
+	</NLayout>
 </template>
