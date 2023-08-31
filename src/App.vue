@@ -28,10 +28,12 @@ import {
 	useNotification,
 	darkTheme,
 } from 'naive-ui';
+import { useChatStore } from './stores/chatStore';
 
 
 const authStore = useAuthStore();
 const store = useStore();
+const chatStore = useChatStore();
 const route = useRoute();
 
 const theme = computed(() => {
@@ -134,8 +136,8 @@ onBeforeMount(async () => {
 									</main>
 
 
-									<div v-show="showFooter">
-										<Footer />
+									<div>
+										<!-- <Footer /> -->
 									</div>
 								</NLayoutContent>
 

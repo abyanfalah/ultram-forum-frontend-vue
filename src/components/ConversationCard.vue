@@ -27,8 +27,8 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="group rounded  "
-		:class="cardHoverBgColor">
+	<div class="group rounded"
+		:class="(store.isBrightTheme ? 'hover:bg-primary-highlight' : 'hover:bg-primary-dark-highlight')">
 		<NSpace v-if="conversation"
 			class="py-2 group-hover:translate-x-4 transition ease-out">
 			<!-- user avatar -->

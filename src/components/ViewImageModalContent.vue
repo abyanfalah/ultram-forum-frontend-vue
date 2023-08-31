@@ -20,9 +20,8 @@ const emits = defineEmits(['close'])
 
 <template>
 	<!-- <RequiresEmailVerificationCard /> -->
-	<div class="px-4 space-y-2">
-
-		<img class="object-cover w-full rounded  "
+	<div class="flex-col items-center  p-4 space-y-2">
+		<img class="mx-auto my-auto rounded object-cover max-w-full max-h-[85vh]"
 			:src="imgUrl"
 			alt="">
 
