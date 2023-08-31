@@ -23,6 +23,11 @@ export const useStore = defineStore('store', () => {
 		return isBrightTheme.value ? "text-primary " : "text-primary-dark ";
 	});
 
+	const getPrimaryBgHighlightColor = computed(() => {
+		return isBrightTheme.value ? "bg-primary-highlight " : "bg-primary-dark-highlight ";
+	});
+
+
 	const headerOffset = 45;
 
 	function goToMyProfilePage(isReplaceRoute) {
@@ -61,6 +66,7 @@ export const useStore = defineStore('store', () => {
 		getPrimaryBgColor,
 		getPrimaryTextColor,
 		goToMyProfilePage,
+		getPrimaryBgHighlightColor,
 		profilePage,
 	};
 },

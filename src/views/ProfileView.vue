@@ -112,7 +112,7 @@ async function makeConv() {
 		const secondPersonId = user.value.id;
 
 		const res = await conversationApi.createNewConversation([myId, secondPersonId]);
-		console.log(res);
+		// console.log(res);
 		chatStore.conversationId = res.data;
 
 		router.push({ name: 'chat' });
@@ -132,7 +132,7 @@ function seeCover(imgUrl) {
 onMounted(async () => {
 	await getUserData();
 	setMenuOptions();
-	console.log(user.value);
+	// console.log(user.value);
 });
 </script>
 

@@ -68,6 +68,10 @@ const sidebarPosition = computed(() => {
 	return store.isAbsoluteSidebar ? 'absolute' : 'relative';
 });
 
+const showFooter = computed(() => {
+	return router.currentRoute.name != 'chat';
+});
+
 onBeforeMount(async () => {
 	// authStore.checkAuth();
 
@@ -130,7 +134,7 @@ onBeforeMount(async () => {
 									</main>
 
 
-									<div>
+									<div v-show="showFooter">
 										<Footer />
 									</div>
 								</NLayoutContent>
