@@ -27,7 +27,6 @@ export const useStore = defineStore('store', () => {
 		return isBrightTheme.value ? "bg-primary-highlight " : "bg-primary-dark-highlight ";
 	});
 
-
 	const headerOffset = 45;
 
 	function goToMyProfilePage(isReplaceRoute) {

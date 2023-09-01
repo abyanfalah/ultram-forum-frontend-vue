@@ -81,6 +81,13 @@ const router = createRouter({
 				requiresAuth: true,
 			},
 		},
+		// ========================================= user
+		{
+			path: '/users',
+			name: 'users',
+			component: () => import('../views/UserListView.vue'),
+			meta: { requiresAuth: true },
+		},
 
 
 		// must place this as last route

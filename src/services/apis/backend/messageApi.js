@@ -7,17 +7,14 @@ const chatStore = useChatStore();
 
 export default {
 	getConversationMessages() {
-		console.log('set conversationId to 1');
+		console.log('set conversationId to retrieve from conv id:1');
 		chatStore.conversationId = 1;
 		const conversationId = chatStore.conversationId;
 		return api.get(`${url}/${conversationId}`);
 	},
 
-	sendMessage() {
-		// console.log('set conversationId to 1');
-		chatStore.conversationId = 1;
-		const conversationId = chatStore.conversationId;
-		return api.post(`${url}`, { conversationId });
+	sendMessage(message) {
+		return api.post(`${url}`, message);
 	}
 
 };

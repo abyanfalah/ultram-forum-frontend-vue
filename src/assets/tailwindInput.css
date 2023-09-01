@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* these two disappears often. idk just put it here to be safe */
+.bg-primary-dark-highlight {
+	--tw-bg-opacity: 1;
+	background-color: rgb(24 25 46 / var(--tw-bg-opacity));
+}
+
+.bg-primary-highlight {
+	--tw-bg-opacity: 1;
+	background-color: rgb(222 217 252 / var(--tw-bg-opacity));
+}

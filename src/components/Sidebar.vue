@@ -74,8 +74,15 @@ const shortcuts = ref([
 
 			<RouterLink :to="{ name: 'testpage' }">
 				<NButton block
-					type="primary">
+					type="info">
 					Testpage
+				</NButton>
+			</RouterLink>
+
+			<RouterLink :to="{ name: 'users' }">
+				<NButton block
+					type="primary">
+					Users
 				</NButton>
 			</RouterLink>
 

@@ -106,6 +106,10 @@ async function goToChat() {
 
 }
 
+function changeUserData(newUserdata) {
+	user.value = newUserdata;
+}
+
 async function makeConv() {
 	try {
 		const myId = authStore.myId;
@@ -132,7 +136,8 @@ function seeCover(imgUrl) {
 onMounted(async () => {
 	await getUserData();
 	setMenuOptions();
-	// console.log(user.value);
+	console.clear();
+	console.log(user.value);
 });
 </script>
 
@@ -214,7 +219,8 @@ onMounted(async () => {
 		<NSpace v-else>
 			<NButton @click="makeConv"
 				:render-icon="() => renderIcon('fe:mail')">Message</NButton>
-			<FollowButton :user="user" />
+			<FollowButton :user="user"
+				@toggle-follow="changeUserData" />
 		</NSpace>
 	</NSpace>
 

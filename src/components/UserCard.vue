@@ -14,7 +14,19 @@ import FollowCount from './FollowCount.vue';
 import FollowButton from '../components/FollowButton.vue';
 
 const props = defineProps(['user']);
-const isMe = computed(() => props.user.id == useAuthStore().user.id)
+const emits = defineEmits(['userDataChanges']);
+const isMe = computed(() => props.user.id == useAuthStore().user.id);
+
+
+function handleToggleFollow(newUserdata) {
+	console.log('toggle-follow');
+	emits('userDataChanges', newUserdata);
+}
+
+onBeforeMount(() => {
+	// user.value = props?.user;
+})
+
 
 </script>
 
@@ -30,7 +42,8 @@ const isMe = computed(() => props.user.id == useAuthStore().user.id)
 						:with-username="true" />
 					<p v-if="user.bio">{{ user.bio }}</p>
 				</NSpace>
-				<FollowCount :user="user" />
+				<FollowCount :user="user"
+					@toggle-follow="handleToggleFollow" />
 			</NSpace>
 
 			<FollowButton :user="user" />

@@ -12,24 +12,19 @@ const isMe = computed(() => props.user.id == store.user.id);
 const msg = useMessage();
 
 const busy = ref(false);
-const emits = defineEmits(['countChanges']);
+const emits = defineEmits(['toggleFollow']);
 
-const isFollowed = ref(false);
+const isFollowed = computed(() => {
+	return props?.user.is_followed;
+});
 
 async function toggleFollowUser() {
 	try {
 		busy.value = true;
 
-
-		return msg.warning('Will fix this later');
-
-
 		const res = await followApi.followByUserId(props?.user.id);
-		isFollowed.value = true;
-		console.clear();
-		console.log(res.data);
-		emits('countChanges', res.data);
-
+		console.log('ok here');
+		emits('toggleFollow', res.data);
 	} catch (error) {
 		msg.error('Action failed');
 
@@ -38,19 +33,17 @@ async function toggleFollowUser() {
 
 		setTimeout(() => {
 			busy.value = false;
-		}, 3000);
+		}, 300);
 	}
 }
-
-
 </script>
 
 <template>
 	<NButton v-if="isMe == false"
 		@click="toggleFollowUser"
-		:type="isFollowed ? 'default' : 'primary'"
+		:type="user?.is_followed ? 'default' : 'primary'"
 		:loading="busy"
-		:render-icon="() => renderIcon(isFollowed ? 'fe:user-minus' : 'fe:user-plus')">
-		{{ isFollowed ? 'Unfollow' : 'Follow' }}
+		:render-icon="() => renderIcon(user?.is_followed ? 'fe:user-minus' : 'fe:user-plus')">
+		{{ user?.is_followed ? 'Unfollow' : 'Follow' }}
 	</NButton>
 </template>

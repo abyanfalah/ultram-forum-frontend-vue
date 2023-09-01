@@ -13,10 +13,14 @@ import { onBeforeRouteLeave } from 'vue-router';
 import conversationApi from '../services/apis/backend/conversationApi';
 import messageApi from '../services/apis/backend/messageApi';
 import MessageInput from '../components/MessageInput.vue';
+import { useAuthStore } from '../stores/authStore';
+import MessageBubble from '../components/MessageBubble.vue';
+
 
 const dialog = useDialog();
 const msg = useMessage();
 const chatStore = useChatStore();
+const authStore = useAuthStore();
 
 const messages = ref([]);
 // const conversation = ref();
@@ -32,7 +36,7 @@ function checkConversationId() {
 async function getMessages() {
 	try {
 		const res = await messageApi.getConversationMessages();
-		console.log(res);
+		// console.log(res);
 		messages.value = res.data;
 	} catch (error) {
 		msg.error('Unable retrieving messages');
@@ -40,6 +44,10 @@ async function getMessages() {
 	}
 }
 
+function pushNewMessage(message) {
+	messages.value.push(message);
+	// console.log(messages.value);
+}
 onMounted(() => {
 	checkConversationId();
 	getMessages();
@@ -58,22 +66,17 @@ onBeforeRouteLeave(() => {
 
 <template>
 	<NLayout position="absolute">
-
 		<NLayoutContent position="absolute"
 			:native-scrollbar="false"
 			style="margin-bottom: 4rem;">
 			<div class="p-4">
-				<p v-for="i in 100"
-					:class="i % 2 == 0 ? 'text-right' : null">content</p>
+				<MessageBubble v-for="message in messages"
+					:message="message" />
 			</div>
-
-
-
-
 		</NLayoutContent>
 
 		<NLayoutFooter position="absolute">
-			<MessageInput />
+			<MessageInput @sent-new-message="pushNewMessage" />
 		</NLayoutFooter>
 	</NLayout>
 </template>
