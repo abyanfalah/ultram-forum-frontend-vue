@@ -3,10 +3,8 @@ import { defineStore } from 'pinia';
 
 
 export const useDataStore = defineStore('data', () => {
-	const userList = ref([]);
 
 	return {
-		userList,
 	};
 },
 	{

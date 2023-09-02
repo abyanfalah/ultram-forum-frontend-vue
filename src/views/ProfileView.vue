@@ -107,6 +107,7 @@ async function goToChat() {
 }
 
 function changeUserData(newUserdata) {
+	console.log('change user data from profile view');
 	user.value = newUserdata;
 }
 
@@ -168,8 +169,6 @@ onMounted(async () => {
 					alt=""
 					@click="seeCover(`/img/cover/cover${i}.png`)">
 			</NCarousel>
-
-
 		</div>
 
 
@@ -178,7 +177,7 @@ onMounted(async () => {
 
 		<!-- profile image -->
 		<div class="absolute  -bottom-[3rem]  flex rounded-full justify-start ms-4">
-			<div class="group  transition ease-out">
+			<div class="group transition ease-out">
 				<div class=" rounded-full  overflow-clip p-[4px] transition ease-out  "
 					:class="[store.isBrightTheme ? 'bg-white group-hover:bg-primary' : 'bg-dark group-hover:bg-primary-dark',]">
 					<NDropdown show-arrow

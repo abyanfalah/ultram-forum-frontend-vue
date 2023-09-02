@@ -19,7 +19,7 @@ const isMe = computed(() => props.user.id == useAuthStore().user.id);
 
 
 function handleToggleFollow(newUserdata) {
-	console.log('toggle-follow');
+	console.log('handleToggleFollow from UserCard');
 	emits('userDataChanges', newUserdata);
 }
 
@@ -46,7 +46,8 @@ onBeforeMount(() => {
 					@toggle-follow="handleToggleFollow" />
 			</NSpace>
 
-			<FollowButton :user="user" />
+			<FollowButton :user="user"
+				@toggle-follow="handleToggleFollow" />
 		</NSpace>
 
 
