@@ -1,13 +1,16 @@
 <script setup>
 import {
+	NButton,
 	NLayout,
 	NLayoutContent,
 	NLayoutFooter,
 	useDialog,
 	useMessage,
+	NSpin,
+	NSpace,
 } from 'naive-ui';
 import { useChatStore } from '../stores/chatStore';
-import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
+import { computed, nextTick, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import router from '../router';
 import { onBeforeRouteLeave } from 'vue-router';
 import conversationApi from '../services/apis/backend/conversationApi';
@@ -21,6 +24,9 @@ const dialog = useDialog();
 const msg = useMessage();
 const chatStore = useChatStore();
 const authStore = useAuthStore();
+const messageContainerRef = ref(null);
+const nLayoutContentRef = ref();
+const busy = ref(false);
 
 const messages = ref([]);
 // const conversation = ref();
@@ -37,40 +43,48 @@ function checkConversationId() {
 
 async function getMessages() {
 	try {
+		busy.value = true;
 		const res = await messageApi.getConversationMessages();
 		// console.log(res);
 		messages.value = res.data;
+
 	} catch (error) {
 		msg.error('Unable retrieving messages');
 		console.error(error);
+	} finally {
+		busy.value = false;
+		setTimeout(() => {
+			scrollToBottom();
+
+		}, 0);
+
+		// scrollToBottom();
+
 	}
 }
 
 function pushNewMessage(message) {
 	messages.value.push(message);
-	// console.log(messages.value);`
+	scrollToBottom();
 }
+
+function scrollToBottom(isSmooth) {
+	nLayoutContentRef.value.scrollTo({ top: messageContainerRef.value.scrollHeight + 1000, behavior: isSmooth ? 'smooth' : 'auto' });
+}
+
 onMounted(() => {
 	checkConversationId();
 	getMessages();
 
-	console.log({
-		conversationChannel,
-		convId: chatStore.conversationId,
-	});
+	console.clear();
+	console.log(nLayoutContentRef.value);
+
 
 	window.Echo.channel(conversationChannel)
 		.listen('MessageSent', (e) => {
-			// console.clear();
-			console.log(e);
 			pushNewMessage(e.message);
 		});
 
-	// window.Echo.channel('message-sent')
-	// 	.listen('MessageSent', (e) => {
-	// 		console.log(e);
-	// 		pushNewMessage(e.message);
-	// 	});
 });
 
 onUnmounted(() => {
@@ -95,13 +109,24 @@ function leaveChatRoom() {
 	<NLayout position="absolute">
 		<NLayoutContent position="absolute"
 			:native-scrollbar="false"
+			ref="nLayoutContentRef"
 			style="margin-bottom: 4rem;">
-			<div class="p-4">
+
+			<NSpace justify="center"
+				align="center"
+				class="h-[80vh]"
+				v-show="busy">
+				<NSpin></NSpin>
+			</NSpace>
+
+			<!-- messages container -->
+			<div v-show="!busy"
+				class="px-4 pt-4 pb-14"
+				ref="messageContainerRef">
 
 				<MessageBubble v-if="messages.length"
 					v-for="message in messages"
 					:message="message" />
-
 				<div v-else>
 					<p class="mx-auto block text-center text-neutral-500">You haven't talk to this guy just yet.</p>
 					<p class="mx-auto block text-center text-neutral-500">Try to say hi...</p>
@@ -109,10 +134,14 @@ function leaveChatRoom() {
 				</div>
 
 			</div>
+
+
 		</NLayoutContent>
 
 		<NLayoutFooter position="absolute">
 			<MessageInput @sent-new-message="pushNewMessage" />
+			<NButton @click="() => scrollToBottom(true)">bottom</NButton>
+
 		</NLayoutFooter>
 	</NLayout>
 </template>
