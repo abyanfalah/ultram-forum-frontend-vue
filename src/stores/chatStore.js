@@ -12,7 +12,6 @@ export const useChatStore = defineStore(
 		function goToConversation(convId) {
 			conversationId.value = convId;
 			router.push({ name: 'chat' });
-
 		}
 
 

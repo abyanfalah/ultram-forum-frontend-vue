@@ -1,9 +1,11 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useStore } from '../stores/store';
+import { useAuthStore } from '../stores/authStore';
 
 const props = defineProps(['user']);
 const store = useStore();
+const authStore = useAuthStore();
 
 </script>
 

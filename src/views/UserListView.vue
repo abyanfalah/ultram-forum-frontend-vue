@@ -10,7 +10,9 @@ import RequiresEmailVerificationCard from '../components/RequiresEmailVerificati
 import renderIcon from '../services/renderIcon';
 import UserCard from '../components/UserCard.vue';
 import userApi from '../services/apis/backend/userApi';
+import { useAuthStore } from '../stores/authStore';
 
+const authStore = useAuthStore();
 const users = ref([]);
 
 function handleUserDataChanges(newUserdata) {

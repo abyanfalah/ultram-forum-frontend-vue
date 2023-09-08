@@ -5,7 +5,7 @@ import { threadDate } from '../services/humanTime';
 import NewCommentInput from '../components/NewCommentInput.vue';
 import LikeDislikeThreadButton from '../components/LikeDislikeThreadButton.vue';
 import PostCard from '../components/PostCard.vue';
-import UserAvatarWithName from './UserAvatarWithName.vue';
+import UserAvatarWithName from '../components/UserAvatarWithName.vue';
 
 import {
 	NSpace,

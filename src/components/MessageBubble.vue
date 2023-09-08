@@ -12,9 +12,9 @@ const props = defineProps(['message'])
 </script>
 
 <template>
-	<div class="flex"
-		:class="message.user_id == authStore.myId ? `justify-end` : null">
-		<p class="p-2 rounded"
+	<div class="flex flex-col"
+		:class="message.user_id == authStore.myId ? `items-end` : 'items-start'">
+		<p class="p-2 mb-2 rounded max-w-sm"
 			:class="message.user_id == authStore.myId ? `${store.getPrimaryBgColor}` : `${store.getPrimaryBgHighlightColor}`">
 			{{ message.content }}
 		</p>

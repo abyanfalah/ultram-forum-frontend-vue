@@ -13,6 +13,7 @@ import renderIcon from '../services/renderIcon';
 import FollowCount from './FollowCount.vue';
 import FollowButton from '../components/FollowButton.vue';
 
+const authStore = useAuthStore();
 const props = defineProps(['user']);
 const emits = defineEmits(['userDataChanges']);
 const isMe = computed(() => props.user.id == useAuthStore().user.id);
@@ -42,7 +43,8 @@ onBeforeMount(() => {
 						:with-username="true" />
 					<p v-if="user.bio">{{ user.bio }}</p>
 				</NSpace>
-				<FollowCount :user="user"
+				<FollowCount v-if="user.id !== authStore.myId"
+					:user="user"
 					@toggle-follow="handleToggleFollow" />
 			</NSpace>
 

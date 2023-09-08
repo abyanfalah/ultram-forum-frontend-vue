@@ -21,9 +21,6 @@ async function sendMessage() {
 
 	try {
 
-		// TODO: delete
-		chatStore.conversationId = 1;
-
 		const newMessage = {
 			conversation_id: chatStore.conversationId,
 			user_id: authStore.myId,
@@ -32,9 +29,10 @@ async function sendMessage() {
 
 		// send mesage to server
 		const res = await messageApi.sendMessage(newMessage);
-		console.log(res);
+		// console.log(res);
 
-		emits('sentNewMessage', newMessage);
+		// emit disabled. new message retrieved from broadcast instead
+		// emits('sentNewMessage', newMessage);
 		message.value = '';
 	} catch (error) {
 		msg.error('Failed sending your message');

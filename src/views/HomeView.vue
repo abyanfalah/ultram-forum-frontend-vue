@@ -48,12 +48,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<h1 class="text-3xl">Home</h1>
+	<!-- <h1 class="text-3xl">Home</h1> -->
 
 	<div class="block text-center">
 		<NSpin v-show="isLoadingThreads"></NSpin>
 	</div>
-
 
 	<ThreadCard v-for="thread in threads"
 		:key="thread.id"

@@ -13,6 +13,16 @@ export default {
 		return api.post(`${url}`, { participants });
 	},
 
+	getConversationIdByParticipants(participantIdList) {
+		return api.post(`${url}/get/by/participants`, { participantIdList });
+	},
+
+	getById(conversationId) {
+		return api.get(`${url}/${conversationId}`);
+	},
+
+
+
 	getMyConversations() {
 		return api.get(`${url}`);
 	},

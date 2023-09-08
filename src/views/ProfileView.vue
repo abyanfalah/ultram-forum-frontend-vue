@@ -72,14 +72,12 @@ function setMenuOptions() {
 			label: "Change",
 			key: "change",
 			icon: () => renderIcon('fe:edit'),
-			disabled: () => isMe.value == false,
 		});
 
 		coverPicOptions.value.push({
 			label: "Change",
 			key: "change",
 			icon: () => renderIcon('fe:edit'),
-			disabled: () => isMe.value == false,
 		});
 	}
 }
@@ -95,21 +93,19 @@ async function getUserData() {
 	userPosts.value = (await postApi.getByUserId(user.value.id))?.data ?? [];
 }
 
-async function goToChat() {
-	// check if i have a conv with this guy already.
-	// but let's just create one directly for now.
-
-	// if so, then go there
-
-	// if not, make one, and go there.
-
-
-}
-
 function changeUserData(newUserdata) {
 	console.log('change user data from profile view');
 	user.value = newUserdata;
 }
+
+async function goToChat() {
+	// check if i have a conv with this guy already.
+	const participantIdList = [authStore.myId, user.value.id];
+	const res = await conversationApi.getConversationIdByParticipants(participantIdList);
+	const conversationId = res.data;
+	return chatStore.goToConversation(conversationId);
+}
+
 
 async function makeConv() {
 	try {
@@ -117,11 +113,10 @@ async function makeConv() {
 		const secondPersonId = user.value.id;
 
 		const res = await conversationApi.createNewConversation([myId, secondPersonId]);
-		// console.log(res);
+		console.log(res);
 		chatStore.conversationId = res.data;
 
 		router.push({ name: 'chat' });
-
 	} catch (error) {
 		console.error('error make conv: ', error);
 	}
@@ -137,13 +132,13 @@ function seeCover(imgUrl) {
 onMounted(async () => {
 	await getUserData();
 	setMenuOptions();
-	console.clear();
-	console.log(user.value);
+	// console.clear();
+	// console.log(user.value);
 });
 </script>
 
 <template>
-	<!-- cover image -->
+	<!-- images -->
 	<div class="relative mb-[5rem]">
 		<div class="group rounded transition-all ease-out "
 			:class="[store.isBrightTheme ? ' bg-primary' : ' bg-primary-dark',]">
@@ -155,32 +150,32 @@ onMounted(async () => {
 
 			</NDropdown> -->
 
+			<!-- cover image -->
 			<NCarousel show-arrow
 				:show-dots="false"
 				dot-type="line"
 				dot-placement="bottom"
-				autoplay
+				:draggable="true"
+				:autoplay="isViewingCoverPic == false"
 				class="rounded w-full h-[30vh]">
 				<img v-for="i in 40"
 					class=" object-cover w-full mx-auto rounded transition ease-out  "
 					:src="`/img/cover/cover${i}.png`"
 					role="button"
-					style="height: 30vh;"
+					style="height: 10vh;"
 					alt=""
 					@click="seeCover(`/img/cover/cover${i}.png`)">
 			</NCarousel>
 		</div>
 
-
-
-
-
 		<!-- profile image -->
 		<div class="absolute  -bottom-[3rem]  flex rounded-full justify-start ms-4">
-			<div class="group transition ease-out">
+			<div class="group transition ease-out rounded-full ">
 				<div class=" rounded-full  overflow-clip p-[4px] transition ease-out  "
 					:class="[store.isBrightTheme ? 'bg-white group-hover:bg-primary' : 'bg-dark group-hover:bg-primary-dark',]">
-					<NDropdown show-arrow
+
+					<NDropdown v-if="isMe"
+						show-arrow
 						@select="(key, option) => { option.action() }"
 						trigger="click"
 						:options="profilePicOptions">
@@ -189,6 +184,14 @@ onMounted(async () => {
 							role="button"
 							alt="">
 					</NDropdown>
+
+					<img v-else
+						src="/img/egg.png"
+						class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
+						role="button"
+						@click="isViewingProfilePic = true"
+						alt="">
+
 				</div>
 			</div>
 		</div>
@@ -216,7 +219,7 @@ onMounted(async () => {
 
 		<!-- button for other's profile -->
 		<NSpace v-else>
-			<NButton @click="makeConv"
+			<NButton @click="goToChat"
 				:render-icon="() => renderIcon('fe:mail')">Message</NButton>
 			<FollowButton :user="user"
 				@toggle-follow="changeUserData" />

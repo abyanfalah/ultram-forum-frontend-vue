@@ -24,6 +24,8 @@ const authStore = useAuthStore();
 
 const messages = ref([]);
 // const conversation = ref();
+const conversationChannel = `conversation-${chatStore.conversationId}`;
+
 
 function checkConversationId() {
 	if (!chatStore.conversationId) {
@@ -46,21 +48,46 @@ async function getMessages() {
 
 function pushNewMessage(message) {
 	messages.value.push(message);
-	// console.log(messages.value);
+	// console.log(messages.value);`
 }
 onMounted(() => {
 	checkConversationId();
 	getMessages();
 
+	console.log({
+		conversationChannel,
+		convId: chatStore.conversationId,
+	});
+
+	window.Echo.channel(conversationChannel)
+		.listen('MessageSent', (e) => {
+			// console.clear();
+			console.log(e);
+			pushNewMessage(e.message);
+		});
+
+	// window.Echo.channel('message-sent')
+	// 	.listen('MessageSent', (e) => {
+	// 		console.log(e);
+	// 		pushNewMessage(e.message);
+	// 	});
 });
 
 onUnmounted(() => {
-	chatStore.conversationId = null;
+	leaveChatRoom();
 });
 
 onBeforeRouteLeave(() => {
+	leaveChatRoom();
+});
+
+function leaveChatRoom() {
 	chatStore.conversationId = null;
-})
+	window.Echo.leaveChannel(conversationChannel);
+	// window.Echo.leaveChannel('message-sent');
+}
+
+
 
 </script>
 
@@ -70,8 +97,17 @@ onBeforeRouteLeave(() => {
 			:native-scrollbar="false"
 			style="margin-bottom: 4rem;">
 			<div class="p-4">
-				<MessageBubble v-for="message in messages"
+
+				<MessageBubble v-if="messages.length"
+					v-for="message in messages"
 					:message="message" />
+
+				<div v-else>
+					<p class="mx-auto block text-center text-neutral-500">You haven't talk to this guy just yet.</p>
+					<p class="mx-auto block text-center text-neutral-500">Try to say hi...</p>
+					<p class="mx-auto block text-center text-neutral-500">(i mean, why not?)</p>
+				</div>
+
 			</div>
 		</NLayoutContent>
 
