@@ -32,6 +32,9 @@ const replyLength = ref(0);
 const replies = ref([]);
 
 function toggleReplyInput() {
+	// console.clear();
+	// console.log(props.post);
+
 	if (!replyMode.value) {
 		replyMode.value = true;
 		CommentReplyInputWrapperRef.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -96,8 +99,8 @@ function pushReply(reply) {
 		</NSpace>
 
 		<NSpace>
-			<p class="whitespace-pre-line">{{ post.content }}</p>
-			<!-- <pre class="">{{ post.content }}</pre> -->
+			<!-- <p class="whitespace-pre-line">{{ post.content }}</p> -->
+			<pre class="">{{ post.level }}</pre>
 		</NSpace>
 
 		<NSpace justify="">

@@ -41,8 +41,6 @@ const formRules = {
 	}
 };
 
-
-
 function handleSendComment() {
 	formModel.value.threadId = props.threadId;
 	formModel.value.parentPostId = props.parentPostId ?? null;
@@ -58,23 +56,25 @@ function handleSendComment() {
 		try {
 			const comment = Object.assign({}, formModel.value);
 			const data = (await postApi.store(comment)).data;
+			// console.log(data);
 
-			console.log('data balesannya', data);
-			const newPost = {
-				id: data.id,
-				thread_id: data.thread_id,
-				parent_post_id: data.parent_post_id,
-				user_id: data.user_id,
-				content: data.content,
-				updated_at: data.updated_at,
-				user: useAuthStore().user,
-				post_replies: [],
-				likes_count: 0,
-				dislikes_count: 0,
-				my_reaction: null,
-			};
 
-			emits('createdNewPost', newPost);
+			// const newPost = {
+			// 	id: data.id,
+			// 	thread_id: data.thread_id,
+			// 	top_parent_post_id: data.top_parent_post_id,
+			// 	parent_post_id: data.parent_post_id,
+			// 	user_id: data.user_id,
+			// 	content: data.content,
+			// 	updated_at: data.updated_at,
+			// 	user: useAuthStore().user,
+			// 	post_replies: [],
+			// 	likes_count: 0,
+			// 	dislikes_count: 0,
+			// 	my_reaction: null,
+			// };
+			// emits('createdNewPost', newPost);
+
 			formModel.value.content = '';
 			commentMode.value = false;
 			msg.success('Comment sent');

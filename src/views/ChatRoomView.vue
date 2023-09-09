@@ -55,11 +55,7 @@ async function getMessages() {
 		busy.value = false;
 		setTimeout(() => {
 			scrollToBottom();
-
 		}, 0);
-
-		// scrollToBottom();
-
 	}
 }
 
@@ -80,6 +76,7 @@ onMounted(() => {
 	console.log(nLayoutContentRef.value);
 
 
+	// listening to broadcast
 	window.Echo.channel(conversationChannel)
 		.listen('MessageSent', (e) => {
 			pushNewMessage(e.message);
@@ -140,7 +137,7 @@ function leaveChatRoom() {
 
 		<NLayoutFooter position="absolute">
 			<MessageInput @sent-new-message="pushNewMessage" />
-			<NButton @click="() => scrollToBottom(true)">bottom</NButton>
+			<!-- st<NButton @click="() => scrollToBottom(true)">bottom</NButton> -->
 
 		</NLayoutFooter>
 	</NLayout>

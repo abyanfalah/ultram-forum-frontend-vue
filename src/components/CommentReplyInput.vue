@@ -26,8 +26,10 @@ const emmits = defineEmits(['createdNewReply', 'replyValueChange']);
 const formRef = ref();
 const formModel = ref({
 	content: '',
-	threadId: '',
-	parentPostId: '',
+
+
+
+
 });
 const formRules = {
 	content: {
@@ -40,11 +42,6 @@ const formRules = {
 
 
 function handleSendReply() {
-	formModel.value.parentPostId = props.parentPost.id;
-	formModel.value.threadId = props.parentPost.thread_id;
-
-
-
 	formRef.value?.validate(async (err) => {
 		loading.start();
 		if (err) {
@@ -54,17 +51,31 @@ function handleSendReply() {
 		}
 
 		try {
-			const reply = Object.assign({}, formModel.value);
+			// console.log('');
+			let commentLevel = props.parentPost?.level + 1;
+			let parentPostId = props.parentPost.id;
 
-			console.log('formModel', formModel.value);
-			console.log('reply', reply);
-			console.log('props.parentpost', props.parentPost);
+			if (commentLevel > 2) {
+				commentLevel = 2;
+				parentPostId = props.parentPost.parent_post_id;
+			}
 
-			const data = (await postApi.store(reply)).data;
+			console.log('this reply would be level : ', commentLevel);
+
+			const reply = {
+				threadId: props.parentPost.thread_id,
+				topParentPostId: props.parentPost.top_parent_post_id ?? props.parentPost.id,
+				parentPostId: parentPostId,
+				level: commentLevel,
+			};
+			const { data } = await postApi.store(reply);
+			console.log(data);
+
 
 			const newReply = {
 				id: data.id,
 				thread_id: data.thread_id,
+				top_parent_post_id: data.top_parent_post_id,
 				parent_post_id: data.parent_post_id,
 				user_id: data.user_id,
 				content: data.content,
@@ -76,13 +87,15 @@ function handleSendReply() {
 				my_reaction: null,
 			};
 
+			// disabled. comment retrieved from broadcast
 			emmits('createdNewReply', newReply);
+
 			formModel.value.content = '';
 			msg.success('Reply sent');
 			loading.finish();
 		} catch (e) {
 			msg.error(`Failed sending reply`);
-			console.log(e);
+			console.error(e);
 			loading.error();
 		}
 	});

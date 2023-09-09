@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import threadApi from '../services/apis/backend/threadApi';
 import { threadDate } from '../services/humanTime';
 import NewCommentInput from '../components/NewCommentInput.vue';
@@ -18,6 +18,7 @@ import {
 } from 'naive-ui';
 import { useAuthStore } from '../stores/authStore';
 import postApi from '../services/apis/backend/postApi';
+import { onBeforeRouteLeave } from 'vue-router';
 
 const props = defineProps(['slug']);
 const authStore = useAuthStore();
@@ -28,13 +29,31 @@ const thread = ref({});
 const posts = ref([]);
 const isLoadingPost = ref(false);
 const isLoadingThread = ref(false);
+const threadChannel = computed(() => `comment-thread-${thread.value?.id}`);
+
+function listenCommentBroadcast() {
+	// listening to broadcast
+	window.Echo.channel(threadChannel.value)
+		.listen('NewCommentSent', (e) => {
+			pushPost(e.post);
+			console.log(e);
+		});
+}
+
+function leaveBroadcastChannel() {
+	window.Echo.leaveChannel(threadChannel.value);
+}
+
+
 
 async function getThread() {
 	try {
 		isLoadingThread.value = true;
-		const data = (await threadApi.get(props.slug)).data;
+		const { data } = await threadApi.get(props.slug);
 		thread.value = data;
+		listenCommentBroadcast();
 	} catch (error) {
+		console.error(error);
 		msg.error('Failed retrieving thread');
 	} finally {
 		isLoadingThread.value = false;
@@ -46,7 +65,7 @@ async function getThreadParentPosts() {
 		isLoadingPost.value = true;
 		const data = (await postApi.getParentByThreadSlug(props.slug)).data;
 		posts.value = data;
-		console.log('posts value', posts.value);
+		// console.log('posts value', posts.value);
 	} catch (error) {
 		msg.error('Failed retrieving comments');
 	} finally {
@@ -66,8 +85,15 @@ function focusToCommentInput() {
 onBeforeMount(() => {
 	getThread();
 	getThreadParentPosts();
-})
+});
 
+onUnmounted(() => {
+	leaveBroadcastChannel();
+});
+
+onBeforeRouteLeave(() => {
+	leaveBroadcastChannel();
+})
 
 
 </script>

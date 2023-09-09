@@ -69,9 +69,16 @@ function handleLogin() {
 			busy.value = true;
 			const loginResponse = await authApi.login(credentials);
 			// console.log('login: ', loginResponse);
-			authStore.checkAuth();
+
+			if (loginResponse === undefined) {
+				const err = new Error;
+				err.message = 'Invalid credentials';
+				throw err;
+			}
+
 
 			if (loginResponse?.status == 204 || loginResponse?.status == 200) {
+				authStore.checkAuth();
 				authStore.isLogin = true;
 
 				router.replace({ name: 'home' });
@@ -79,8 +86,10 @@ function handleLogin() {
 			}
 
 		} catch (err) {
-			console.error(err);
-			return msg.error(err.response?.data.message);
+			// console.log(err);
+			// return msg.error(err.response?.data.message);
+			return msg.error(err.message);
+			// msg.error('Invalid credentials');
 
 			// if (err.response.status == 422) {
 			// 	msg.error('Invalid credentials');
