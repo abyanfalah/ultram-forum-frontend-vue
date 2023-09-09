@@ -26,10 +26,6 @@ const emmits = defineEmits(['createdNewReply', 'replyValueChange']);
 const formRef = ref();
 const formModel = ref({
 	content: '',
-
-
-
-
 });
 const formRules = {
 	content: {
@@ -51,44 +47,42 @@ function handleSendReply() {
 		}
 
 		try {
-			// console.log('');
 			let commentLevel = props.parentPost?.level + 1;
 			let parentPostId = props.parentPost.id;
 
+			// limit to only level 2
 			if (commentLevel > 2) {
 				commentLevel = 2;
 				parentPostId = props.parentPost.parent_post_id;
 			}
-
-			console.log('this reply would be level : ', commentLevel);
 
 			const reply = {
 				threadId: props.parentPost.thread_id,
 				topParentPostId: props.parentPost.top_parent_post_id ?? props.parentPost.id,
 				parentPostId: parentPostId,
 				level: commentLevel,
+				content: formModel.value.content,
 			};
 			const { data } = await postApi.store(reply);
-			console.log(data);
+			// console.log(data);
 
 
-			const newReply = {
-				id: data.id,
-				thread_id: data.thread_id,
-				top_parent_post_id: data.top_parent_post_id,
-				parent_post_id: data.parent_post_id,
-				user_id: data.user_id,
-				content: data.content,
-				updated_at: data.updated_at,
-				user: useAuthStore().user,
-				post_replies: [],
-				likes_count: 0,
-				dislikes_count: 0,
-				my_reaction: null,
-			};
+			// const newReply = {
+			// 	id: data.id,
+			// 	thread_id: data.thread_id,
+			// 	top_parent_post_id: data.top_parent_post_id,
+			// 	parent_post_id: data.parent_post_id,
+			// 	user_id: data.user_id,
+			// 	content: data.content,
+			// 	updated_at: data.updated_at,
+			// 	user: useAuthStore().user,
+			// 	post_replies: [],
+			// 	likes_count: 0,
+			// 	dislikes_count: 0,
+			// 	my_reaction: null,
+			// };
 
-			// disabled. comment retrieved from broadcast
-			emmits('createdNewReply', newReply);
+			emmits('createdNewReply');
 
 			formModel.value.content = '';
 			msg.success('Reply sent');

@@ -75,7 +75,7 @@ onMounted(() => {
 
 function pushReply(reply) {
 	// console.log('balesannya nih', reply);
-	replies.value.push(reply);
+	// replies.value.push(reply);
 	replyMode.value = false;
 }
 
@@ -99,8 +99,11 @@ function pushReply(reply) {
 		</NSpace>
 
 		<NSpace>
-			<!-- <p class="whitespace-pre-line">{{ post.content }}</p> -->
-			<pre class="">{{ post.level }}</pre>
+			<p class="whitespace-pre-line">{{ post.content }}</p>
+			<!-- <pre class="">{{ post.level }}</pre>
+			<pre class="">{{ post.top_parent_post_id }}</pre>
+			<pre class="">{{ post.parent_post_id }}</pre>
+			<pre class="">{{ post.id }}</pre> -->
 		</NSpace>
 
 		<NSpace justify="">

@@ -35,8 +35,8 @@ function listenCommentBroadcast() {
 	// listening to broadcast
 	window.Echo.channel(threadChannel.value)
 		.listen('NewCommentSent', (e) => {
+			// console.log(e.post);
 			pushPost(e.post);
-			console.log(e);
 		});
 }
 
@@ -65,7 +65,6 @@ async function getThreadParentPosts() {
 		isLoadingPost.value = true;
 		const data = (await postApi.getParentByThreadSlug(props.slug)).data;
 		posts.value = data;
-		// console.log('posts value', posts.value);
 	} catch (error) {
 		msg.error('Failed retrieving comments');
 	} finally {
@@ -74,9 +73,19 @@ async function getThreadParentPosts() {
 }
 
 function pushPost(post) {
-	posts.value.push(post);
+	if (post.level === 0) return posts.value.push(post);
+
+	const topParentPostIndex = posts.value.findIndex(p => p.id == post.top_parent_post_id);
+	if (post.level === 1) {
+		return posts.value[topParentPostIndex].post_replies.push(post);
+	}
+
+	const parentPostIndex = posts.value[topParentPostIndex].post_replies.findIndex(p => p.id == post.parent_post_id);
+	posts.value[topParentPostIndex].post_replies[parentPostIndex].post_replies.push(post);
 }
 
+
+// TODO: maybe delete this
 function focusToCommentInput() {
 	// console.log(commentInputRef.value);
 	// commentInputRef.value.scrollIntoView();
