@@ -6,9 +6,11 @@ import {
 	useMessage,
 	NAvatar,
 } from 'naive-ui';
-import { threadDate } from '../services/humanTime';
+import { threadDate, timesAgo } from '../services/humanTime';
 import UserAvatarWithName from '../components/UserAvatarWithName.vue';
 import LikeDislikeThreadButton from './LikeDislikeThreadButton.vue';
+import renderIcon from '../services/renderIcon';
+import router from '../router';
 
 const props = defineProps(['thread', 'showAuthor']);
 
@@ -24,7 +26,7 @@ const props = defineProps(['thread', 'showAuthor']);
 
 			<UserAvatarWithName :user="thread?.user" />
 
-			<span class="text-neutral-400">{{ threadDate(thread?.created_at) }}</span>
+			<span class="text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
 		</NSpace>
 
 
@@ -41,7 +43,14 @@ const props = defineProps(['thread', 'showAuthor']);
 
 
 		<template #footer>
-			<LikeDislikeThreadButton :thread="thread" />
+			<NSpace align="center">
+				<LikeDislikeThreadButton :thread="thread" />
+				<NButton text
+					@click="router.push({ name: 'thread.view', params: { slug: thread.slug } })"
+					:render-icon="() => renderIcon('fe:comment-o')">
+					{{ thread.posts_count }}
+				</NButton>
+			</NSpace>
 		</template>
 	</NCard>
 </template>
