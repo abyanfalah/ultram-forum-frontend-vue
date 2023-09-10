@@ -35,15 +35,21 @@ const formModel = ref({
 });
 const formRules = {
 	content: {
-		required: true,
+		required: false,
 		message: 'Comment is required!',
-		trigger: ['input']
+		trigger: ['blur']
 	}
 };
 
 function handleSendComment() {
 	formModel.value.threadId = props.threadId;
 	formModel.value.parentPostId = props.parentPostId ?? null;
+
+	if (!formModel.value.content) {
+		msg.error('Invalid comment');
+		loading.error();
+		return;
+	}
 
 	formRef.value?.validate(async (err) => {
 		loading.start();
@@ -92,6 +98,13 @@ function focusCommentInput() {
 	commentMode.value = true;
 	formWrapperRef.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+
+function cancelComment() {
+	// if (!formModel.value.content) {
+	// 	formModel.value.content = '';
+	// }
+	commentMode.value = false;
+}
 </script>
 
 <template>
@@ -113,18 +126,17 @@ function focusCommentInput() {
 
 				<NButton v-show="commentMode"
 					type="primary"
+					:disabled="!formModel.content"
 					@click="handleSendComment"
 					:render-icon="() => renderIcon('fe:paper-plane')">Send comment</NButton>
 
 				<NButton v-show="commentMode"
-					@click="commentMode = false"
+					@click="cancelComment"
 					type="tertiary"
 					:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
 
 
 			</div>
-
-
 		</NForm>
 	</div>
 </template>
