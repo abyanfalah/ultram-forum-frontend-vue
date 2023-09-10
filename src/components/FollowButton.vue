@@ -18,6 +18,16 @@ const isFollowed = computed(() => {
 	return props?.user.is_followed;
 });
 
+const isFollowing = computed(() => {
+	return props?.user.is_following;
+});
+
+const buttonText = computed(() => {
+	if (isFollowed.value) return 'Unfollow';
+	if (isFollowing.value) return 'Follow back';
+	return 'Follow';
+});
+
 async function toggleFollowUser() {
 	try {
 		busy.value = true;
@@ -44,6 +54,6 @@ async function toggleFollowUser() {
 		:type="user?.is_followed ? 'default' : 'primary'"
 		:loading="busy"
 		:render-icon="() => renderIcon(user?.is_followed ? 'fe:user-minus' : 'fe:user-plus')">
-		{{ user?.is_followed ? 'Unfollow' : 'Follow' }}
+		{{ buttonText }}
 	</NButton>
 </template>
