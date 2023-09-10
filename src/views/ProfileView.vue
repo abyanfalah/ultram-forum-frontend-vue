@@ -243,14 +243,14 @@ onMounted(async () => {
 
 		</NTabPane>
 
-		<NTabPane name="Posts">
+		<NTabPane name="Comments">
 
 			<NSpace v-if="userPosts.length < 1">
 				You haven't make any post yet...
 			</NSpace>
 
 			<div v-else>
-				you do have post(s), but maybe i'll disable this feature, i guess.
+				you do have comment(s), but maybe i'll disable this feature, i guess.
 			</div>
 
 		</NTabPane>
