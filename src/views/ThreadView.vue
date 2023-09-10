@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import threadApi from '../services/apis/backend/threadApi';
-import { threadDate } from '../services/humanTime';
+import { threadDate, timesAgo } from '../services/humanTime';
 import NewCommentInput from '../components/NewCommentInput.vue';
 import LikeDislikeThreadButton from '../components/LikeDislikeThreadButton.vue';
 import PostCard from '../components/PostCard.vue';
@@ -121,10 +121,7 @@ onBeforeRouteLeave(() => {
 			justify="space-between"
 			class="mb-4">
 			<UserAvatarWithName :user="thread?.user" />
-
-
-
-			<span class="text-neutral-400">{{ threadDate(thread?.created_at) }}</span>
+			<span class="text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
 		</NSpace>
 
 		<!-- thread -->
@@ -164,7 +161,7 @@ onBeforeRouteLeave(() => {
 	<NDivider></NDivider>
 
 	<!-- comment input -->
-	<NewCommentInput class="mb-4"
+	<NewCommentInput class="mb-10"
 		ref="commentInputRef"
 		:threadId="thread.id"
 		@created-new-post="pushPost"

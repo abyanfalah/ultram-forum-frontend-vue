@@ -93,7 +93,7 @@ function pushReply(reply) {
 			<div class="flex items-center space-x-2">
 				<UserAvatarWithName :user="post?.user" />
 
-				<span class="text-neutral-400 text-xs">{{ threadDate(post.updated_at) }}</span>
+				<span class="text-neutral-400 text-xs">{{ timesAgo(post.updated_at) }}</span>
 
 			</div>
 		</NSpace>
