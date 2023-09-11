@@ -45,11 +45,14 @@ const props = defineProps(['thread', 'showAuthor']);
 		<template #footer>
 			<NSpace align="center">
 				<LikeDislikeThreadButton :thread="thread" />
-				<NButton text
-					@click="router.push({ name: 'thread.view', params: { slug: thread.slug } })"
-					:render-icon="() => renderIcon('fe:comment-o')">
-					{{ thread.posts_count }}
-				</NButton>
+				<div class="transition hover:scale-110 ease-out">
+					<NButton text
+						@click="router.push({ name: 'thread.view', params: { slug: thread.slug } })"
+						:render-icon="() => renderIcon('octicon:comment-24')">
+						{{ thread.posts_count }}
+					</NButton>
+				</div>
+
 			</NSpace>
 		</template>
 	</NCard>

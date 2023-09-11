@@ -17,6 +17,7 @@ export function timesAgo(dateTime) {
 	const minutesAgo = moment().diff(
 		moment(dateTime), 'minutes'
 	);
+	if (minutesAgo < 1) return 'Just now';
 	if (minutesAgo < 59) return `${minutesAgo}m ago`;
 
 	const hoursAgo = moment().diff(

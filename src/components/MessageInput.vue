@@ -16,6 +16,7 @@ const chatStore = useChatStore();
 const authStore = useAuthStore();
 const message = ref('');
 let id = 0;
+
 async function sendMessage() {
 	if (!message.value) return msg.info("Bruh at least say something...");
 

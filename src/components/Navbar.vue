@@ -29,13 +29,13 @@ const userMenuOptions = ref([
 		icon: () => renderIcon('fe:user'),
 		action: () => store.goToMyProfilePage(false),
 	},
-	// {
-	// 	label: 'My threads',
-	// 	key: 'mythread',
-	// 	icon: () => renderIcon('fe:comments'),
-	// 	// action: () => alert('why'),
-	// 	action: () => router.push({ name: 'me.thread' }),
-	// },
+	{
+		label: 'My sub',
+		key: 'my-sub',
+		icon: () => renderIcon('fe:layer'),
+		// action: () => alert('why'),
+		action: () => router.push({ name: 'me.thread' }),
+	},
 	{
 		type: 'divider'
 	},
@@ -54,6 +54,12 @@ const addPostOptions = ref([
 		icon: () => renderIcon('fe:text-align-left'),
 		action: () => router.push({ name: 'thread.new' }),
 	},
+	{
+		label: 'New sub',
+		key: 'new-sub',
+		icon: () => renderIcon('fe:layer'),
+		action: () => router.push({ name: 'sub.new' }),
+	},
 	{ type: 'divider' },
 	{
 		label: 'Something else',
@@ -62,7 +68,6 @@ const addPostOptions = ref([
 ]);
 
 function confirmLogout() {
-
 	dialog.error({
 		title: 'Logout',
 		content: 'Are you sure?',

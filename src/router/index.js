@@ -39,6 +39,21 @@ const router = createRouter({
 			props: true,
 		},
 
+		// ========================================= SUB FORUM
+		{
+			path: '/sub/new',
+			name: 'sub.new',
+			component: () => import('../views/NewSubView.vue'),
+			meta: { requiresAuth: true },
+		},
+		{
+			path: '/sub/:slug',
+			name: 'sub.view',
+			component: () => import('../views/SubView.vue'),
+			meta: { requiresAuth: true },
+			props: true,
+		},
+
 
 		// ========================================= MISC
 

@@ -29,7 +29,6 @@ const nLayoutContentRef = ref();
 const busy = ref(false);
 
 const messages = ref([]);
-// const conversation = ref();
 const conversationChannel = `conversation-${chatStore.conversationId}`;
 
 
@@ -43,7 +42,7 @@ function checkConversationId() {
 
 async function getMessages() {
 	try {
-		busy.value = true;
+		// busy.value = true;
 		const res = await messageApi.getConversationMessages();
 		// console.log(res);
 		messages.value = res.data;
@@ -52,10 +51,10 @@ async function getMessages() {
 		msg.error('Unable retrieving messages');
 		console.error(error);
 	} finally {
-		busy.value = false;
 		setTimeout(() => {
 			scrollToBottom();
 		}, 0);
+		// busy.value = false;
 	}
 }
 
@@ -72,8 +71,8 @@ onMounted(() => {
 	checkConversationId();
 	getMessages();
 
-	console.clear();
-	console.log(nLayoutContentRef.value);
+	// console.clear();
+	// console.log(nLayoutContentRef.value);
 
 
 	// listening to broadcast
@@ -109,12 +108,12 @@ function leaveChatRoom() {
 			ref="nLayoutContentRef"
 			style="margin-bottom: 4rem;">
 
-			<NSpace justify="center"
+			<!-- <NSpace justify="center"
 				align="center"
 				class="h-[80vh]"
-				v-show="busy">
+				v-show="false">
 				<NSpin></NSpin>
-			</NSpace>
+			</NSpace> -->
 
 			<!-- messages container -->
 			<div v-show="!busy"
