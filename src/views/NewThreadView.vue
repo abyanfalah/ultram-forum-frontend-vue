@@ -25,7 +25,7 @@ const newThreadFormRef = ref();
 const newThreadFormModel = ref({
 	title: 'asdf',
 	content: 'asdf',
-	categoryId: '1',
+	// categoryId: '1',
 });
 const newThreadFormRules = {
 	title: [
@@ -40,11 +40,11 @@ const newThreadFormRules = {
 		message: "Thread content is required",
 		trigger: ['input', 'blur',]
 	},
-	category: {
-		required: true,
-		message: "Category is required",
-		trigger: ['input', 'blur',]
-	}
+	// category: {
+	// 	required: true,
+	// 	message: "Category is required",
+	// 	trigger: ['input', 'blur',]
+	// }
 };
 
 const categories = ref([]);
@@ -85,20 +85,20 @@ function handleSubmitNewThread() {
 
 
 
-async function getCategories() {
-	const res = await threadApi.getAllCategories();
-	categoryList = res.data;
+// async function getCategories() {
+// 	const res = await threadApi.getAllCategories();
+// 	categoryList = res.data;
 
-	categories.value = categoryList.map(cat => {
-		return {
-			label: cat.name,
-			value: cat.id.toString(),
-		};
-	});
-}
+// 	categories.value = categoryList.map(cat => {
+// 		return {
+// 			label: cat.name,
+// 			value: cat.id.toString(),
+// 		};
+// 	});
+// }
 
 onMounted(() => {
-	getCategories();
+	// getCategories();
 });
 </script>
 
@@ -117,13 +117,13 @@ onMounted(() => {
 				placeholder="Thread title" />
 		</NFormItem>
 
-		<NFormItem label="Category"
+		<!-- <NFormItem label="Category"
 			path="categoryId">
 			<NSelect placeholder="Select category"
 				v-model:value="newThreadFormModel.categoryId"
 				:options="categories"
 				filterable />
-		</NFormItem>
+		</NFormItem> -->
 
 		<NFormItem label="Content"
 			path="content">
