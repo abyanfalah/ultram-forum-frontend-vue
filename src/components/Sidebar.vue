@@ -86,6 +86,13 @@ const shortcuts = ref([
 				</NButton>
 			</RouterLink>
 
+			<RouterLink :to="{ name: 'sub.all' }">
+				<NButton block
+					type="tertiary">
+					Sub forums
+				</NButton>
+			</RouterLink>
+
 			<NPopconfirm @positive-click="migrate">
 				Migrate the db?
 				<template #trigger>

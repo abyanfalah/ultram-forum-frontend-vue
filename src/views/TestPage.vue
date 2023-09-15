@@ -10,7 +10,7 @@ import RequiresEmailVerificationCard from '../components/RequiresEmailVerificati
 import renderIcon from '../services/renderIcon';
 import UserCard from '../components/UserCard.vue';
 import userApi from '../services/apis/backend/userApi';
-
+import ProfilePictureUploadModal from '../components/ProfilePictureUploadModal.vue';
 
 const users = ref([]);
 
@@ -24,12 +24,12 @@ async function testEvent() {
 </script>
 
 <template>
-	<RequiresEmailVerificationCard />
+	<!-- <RequiresEmailVerificationCard /> -->
 	<!-- 
 	<UserCard v-for="user in users"
 		:key="user.id"
 		:user="user"
 		class="mb-2" /> -->
 
-	testpage
+	<ProfilePictureUploadModal />
 </template>

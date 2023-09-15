@@ -17,14 +17,19 @@ import {
 	useLoadingBar,
 } from 'naive-ui';
 import router from '../router';
+import { useStore } from '../stores/store';
 
 const msg = useMessage();
 const loading = useLoadingBar();
+const store = useStore();
+
+const subForum = ref({});
 
 const newThreadFormRef = ref();
 const newThreadFormModel = ref({
-	title: 'asdf',
-	content: 'asdf',
+	title: 'thread on a sub forum',
+	// content: 'asdf',
+	content: `The data property of a dataset can be passed in various formats. By default, that data is parsed using the associated chart type and scales. If the labels property of the main data property is used, it has to contain the same amount of elements as the dataset with the most values. These labels are used to label the index axis (default x axes). The values for the labels have to be provided in an array. The provided labels can be of the type string or number to be rendered correctly. In case you want multiline labels you can provide an array with each line as one entry in the array.`,
 	// categoryId: '1',
 });
 const newThreadFormRules = {
@@ -52,6 +57,8 @@ const newThreadFormRules = {
 // let categoryList = [];
 
 function handleSubmitNewThread() {
+	// TODO: delete
+
 
 	newThreadFormRef.value?.validate(async (err) => {
 
@@ -67,7 +74,10 @@ function handleSubmitNewThread() {
 					strict: true,
 					trim: true,
 				});
+			thread.subForumId = store.currentSubForum.id;
+
 			const res = await threadApi.store(thread);
+			console.log(res);
 			msg.success('Thread created');
 			loading.finish();
 
@@ -99,12 +109,22 @@ function handleSubmitNewThread() {
 // }
 
 onMounted(() => {
+
+	console.log(store.currentSubForum);
 	// getCategories();
+	if (!store.currentSubForum) {
+		msg.error('No selected sub forum!');
+		return router.back();
+	}
+	subForum.value = Object.assign({}, store.currentSubForum);
 });
 </script>
 
 <template>
-	<h1 class="text-3xl">New thread</h1>
+	<div class="flex flex-col">
+		<h1 class="text-3xl">New thread</h1>
+		<p>on {{ subForum.name }}</p>
+	</div>
 
 	<NForm ref="newThreadFormRef"
 		:model="newThreadFormModel"

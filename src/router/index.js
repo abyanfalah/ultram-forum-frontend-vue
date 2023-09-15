@@ -41,15 +41,27 @@ const router = createRouter({
 
 		// ========================================= SUB FORUM
 		{
+			path: '/sub/all',
+			name: 'sub.all',
+			component: () => import('../views/SubForumListView.vue'),
+			meta: { requiresAuth: true },
+		},
+		{
 			path: '/sub/new',
 			name: 'sub.new',
 			component: () => import('../views/NewSubView.vue'),
 			meta: { requiresAuth: true },
 		},
 		{
+			path: '/sub/thread/new',
+			name: 'sub.thread.new',
+			component: () => import('../views/NewSubThreadView.vue'),
+			meta: { requiresAuth: true },
+		},
+		{
 			path: '/sub/:slug',
 			name: 'sub.view',
-			component: () => import('../views/SubView.vue'),
+			component: () => import('../views/SubForumView.vue'),
 			meta: { requiresAuth: true },
 			props: true,
 		},

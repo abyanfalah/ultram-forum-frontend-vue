@@ -55,6 +55,8 @@ export const useStore = defineStore('store', () => {
 		await ax.get('http://localhost:8000/migrate');
 	}
 
+	const currentSubForum = ref({});
+
 	return {
 		migrate,
 
@@ -67,6 +69,7 @@ export const useStore = defineStore('store', () => {
 		goToMyProfilePage,
 		getPrimaryBgHighlightColor,
 		profilePage,
+		currentSubForum,
 	};
 },
 	{
