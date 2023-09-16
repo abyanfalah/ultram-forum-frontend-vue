@@ -250,7 +250,7 @@ onMounted(async () => {
 			</NSpace>
 
 			<div v-else>
-				you do have comment(s), but maybe i'll disable this feature, i guess.
+				This user has comment(s), but i'll disable this feature, i guess.
 			</div>
 
 		</NTabPane>
