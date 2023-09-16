@@ -8,6 +8,7 @@ import {
 	NButton,
 	useMessage,
 	useNotification,
+	NSpace,
 } from 'naive-ui';
 import authApi from '../services/apis/backend/authApi';
 import { useAuthStore } from '../stores/authStore';
@@ -56,6 +57,18 @@ function isValidEmail() {
 	return !!re.test(String(email).toLowerCase());
 }
 
+function loginAsMeiko() {
+	loginFormModel.value.email = 'meiko@gmail.com';
+	loginFormModel.value.password = 'scootermania';
+	handleLogin();
+}
+
+function loginAsAbyan() {
+	loginFormModel.value.email = 'abyan@gmail.com';
+	loginFormModel.value.password = 'scootermania';
+	handleLogin();
+}
+
 function handleLogin() {
 	loginFormRef.value?.validate(async (err) => {
 		if (err) return msg.error("Invalid form!");
@@ -102,8 +115,7 @@ function handleLogin() {
 }
 
 onMounted(() => {
-	loginFormModel.value.email = 'abyan@gmail.com';
-	loginFormModel.value.password = 'scootermania';
+
 });
 
 </script>
@@ -139,4 +151,25 @@ onMounted(() => {
 		:loading="busy">
 		Login
 	</NButton>
+
+	<NSpace vertical
+		class="mt-2">
+		<NButton @click="loginAsAbyan"
+			type="success"
+			block
+			strong
+			:disabled="busy"
+			:loading="busy">
+			Login as Abyan
+		</NButton>
+
+		<NButton @click="loginAsMeiko"
+			type="error"
+			block
+			strong
+			:disabled="busy"
+			:loading="busy">
+			Login as Meiko
+		</NButton>
+	</NSpace>
 </template>

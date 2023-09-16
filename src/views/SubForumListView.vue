@@ -29,10 +29,7 @@ async function getSubForums() {
 
 function changeSubForumData(updatedSubForumData) {
 	const subForumIndex = subForums.value.findIndex(sub => sub.id == updatedSubForumData.id);
-	console.log(subForumIndex);
 	subForums.value[subForumIndex] = Object.assign({}, updatedSubForumData);
-
-
 }
 
 onMounted(() => {

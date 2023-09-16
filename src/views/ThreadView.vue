@@ -155,5 +155,5 @@ onBeforeRouteLeave(() => {
 	<!--  -->
 
 	<!-- bottom spacer -->
-	<!-- <div class="my-[500px]"></div> -->
+	<div class="my-[500px]"></div>
 </template>
