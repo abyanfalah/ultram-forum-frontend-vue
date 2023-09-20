@@ -1,11 +1,8 @@
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { defineStore } from 'pinia';
 import authApi from '../services/apis/backend/authApi';
 import router from '../router';
 import imageApi from '../services/apis/backend/imageApi';
-
-
-
 
 export const useAuthStore = defineStore('auth',
 	() => {
@@ -13,7 +10,7 @@ export const useAuthStore = defineStore('auth',
 		const user = ref({});
 		const isLogin = ref(false);
 		const myId = computed(() => user.value?.id ?? null);
-		const timestamp = ref(0);
+		const myProfilePicUrl = ref();
 
 		async function checkAuth() {
 			try {
@@ -24,6 +21,8 @@ export const useAuthStore = defineStore('auth',
 					user.value = Object.assign({});
 					return res;
 				}
+
+				myProfilePicUrl.value = imageApi.profileImageEndpoint(myId.value);
 			} catch (error) {
 				console.log('check auth error: ', error);
 			}
@@ -70,12 +69,6 @@ export const useAuthStore = defineStore('auth',
 		}
 
 
-		function reloadProfilePic() {
-			timestamp.value = new Date().getTime();
-		}
-		const myProfilePicUrl = computed(() => {
-			return `${imageApi.profileImageEndpoint(myId.value)}?timestamp=${timestamp.value}`;
-		});
 
 		return {
 			user,
@@ -85,7 +78,7 @@ export const useAuthStore = defineStore('auth',
 			clientSideLogout,
 			myId,
 			myProfilePicUrl,
-			reloadProfilePic,
+
 		};
 	},
 	{ persist: true }

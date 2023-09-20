@@ -4,8 +4,18 @@ import {
 	NButton,
 } from 'naive-ui';
 import imageApi from '../services/apis/backend/imageApi';
+import { computed } from 'vue';
+import { useAuthStore } from '../stores/authStore';
+
+const authStore = useAuthStore();
+
 
 const props = defineProps(['user', 'avatarSize', 'withUsername']);
+const profilePicUrl = computed(() => {
+	if (props?.user.id == authStore.myId) return authStore.myProfilePicUrl;
+	return imageApi.profileImageEndpoint(props?.user.id);
+})
+
 
 </script>
 
@@ -16,8 +26,7 @@ const props = defineProps(['user', 'avatarSize', 'withUsername']);
 			params: { username: user?.username }
 		}"
 			class=" flex space-x-2 items-center ">
-			<NAvatar :src="imageApi.profileImageEndpoint(user.id)"
-				fallback-src="/img/user-default.svg"
+			<NAvatar :src="profilePicUrl"
 				:size="avatarSize ?? 'small'"
 				role="button"
 				round

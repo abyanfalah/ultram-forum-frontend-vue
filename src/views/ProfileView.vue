@@ -43,8 +43,19 @@ const msg = useMessage();
 
 const userThreads = ref([]);
 const userPosts = ref([]);
+
 const profileImageUrl = ref();
+function reloadProfilePicUrl() {
+	if (!user.value) return null;
+	profileImageUrl.value = imageApi.profileImageEndpoint(user.value.id);
+	authStore.myProfilePicUrl = profileImageUrl.value;
+};
+
 const coverImageUrl = ref();
+function reloadCoverPicUrl() {
+	if (!user.value) return null;
+	profileImageUrl.value = imageApi.coverImageEndpoint(user.value.id);
+};
 
 const profilePicInputRef = ref();
 const isChangingProfilePic = ref(false);
@@ -101,7 +112,7 @@ async function getUserData() {
 			user.value = res.data;
 		}
 
-		getProfileImageUrl();
+		reloadProfilePicUrl();
 
 		userThreads.value = (await threadApi.getByUserId(user.value.id))?.data ?? [];
 		userPosts.value = (await postApi.getByUserId(user.value.id))?.data ?? [];
@@ -127,13 +138,7 @@ async function goToChat() {
 	return chatStore.goToConversation(conversationId);
 }
 
-function getProfileImageUrl() {
-	if (!user.value) return null;
 
-	// use some random query to invoke reload when changed
-	const timestamp = new Date().getTime();
-	profileImageUrl.value = `${imageApi.profileImageEndpoint(user.value.id)}?timestamp=${timestamp}`;
-};
 
 // const coverImgUrl = computed(() => {
 // 	if (!user.value) return null;
@@ -161,17 +166,9 @@ async function handleProfilePicFileChange(event) {
 		formData.append('image', selectedFile);
 
 		const res = await imageApi.uploadProfileImage(formData);
-		console.log(res);
+		// console.log(res);
 
-		// if (res.status != 200) { throw new Error("No image is being send"); };
-
-
-		console.log(authStore.myProfilePicUrl);
-
-		getProfileImageUrl();
-		authStore.reloadProfilePic();
-
-		console.log(authStore.myProfilePicUrl);
+		reloadProfilePicUrl();
 
 		loading.finish();
 		msg.success("Profile picture updated");

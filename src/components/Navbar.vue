@@ -134,7 +134,7 @@ const logoClass = computed(() => {
 						:show-arrow="false"
 						animated
 						:options="userMenuOptions">
-						<NAvatar :src="authStore.myProfilePicUrl"
+						<NAvatar :src="authStore.myProfilePicUrl ?? null"
 							size="small"
 							role="button"
 							round
