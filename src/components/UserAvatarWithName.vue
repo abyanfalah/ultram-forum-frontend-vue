@@ -29,6 +29,7 @@ const profilePicUrl = computed(() => {
 			<NAvatar :src="profilePicUrl"
 				:size="avatarSize ?? 'small'"
 				role="button"
+				object-fit="cover"
 				round
 				@click=""></NAvatar>
 			<div class="flex flex-col items-start space-y-1">

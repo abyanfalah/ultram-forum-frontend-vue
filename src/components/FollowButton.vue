@@ -33,7 +33,7 @@ async function toggleFollowUser() {
 		busy.value = true;
 
 		const res = await followApi.followByUserId(props?.user.id);
-		console.log('emit toggle Follow');
+		// console.log('emit toggle Follow');
 		emits('toggleFollow', res.data);
 	} catch (error) {
 		msg.error('Action failed');

@@ -50,7 +50,7 @@ function reloadProfilePicUrl() {
 	profileImageUrl.value = imageApi.profileImageEndpoint(user.value.id);
 
 	if (isMe.value) {
-	authStore.myProfilePicUrl = profileImageUrl.value;
+		authStore.myProfilePicUrl = profileImageUrl.value;
 	}
 };
 
@@ -129,7 +129,7 @@ async function getUserData() {
 }
 
 function changeUserData(newUserdata) {
-	console.log('change user data from profile view');
+	// console.log('change user data from profile view');
 	user.value = newUserdata;
 }
 
