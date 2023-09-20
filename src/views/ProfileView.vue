@@ -48,7 +48,10 @@ const profileImageUrl = ref();
 function reloadProfilePicUrl() {
 	if (!user.value) return null;
 	profileImageUrl.value = imageApi.profileImageEndpoint(user.value.id);
+
+	if (isMe.value) {
 	authStore.myProfilePicUrl = profileImageUrl.value;
+	}
 };
 
 const coverImageUrl = ref();
