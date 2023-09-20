@@ -2,6 +2,7 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import authApi from '../services/apis/backend/authApi';
 import router from '../router';
+import imageApi from '../services/apis/backend/imageApi';
 
 
 
@@ -12,7 +13,7 @@ export const useAuthStore = defineStore('auth',
 		const user = ref({});
 		const isLogin = ref(false);
 		const myId = computed(() => user.value?.id ?? null);
-
+		const timestamp = ref(0);
 
 		async function checkAuth() {
 			try {
@@ -63,10 +64,18 @@ export const useAuthStore = defineStore('auth',
 			isLogin.value = false;
 			user.value = Object.assign({});
 			router.replace({ name: 'auth' });
-			console.clear();
+			// console.clear();
 			console.log('Session expired. You are logged out.');
 			return;
 		}
+
+
+		function reloadProfilePic() {
+			timestamp.value = new Date().getTime();
+		}
+		const myProfilePicUrl = computed(() => {
+			return `${imageApi.profileImageEndpoint(myId.value)}?timestamp=${timestamp.value}`;
+		});
 
 		return {
 			user,
@@ -75,6 +84,8 @@ export const useAuthStore = defineStore('auth',
 			logout,
 			clientSideLogout,
 			myId,
+			myProfilePicUrl,
+			reloadProfilePic,
 		};
 	},
 	{ persist: true }

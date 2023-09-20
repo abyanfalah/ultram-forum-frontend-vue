@@ -134,8 +134,7 @@ const logoClass = computed(() => {
 						:show-arrow="false"
 						animated
 						:options="userMenuOptions">
-						<NAvatar src="/img/egg.png"
-							fallback-src="/img/user-default.svg"
+						<NAvatar :src="authStore.myProfilePicUrl"
 							size="small"
 							role="button"
 							round

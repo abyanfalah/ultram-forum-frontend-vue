@@ -4,7 +4,6 @@ import axios from 'axios';
 const api = backendApi;
 const baseApiUrl = api.defaults.baseURL + "/api";
 const url = baseApiUrl + "/image";
-const authStore = useAuthStore();
 axios.defaults.withCredentials = true;
 
 export default {
@@ -16,15 +15,34 @@ export default {
 		return api.get(`${url}/${subId}`);
 	},
 
-	// async getByUserId(userId) {
-	// 	return api.get(`${url}/user/${userId}`);
-	// },
+	async getProfileImage(userId) {
+		return api.get(`${url}/profile_pic/${userId}`);
+	},
+
+	async getCoverImage(userId) {
+		return api.get(`${url}/cover_pic/${userId}`);
+	},
 
 	async store(sub) {
 		return api.post(url, sub);
 	},
 
-	profileImageUploadEndpoint: () => `${url}/profile_pic/${authStore.myId}`,
-	coverImageUploadEndpoint: () => `${url}/cover_pic/${authStore.myId}`,
+	async uploadProfileImage(formData) {
+		// console.log(formData);
+		// return api.postForm(`${url}/profile_pic`, {
+		// 	the_fucking_image: imageFile,
+		// });
+		return api.post(`${url}/profile_pic`, formData);
+	},
+
+
+	// profileImageUploadEndpoint: () => `${url}/profile_pic`,
+	// coverImageUploadEndpoint: () => `${url}/cover_pic`,
+
+	// retrieving
+	profileImageEndpoint: (userId) => `${url}/profile_pic/${userId}?timestamp=${new Date().getTime()}`,
+	coverImageEndpoint: (userId) => `${url}/cover_pic/${userId}?timestamp=${new Date().getTime()}`,
+
+
 
 };

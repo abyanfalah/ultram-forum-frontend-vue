@@ -3,8 +3,10 @@ import {
 	NAvatar,
 	NButton,
 } from 'naive-ui';
+import imageApi from '../services/apis/backend/imageApi';
 
 const props = defineProps(['user', 'avatarSize', 'withUsername']);
+
 </script>
 
 <template>
@@ -14,7 +16,7 @@ const props = defineProps(['user', 'avatarSize', 'withUsername']);
 			params: { username: user?.username }
 		}"
 			class=" flex space-x-2 items-center ">
-			<NAvatar src="/img/egg.png"
+			<NAvatar :src="imageApi.profileImageEndpoint(user.id)"
 				fallback-src="/img/user-default.svg"
 				:size="avatarSize ?? 'small'"
 				role="button"
