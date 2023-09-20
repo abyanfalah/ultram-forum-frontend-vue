@@ -19,7 +19,6 @@ import FollowButton from '../components/FollowButton.vue';
 import ViewImageModalContent from '../components/ViewImageModalContent.vue';
 import ThreadCard from '../components/ThreadCard.vue';
 import FollowCount from '../components/FollowCount.vue';
-import ProfilePictureUploadForm from '../components/ProfilePictureUploadForm.vue';
 
 import threadApi from '../services/apis/backend/threadApi';
 import postApi from '../services/apis/backend/postApi';
