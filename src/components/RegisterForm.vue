@@ -37,19 +37,19 @@ function closeRegisterSuccessModal() {
 }
 
 const registerFormRef = ref();
-const registerFormModel = ref({
-	username: 'Tanya.Blanda-Stanton2',
-	email: 'your.email+fakedata30686@gmail.com',
-	password: '_JqpWGcJ6GHWv__',
-	passwordConfirm: '_JqpWGcJ6GHWv__',
-});
-
 // const registerFormModel = ref({
-// 	username: '',
-// 	email: '',
-// 	password: '',
-// 	passwordConfirm: '',
+// 	username: 'Tanya.Blanda-Stanton2',
+// 	email: 'your.email+fakedata30686@gmail.com',
+// 	password: '_JqpWGcJ6GHWv__',
+// 	passwordConfirm: '_JqpWGcJ6GHWv__',
 // });
+
+const registerFormModel = ref({
+	username: '',
+	email: '',
+	password: '',
+	passwordConfirm: '',
+});
 
 
 const registerFormRules = ref({
@@ -61,7 +61,7 @@ const registerFormRules = ref({
 		},
 		{
 			validator: isUniqueUsername,
-			message: "This username is already taken by someone :(",
+			message: "This username belongs to someone else :(",
 			trigger: ["input"],
 		},
 	],
@@ -249,7 +249,8 @@ function handleRegister() {
 
 			<NFormItemRow path="username"
 				label="Username">
-				<NInput v-model:value="registerFormModel.username"
+				<NInput :disabled="busy"
+					v-model:value="registerFormModel.username"
 					placeholder="Username"
 					type="text"
 					:loading="busyCheckingUsername"
@@ -259,7 +260,8 @@ function handleRegister() {
 
 			<NFormItemRow path="email"
 				label="Email">
-				<NInput v-model:value="registerFormModel.email"
+				<NInput :disabled="busy"
+					v-model:value="registerFormModel.email"
 					placeholder="example@mail.com"
 					:loading="busyCheckingEmail"
 					type="email" />
@@ -267,7 +269,8 @@ function handleRegister() {
 
 			<NFormItemRow path="password"
 				label="Password">
-				<NInput v-model:value="registerFormModel.password"
+				<NInput :disabled="busy"
+					v-model:value="registerFormModel.password"
 					placeholder="Password"
 					show-password-on="click"
 					type="password" />
@@ -275,7 +278,8 @@ function handleRegister() {
 
 			<NFormItemRow path="passwordConfirm"
 				label="Confirm password">
-				<NInput v-model:value="registerFormModel.passwordConfirm"
+				<NInput :disabled="busy"
+					v-model:value="registerFormModel.passwordConfirm"
 					placeholder="Confirm password"
 					type="password" />
 			</NFormItemRow>
