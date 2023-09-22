@@ -137,6 +137,7 @@ const logoClass = computed(() => {
 						<NAvatar :src="authStore.myProfilePicUrl ?? null"
 							size="small"
 							role="button"
+							object-fit="cover"
 							round
 							@click=""></NAvatar>
 					</NDropdown>
