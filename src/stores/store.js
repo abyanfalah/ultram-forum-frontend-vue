@@ -19,8 +19,16 @@ export const useStore = defineStore('store', () => {
 		return isBrightTheme.value ? "bg-primary text-white" : "bg-primary-dark text-black";
 	});
 
+	const getHoverPrimaryBgColor = computed(() => {
+		return isBrightTheme.value ? "hover:bg-primary hover:text-white" : "hover:bg-primary-dark hover:text-black";
+	});
+
 	const getPrimaryTextColor = computed(() => {
 		return isBrightTheme.value ? "text-primary " : "text-primary-dark ";
+	});
+
+	const getHoverPrimaryTextColor = computed(() => {
+		return isBrightTheme.value ? "hover:text-primary " : "hover:text-primary-dark ";
 	});
 
 	const getPrimaryBgHighlightColor = computed(() => {
@@ -57,17 +65,21 @@ export const useStore = defineStore('store', () => {
 
 	const currentSubForum = ref({});
 
+	const showPostRepliesByDefault = ref(false);
+
 	return {
 		migrate,
-
+		showPostRepliesByDefault,
 		isBrightTheme,
 		isCollapsedSidebar,
 		isAbsoluteSidebar,
 		headerOffset,
 		getPrimaryBgColor,
+		getHoverPrimaryBgColor,
 		getPrimaryTextColor,
 		goToMyProfilePage,
 		getPrimaryBgHighlightColor,
+		getHoverPrimaryTextColor,
 		profilePage,
 		currentSubForum,
 	};
