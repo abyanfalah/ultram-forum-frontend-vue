@@ -48,7 +48,7 @@ async function reactToThread(isLiking) {
 
 <template>
 	<!-- likes/dislikes -->
-	<NSpin v-if="busy"
+	<NSpin v-if="false"
 		size="small" />
 
 	<NSpace v-else
