@@ -97,9 +97,13 @@ const logoClass = computed(() => {
 			align="center">
 
 			<div class="flex items-center space-x-2">
-				<NButton quaternary
-					:render-icon="() => renderIcon('fe:bar')"
-					@click="store.isCollapsedSidebar = !store.isCollapsedSidebar" />
+				<div class="">
+					<!-- <div class="lg:hidden"> -->
+					<NButton quaternary
+						:render-icon="() => renderIcon('fe:bar')"
+						@click="store.isCollapsedSidebar = !store.isCollapsedSidebar" />
+
+				</div>
 
 				<!-- logo -->
 				<RouterLink :to="{ name: 'home' }">

@@ -3,8 +3,11 @@ import { onMounted, ref } from 'vue';
 import threadApi from '../services/apis/backend/threadApi';
 import { threadDate } from '../services/humanTime';
 import ThreadCard from '../components/ThreadCard.vue';
+import RightSidebarVue from '../components/HomeView/RightSidebar.vue';
+import LeftSidebarVue from '../components/HomeView/LeftSidebar.vue';
 
 import {
+	NLayout,
 	NCard,
 	NSpace,
 	NSpin,
@@ -37,9 +40,6 @@ async function getAllThreads() {
 	// console.log(threads.value);
 }
 
-
-
-
 onMounted(() => {
 	getAllThreads();
 })
@@ -54,9 +54,37 @@ onMounted(() => {
 		<NSpin v-show="isLoadingThreads"></NSpin>
 	</div>
 
-	<ThreadCard v-for="thread in threads"
-		:key="thread.id"
-		:thread="thread"
-		:showAuthor="true"
-		class="my-4" />
+
+	<div class="flex justify-center space-x-4">
+
+		<!-- left -->
+		<div class="hidden lg:block w-1/5 ">
+
+			<NSpace vertical
+				class="sticky top-4">
+				<LeftSidebarVue />
+			</NSpace>
+		</div>
+
+		<!-- center -->
+		<div class="grow ">
+			<ThreadCard v-for="thread in threads"
+				:key="thread.id"
+				:thread="thread"
+				:showAuthor="true"
+				class="mb-2" />
+		</div>
+
+		<!-- right -->
+		<div class="hidden sm:block relative w-1/4 ">
+			<NSpace vertical
+				class="sticky top-4">
+				<RightSidebarVue />
+				<!-- <RightSidebarVue v-for="i in 2" /> -->
+			</NSpace>
+		</div>
+
+
+
+	</div>
 </template>

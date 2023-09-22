@@ -105,6 +105,8 @@ onBeforeMount(async () => {
 							class="min-h-screen">
 
 							<!-- sidebar -->
+							<!-- <div class="h-screen"> -->
+							<!-- <div class="lg:hidden"> -->
 							<NLayoutSider v-if="authStore.isLogin"
 								:native-scrollbar="false"
 								show-trigger="bar"
@@ -117,6 +119,8 @@ onBeforeMount(async () => {
 								bordered>
 								<Sidebar />
 							</NLayoutSider>
+
+							<!-- </div> -->
 
 							<!-- content -->
 							<NLayout position="relative">
@@ -131,7 +135,7 @@ onBeforeMount(async () => {
 									position="absolute"
 									:style="{ top: authStore.isLogin ? '4.3rem' : null }">
 									<main class="min-h-[90dvh]"
-										:class="{ 'p-4 max-w-2xl  mx-auto': authStore.isLogin }">
+										:class="{ 'p-4 max-w-screen-2xl  mx-auto': authStore.isLogin }">
 										<RouterView :key="route.path" />
 									</main>
 

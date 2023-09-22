@@ -29,7 +29,8 @@ const profilePicUrl = computed(() => {
 			params: { username: user?.username }
 		}"
 			class=" flex space-x-2 items-center ">
-			<NAvatar :src="profilePicUrl"
+			<NAvatar :lazy="true"
+				:src="profilePicUrl"
 				:size="avatarSize ?? 'small'"
 				role="button"
 				object-fit="cover"

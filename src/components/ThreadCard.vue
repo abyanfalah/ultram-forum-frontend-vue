@@ -20,64 +20,66 @@ const props = defineProps(['thread', 'showAuthor']);
 </script>
 
 <template>
-	<NCard :key="thread.id"
-		hoverable>
-		<!-- user detail and time -->
-		<NSpace v-if="thread?.user"
-			justify="space-between"
-			class="mb-4">
+	<div>
+		<NCard :key="thread.id"
+			hoverable>
+			<!-- user detail and time -->
+			<NSpace v-if="thread?.user"
+				justify="space-between"
+				class="mb-4">
 
-			<UserAvatarWithName :user="thread?.user" />
+				<UserAvatarWithName :user="thread?.user" />
 
-			<NSpace vertical
-				align="end">
-				<span class="ms-auto text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
+				<NSpace vertical
+					align="end">
+					<span class="ms-auto text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
 
 
+				</NSpace>
 			</NSpace>
-		</NSpace>
 
 
 
-		<NSpace class="mt-4">
+			<NSpace class="mt-4">
 
-			<RouterLink :to="{ name: 'thread.view', params: { slug: thread.slug } }"
-				class="text-xl">
-				{{ thread.title }}
-			</RouterLink>
-		</NSpace>
-
-
-
-
-		<template #footer>
-			<NSpace align="center"
-				justify="start">
-				<LikeDislikeThreadButton :thread="thread" />
-				<div class="transition hover:scale-110 ease-out">
-					<NButton text
-						@click="router.push({ name: 'thread.view', params: { slug: thread.slug } })"
-						:render-icon="() => renderIcon('octicon:comment-24')">
-						{{ thread.posts_count }}
-					</NButton>
-				</div>
-
-				<p v-if="thread?.sub_forum_id">
-					posted on:
-					<RouterLink :to="{
-						name: 'sub.view',
-						params: {
-							slug: thread?.sub_forum.slug
-						}
-					}">
-						<span :class="store.getHoverPrimaryBgColor"
-							class="transition ease-out font-bold p-1 rounded">
-							<span class="hidden">sub/</span>
-							{{ thread.sub_forum.name }}</span>
-					</RouterLink>
-				</p>
-
+				<RouterLink :to="{ name: 'thread.view', params: { slug: thread.slug } }"
+					class="text-xl">
+					{{ thread.title }}
+				</RouterLink>
 			</NSpace>
-		</template>
-	</NCard>
+
+
+
+
+			<template #footer>
+				<NSpace align="center"
+					justify="start">
+					<LikeDislikeThreadButton :thread="thread" />
+					<div class="transition hover:scale-110 ease-out">
+						<NButton text
+							@click="router.push({ name: 'thread.view', params: { slug: thread.slug } })"
+							:render-icon="() => renderIcon('octicon:comment-24')">
+							{{ thread.posts_count }}
+						</NButton>
+					</div>
+
+					<p v-if="thread?.sub_forum_id">
+						posted on:
+						<RouterLink :to="{
+							name: 'sub.view',
+							params: {
+								slug: thread?.sub_forum.slug
+							}
+						}">
+							<span :class="store.getHoverPrimaryBgColor"
+								class="transition ease-out font-bold p-1 rounded">
+								<span class="hidden">sub/</span>
+								{{ thread.sub_forum.name }}</span>
+						</RouterLink>
+					</p>
+
+				</NSpace>
+			</template>
+		</NCard>
+	</div>
 </template>

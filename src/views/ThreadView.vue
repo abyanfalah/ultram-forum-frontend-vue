@@ -145,7 +145,7 @@ onBeforeRouteLeave(() => {
 						}
 					}">
 						<span :class="store.getHoverPrimaryBgColor"
-							class="transition ease-out font-bold p-1 rounded">
+							class="transition ease-out font-bold p-1 rounded hover:bg-primary-dark hover:text-black">
 							<span class="hidden">sub/</span>
 							{{ thread.sub_forum.name }}</span>
 					</RouterLink>
