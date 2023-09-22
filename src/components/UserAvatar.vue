@@ -1,7 +1,19 @@
 <script setup>
 import { NAvatar } from 'naive-ui';
+import { computed } from 'vue';
+import { useStore } from '../stores/store';
+import { useAuthStore } from '../stores/authStore';
+import imageApi from '../services/apis/backend/imageApi';
 
-const props = defineProps(['user', 'size'])
+const authStore = useAuthStore();
+// const store = useStore();
+
+
+const props = defineProps(['user', 'size']);
+const profilePicUrl = computed(() => {
+	if (props?.user.id == authStore.myId) return authStore.myProfilePicUrl;
+	return imageApi.profileImageEndpoint(props?.user.id);
+})
 
 
 
@@ -9,10 +21,10 @@ const props = defineProps(['user', 'size'])
 </script>
 
 <template>
-	<NAvatar :src="`img`"
-		fallback-src="/img/egg.png"
-		size="small"
+	<NAvatar :lazy="true"
+		:src="profilePicUrl"
 		role="button"
-		round>
-	</NAvatar>
+		object-fit="cover"
+		round
+		@click=""></NAvatar>
 </template >
