@@ -57,11 +57,11 @@ function reloadProfilePicUrl() {
 const coverImageUrl = ref();
 function reloadCoverPicUrl() {
 	if (!user.value) return null;
-	profileImageUrl.value = imageApi.coverImageEndpoint(user.value.id);
+	coverImageUrl.value = imageApi.coverImageEndpoint(user.value.id);
 };
 
 const profilePicInputRef = ref();
-const isChangingProfilePic = ref(false);
+const coverPicInputRef = ref();
 
 const isViewingProfilePic = ref(false);
 const profilePicOptions = ref([
@@ -81,8 +81,6 @@ const coverPicOptions = ref([
 		key: "view",
 		icon: () => renderIcon('fe:eye'),
 		action: () => isViewingCoverPic.value = true,
-		action: () => isViewingCoverPic.value = true,
-
 	},
 
 ]);
@@ -100,6 +98,7 @@ function setMenuOptions() {
 			label: "Change (max 2MB)",
 			key: "change",
 			icon: () => renderIcon('fe:edit'),
+			action: () => coverPicInputRef.value.click(),
 		});
 	}
 }
@@ -116,6 +115,7 @@ async function getUserData() {
 		}
 
 		reloadProfilePicUrl();
+		reloadCoverPicUrl();
 
 		userThreads.value = (await threadApi.getByUserId(user.value.id))?.data ?? [];
 		userPosts.value = (await postApi.getByUserId(user.value.id))?.data ?? [];
@@ -183,6 +183,34 @@ async function handleProfilePicFileChange(event) {
 
 }
 
+async function handleCoverPicFileChange(event) {
+	const selectedFile = event.target.files[0];
+
+	if (selectedFile.size > 2000000) {
+		msg.error('File size is too large');
+		return console.error("Unable to upload image: file size is too large");
+	}
+
+	try {
+		loading.start();
+		const formData = new FormData();
+		formData.append('image', selectedFile);
+
+		const res = await imageApi.uploadCoverImage(formData);
+		// console.log(res);
+
+		reloadCoverPicUrl();
+
+		loading.finish();
+		msg.success("Cover picture updated");
+	} catch (error) {
+		msg.error('An error occured when uploading cover image');
+		console.error('An error occured when uploading cover image:', error);
+		loading.error();
+	}
+
+}
+
 onMounted(async () => {
 	await getUserData();
 	setMenuOptions();
@@ -197,15 +225,29 @@ onMounted(async () => {
 		<div class="group rounded transition-all ease-out "
 			:class="[store.isBrightTheme ? ' bg-primary' : ' bg-primary-dark',]">
 
-			<!-- <NDropdown show-arrow
+			<NDropdown v-if="isMe"
+				show-arrow
 				trigger="click"
 				@select="(key, option) => { option.action() }"
 				:options="coverPicOptions">
+				<img class=" object-cover w-full mx-auto rounded transition ease-out  "
+					:src="coverImageUrl"
+					role="button"
+					style="height: 30vh;"
+					alt="">
+			</NDropdown>
 
-			</NDropdown> -->
+			<img v-else
+				class=" object-cover w-full mx-auto rounded transition ease-out  "
+				:src="coverImageUrl"
+				role="button"
+				style="height: 30vh;"
+				alt=""
+				@click="isViewingCoverPic = true">
+
 
 			<!-- cover image -->
-			<NCarousel show-arrow
+			<!-- <NCarousel show-arrow
 				:show-dots="false"
 				dot-type="line"
 				dot-placement="bottom"
@@ -219,7 +261,9 @@ onMounted(async () => {
 					style="height: 10vh;"
 					alt=""
 					@click="seeCover(`/img/cover/cover${i}.png`)">
-			</NCarousel>
+			</NCarousel> -->
+
+
 		</div>
 
 		<!-- profile image -->
@@ -290,7 +334,7 @@ onMounted(async () => {
 			</NSpace>
 
 			<ThreadCard v-else
-				v-for="   thread    in    userThreads   "
+				v-for="thread in userThreads"
 				:key="thread.id"
 				:thread="thread"
 				class="my-4" />
@@ -337,7 +381,7 @@ onMounted(async () => {
 
 	<!-- cover pic -->
 	<NModal v-model:show="isViewingCoverPic">
-		<ViewImageModalContent :imgUrl="coverImgUrl"
+		<ViewImageModalContent :imgUrl="coverImageUrl"
 			@close="isViewingCoverPic = false" />
 	</NModal>
 
@@ -345,7 +389,14 @@ onMounted(async () => {
 	<div class="hidden">
 		<input type="file"
 			size="1048576"
+			accept="image/*"
 			ref="profilePicInputRef"
 			@change="handleProfilePicFileChange">
+
+		<input type="file"
+			size="1048576"
+			accept="image/*"
+			ref="coverPicInputRef"
+			@change="handleCoverPicFileChange">
 	</div>
 </template>

@@ -28,16 +28,12 @@ export default {
 	},
 
 	async uploadProfileImage(formData) {
-		// console.log(formData);
-		// return api.postForm(`${url}/profile_pic`, {
-		// 	the_fucking_image: imageFile,
-		// });
 		return api.post(`${url}/profile_pic`, formData);
 	},
 
-
-	// profileImageUploadEndpoint: () => `${url}/profile_pic`,
-	// coverImageUploadEndpoint: () => `${url}/cover_pic`,
+	async uploadCoverImage(formData) {
+		return api.post(`${url}/cover_pic`, formData);
+	},
 
 	// retrieving
 	profileImageEndpoint: (userId) => `${url}/profile_pic/${userId}?timestamp=${new Date().getTime()}`,
