@@ -330,7 +330,7 @@ onMounted(async () => {
 		<NTabPane name="Threads">
 
 			<NSpace v-if="userThreads.length < 1">
-				You haven't make any thread yet...
+				Haven't make any thread yet...
 			</NSpace>
 
 			<ThreadCard v-else
@@ -344,7 +344,7 @@ onMounted(async () => {
 		<NTabPane name="Comments">
 
 			<NSpace v-if="userPosts.length < 1">
-				You haven't make any post yet...
+				Haven't make any post yet...
 			</NSpace>
 
 			<div v-else>

@@ -11,8 +11,11 @@ import UserAvatarWithName from '../components/UserAvatarWithName.vue';
 import LikeDislikeThreadButton from './LikeDislikeThreadButton.vue';
 import renderIcon from '../services/renderIcon';
 import router from '../router';
+import { useStore } from '../stores/store';
 
+const store = useStore();
 const props = defineProps(['thread', 'showAuthor']);
+
 
 </script>
 
@@ -26,7 +29,12 @@ const props = defineProps(['thread', 'showAuthor']);
 
 			<UserAvatarWithName :user="thread?.user" />
 
-			<span class="text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
+			<NSpace vertical
+				align="end">
+				<span class="ms-auto text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
+
+
+			</NSpace>
 		</NSpace>
 
 
@@ -43,7 +51,8 @@ const props = defineProps(['thread', 'showAuthor']);
 
 
 		<template #footer>
-			<NSpace align="center">
+			<NSpace align="center"
+				justify="start">
 				<LikeDislikeThreadButton :thread="thread" />
 				<div class="transition hover:scale-110 ease-out">
 					<NButton text
@@ -52,6 +61,21 @@ const props = defineProps(['thread', 'showAuthor']);
 						{{ thread.posts_count }}
 					</NButton>
 				</div>
+
+				<p v-if="thread?.sub_forum_id">
+					posted on:
+					<RouterLink :to="{
+						name: 'sub.view',
+						params: {
+							slug: thread?.sub_forum.slug
+						}
+					}">
+						<span :class="store.getHoverPrimaryBgColor"
+							class="transition ease-out font-bold p-1 rounded">
+							<span class="hidden">sub/</span>
+							{{ thread.sub_forum.name }}</span>
+					</RouterLink>
+				</p>
 
 			</NSpace>
 		</template>

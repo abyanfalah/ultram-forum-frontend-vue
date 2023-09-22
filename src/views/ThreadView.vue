@@ -117,8 +117,16 @@ onBeforeRouteLeave(() => {
 		<NSpin></NSpin>
 	</div>
 
-	<div>
+	<div class="mb-10">
 
+		<img v-if="thread"
+			src="/img/img.png"
+			class="h-[30vh] rounded w-full object-cover ">
+		<p class="text-neutral-500">Thread's image coming soon...</p>
+	</div>
+
+
+	<div>
 		<!-- user detail and time -->
 		<NSpace v-if="thread?.user"
 			justify="space-between"
