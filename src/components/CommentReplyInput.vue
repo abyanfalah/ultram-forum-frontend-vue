@@ -7,7 +7,7 @@ import {
 	useMessage,
 	useLoadingBar,
 } from 'naive-ui';
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import renderIcon from '../services/renderIcon';
 import postApi from '../services/apis/backend/postApi';
@@ -21,7 +21,7 @@ const loading = useLoadingBar();
 const props = defineProps(['parentPost']);
 const emmits = defineEmits(['createdNewReply', 'replyValueChange']);
 
-
+const inputRef = ref();
 
 const formRef = ref();
 const formModel = ref({
@@ -97,9 +97,13 @@ function handleSendReply() {
 
 emmits('replyValueChange', 0);
 
+onMounted(() => {
+	console.log(inputRef.value.focus());
+});
+
+
 watch(() => formModel.value.content, (newVal) => {
 	emmits('replyValueChange', newVal.length);
-
 });
 </script>
 
@@ -109,7 +113,8 @@ watch(() => formModel.value.content, (newVal) => {
 		:rules="formRules">
 		<NFormItem class="p-0"
 			path="content">
-			<NInput type="textarea"
+			<NInput ref="inputRef"
+				type="textarea"
 				v-model:value="formModel.content"
 				placeholder="Type your reply here">
 			</NInput>
