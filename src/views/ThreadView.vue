@@ -19,10 +19,12 @@ import {
 import { useAuthStore } from '../stores/authStore';
 import postApi from '../services/apis/backend/postApi';
 import { onBeforeRouteLeave } from 'vue-router';
+import { useStore } from '../stores/store';
 
 const props = defineProps(['slug']);
 const authStore = useAuthStore();
 const msg = useMessage();
+const store = useStore();
 
 const commentInputRef = ref(null);
 const thread = ref({});
@@ -51,6 +53,7 @@ async function getThread() {
 		isLoadingThread.value = true;
 		const { data } = await threadApi.get(props.slug);
 		thread.value = data;
+		console.log(thread.value);
 		listenCommentBroadcast();
 	} catch (error) {
 		console.error(error);
@@ -121,8 +124,28 @@ onBeforeRouteLeave(() => {
 			justify="space-between"
 			class="mb-4">
 			<UserAvatarWithName :user="thread?.user" />
-			<span class="text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
+
+			<NSpace vertical
+				align="end">
+				<span class="ms-auto text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
+				<p v-if="thread?.sub_forum_id">
+					posted on:
+					<RouterLink :to="{
+						name: 'sub.view',
+						params: {
+							slug: thread?.sub_forum.slug
+						}
+					}">
+						<span :class="store.getHoverPrimaryBgColor"
+							class="transition ease-out font-bold p-1 rounded">
+							<span class="hidden">sub/</span>
+							{{ thread.sub_forum.name }}</span>
+					</RouterLink>
+				</p>
+
+			</NSpace>
 		</NSpace>
+
 
 		<!-- thread -->
 		<h1 class="text-xl">{{ thread.title }}</h1>
