@@ -27,7 +27,15 @@ async function toggleJoinSub() {
 	try {
 		busy.value = true;
 		const res = await subForumApi.toggleJoin(props?.subForum.id);
+		console.log(res);
 		emits('toggleJoin', res.data);
+
+		if (res.data.is_joined) {
+			msg.success(`You joined ${props?.subForum.name}!`);
+		} else {
+			msg.success(`You left ${props?.subForum.name}`);
+		}
+
 	} catch (error) {
 		console.error('Action failed: ', error);
 		msg.error('Action failed');

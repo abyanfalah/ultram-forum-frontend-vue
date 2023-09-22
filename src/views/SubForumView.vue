@@ -95,7 +95,7 @@ async function getSubForumMembers() {
 
 const coverImgUrl = computed(() => {
 	const n = Math.floor(Math.random() * 40);
-	return `/img/cover/cover${n}.png`;
+	return `/img/egg.png`;
 });
 
 
@@ -118,7 +118,7 @@ onUnmounted(() => {
 <template>
 	<div v-if="subForum">
 		<!-- cover image -->
-		<img class="hidden h-[20vh] w-full object-cover rounded"
+		<img class="h-[20vh] w-full object-cover rounded"
 			:src="coverImgUrl"
 			:alt="subForum.name"
 			role="button"
@@ -147,13 +147,13 @@ onUnmounted(() => {
 
 				<!-- <NButton>See details</NButton> -->
 
-				<NButton type="success"
-					@click="router.push({
-						name: 'sub.thread.new'
-					})"
+				<NButton @click="router.push({
+					name: 'sub.thread.new'
+				})"
 					:render-icon="() => renderIcon('fe:plus')">Add new thread</NButton>
-				<div class="lg:hidden">
-					<JoinSubButton :subForum="subForum" />
+				<div>
+					<JoinSubButton :subForum="subForum"
+						@toggle-join="getSubForum" />
 
 				</div>
 
@@ -180,7 +180,6 @@ onUnmounted(() => {
 						<NButton @click="router.push({
 							name: 'sub.thread.new'
 						})"
-							type="success"
 							:render-icon="() => renderIcon('fe:plus')">Add new thread</NButton>
 					</div>
 
