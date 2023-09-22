@@ -29,6 +29,8 @@ const props = defineProps(['post', 'showAuthor']);
 const replyMode = ref(false);
 const replyLength = ref(0);
 
+const showReplies = ref(store.showPostRepliesByDefault);
+
 const replies = ref([]);
 
 function toggleReplyInput() {
@@ -117,6 +119,15 @@ function pushReply(reply) {
 				<span>{{ replyMode ? 'Cancel reply' : 'Reply' }}</span>
 			</NButton>
 
+			<NButton v-if="replies.length > 0"
+				quaternary
+				size="small"
+				@click="showReplies = !showReplies"
+				:render-icon="() => renderIcon((showReplies ? 'fe:arrow-up' : 'fe:arrow-down'))">
+				<span>{{ showReplies ? 'Hide replies' : 'Show replies' }}</span>
+			</NButton>
+
+
 			<!-- <NButton @click="checkdata">
 				check data
 			</NButton> -->
@@ -131,7 +142,8 @@ function pushReply(reply) {
 		</div>
 
 
-		<div class="ms-1">
+		<div class="ms-1"
+			v-show="showReplies">
 			<ChildPostCard v-for="reply in replies"
 				:post="reply" />
 		</div>
