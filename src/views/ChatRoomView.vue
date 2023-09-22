@@ -102,7 +102,8 @@ function leaveChatRoom() {
 </script>
 
 <template>
-	<NLayout position="absolute">
+	<NLayout class="mx-auto max-w-4xl"
+		position="absolute">
 		<NLayoutContent position="absolute"
 			:native-scrollbar="false"
 			ref="nLayoutContentRef"
@@ -130,14 +131,10 @@ function leaveChatRoom() {
 				</div>
 
 			</div>
-
-
 		</NLayoutContent>
 
 		<NLayoutFooter position="absolute">
 			<MessageInput @sent-new-message="pushNewMessage" />
-			<!-- st<NButton @click="() => scrollToBottom(true)">bottom</NButton> -->
-
 		</NLayoutFooter>
 	</NLayout>
 </template>

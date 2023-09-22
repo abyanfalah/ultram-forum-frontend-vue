@@ -54,6 +54,8 @@ function handleKeydown(evt) {
 
 		<NInput v-model:value="message"
 			@keydown="handleKeydown"
+			type="textarea"
+			rows="1"
 			placeholder="Type your message here"></NInput>
 
 		<NButton type="primary"
