@@ -118,7 +118,7 @@ onUnmounted(() => {
 <template>
 	<div v-if="subForum">
 		<!-- cover image -->
-		<img class="h-[20vh] w-full object-cover rounded"
+		<img class="h-[30vh] w-full object-cover rounded"
 			:src="coverImgUrl"
 			:alt="subForum.name"
 			role="button"
