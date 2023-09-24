@@ -13,7 +13,7 @@ import { useStore } from '../stores/store';
 const authStore = useAuthStore();
 const store = useStore();
 
-const props = defineProps(['user', 'avatarSize', 'withUsername']);
+const props = defineProps(['user', 'avatarSize', 'withUsername', 'regularFont']);
 const profilePicUrl = computed(() => {
 	if (props?.user.id == authStore.myId) return authStore.myProfilePicUrl;
 	return imageApi.profileImageEndpoint(props?.user.id);
@@ -29,7 +29,7 @@ const profilePicUrl = computed(() => {
 			params: { username: user?.username }
 		}"
 			class=" flex space-x-2 items-center ">
-			<NAvatar :lazy="true"
+			<NAvatar :lazy="false"
 				:src="profilePicUrl"
 				:size="avatarSize ?? 'small'"
 				role="button"
@@ -37,7 +37,8 @@ const profilePicUrl = computed(() => {
 				round
 				@click=""></NAvatar>
 			<div class="flex flex-col items-start">
-				<span class="font-bold flex items-center">{{ user?.name }}
+				<span :class="[!regularFont ? 'font-bold' : null]"
+					class="flex items-center">{{ user?.name }}
 					<NPopover v-if="user?.username === 'abyan'"
 						trigger="hover">
 						<template #trigger>
