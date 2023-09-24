@@ -123,7 +123,7 @@ onMounted(() => {
 <template>
 	<div class="flex flex-col">
 		<h1 class="text-3xl">New thread</h1>
-		<p>on {{ subForum.name }}</p>
+		<p>on <span class="font-bold"> {{ subForum.name }}</span></p>
 	</div>
 
 	<NForm ref="newThreadFormRef"
