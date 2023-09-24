@@ -29,7 +29,8 @@ const props = defineProps(['post', 'showAuthor']);
 const replyMode = ref(false);
 const replyLength = ref(0);
 
-const showReplies = ref(store.showPostRepliesByDefault);
+const showReplies = ref(true);
+// const showReplies = ref(store.showPostRepliesByDefault);
 
 const replies = ref([]);
 
