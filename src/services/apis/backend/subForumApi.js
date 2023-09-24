@@ -19,6 +19,10 @@ export default {
 		return api.get(`${url}/${slug}`);
 	},
 
+	async getByJoinedUser(userId) {
+		return api.get(`${url}/joined/${userId}`);
+	},
+
 	async getThreads(subForumId) {
 		return api.get(`${url}/${id}/thread`);
 	},

@@ -7,7 +7,9 @@ import {
 	NListItem,
 	useMessage,
 	NAvatar,
+	NInput,
 } from 'naive-ui';
+import { Icon } from '@iconify/vue';
 import renderIcon from '../../services/renderIcon';
 import subForumApi from '../../services/apis/backend/subForumApi';
 import { onMounted, ref } from 'vue';
@@ -25,7 +27,7 @@ const users = ref([]);
 async function getSubforums() {
 	try {
 		const res = await subForumApi.getAll();
-		console.log(res);
+		// console.log(res);
 		subForums.value = res.data;
 	} catch (error) {
 		console.error(error);
@@ -36,7 +38,7 @@ async function getSubforums() {
 async function getUsers() {
 	try {
 		const res = await userApi.getAll();
-		console.log(res);
+		// console.log(res);
 		users.value = res.data;
 	} catch (error) {
 		console.error(error);
@@ -53,6 +55,15 @@ onMounted(() => {
 
 <template>
 	<NSpace vertical="">
+
+
+		<NInput placeholder="Search (coming soon...)">
+			<template #suffix>
+				<Icon icon="fe:search" />
+			</template>
+
+		</NInput>
+
 
 		<NCard size="small">
 			<template #header>
@@ -96,7 +107,8 @@ onMounted(() => {
 					:to="{ name: 'profile', params: { username: user.username } }">
 					<NListItem>
 						<div class="flex items-center space-x-2">
-							<UserAvatarWithNameVue :user="user" />
+							<UserAvatarWithNameVue :user="user"
+								:regularFont="true" />
 						</div>
 
 					</NListItem>
