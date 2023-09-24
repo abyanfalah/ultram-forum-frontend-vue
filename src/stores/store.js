@@ -65,7 +65,7 @@ export const useStore = defineStore('store', () => {
 
 	const currentSubForum = ref({});
 
-	const showPostRepliesByDefault = ref(false);
+	const showPostRepliesByDefault = ref(true);
 
 	return {
 		migrate,
