@@ -5,30 +5,24 @@ import { useAuthStore } from './stores/authStore';
 import { useStore } from './stores/store';
 import Navbar from './components/Navbar.vue';
 import Sidebar from './components/Sidebar.vue';
-
 import {
 	NLayout,
 	NLayoutContent,
-} from "naive-ui";
-
-import {
 	NLayoutSider,
 	NLayoutHeader,
-	NLayoutFooter,
-	NLayout,
 	useNotification,
 	darkTheme,
+	useMessage,
+	useLoadingBar,
 } from 'naive-ui';
-import { useChatStore } from './stores/chatStore';
 
+const notification = useNotification();
+const msg = useMessage();
+const loading = useLoadingBar();
 
 const authStore = useAuthStore();
 const store = useStore();
 const route = useRoute();
-
-
-
-
 
 
 const sidebarPosition = computed(() => {
