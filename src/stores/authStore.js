@@ -22,6 +22,15 @@ export const useAuthStore = defineStore('auth',
 					return res;
 				}
 
+
+				// listen to user broadcast channel
+				const userChannelName = `user-${myId.value}`;
+				window.Echo.channel(userChannelName)
+					.listen('MessageSent', (e) => {
+						// pushNewMessage(e.message);
+						console.log(e);
+					});
+
 				myProfilePicUrl.value = imageApi.profileImageEndpoint(myId.value);
 			} catch (error) {
 				console.log('check auth error: ', error);

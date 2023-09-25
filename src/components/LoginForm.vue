@@ -54,6 +54,7 @@ function isValidEmail() {
 	if (!email) return;
 
 	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 	return !!re.test(String(email).toLowerCase());
 }
 
@@ -81,7 +82,7 @@ function handleLogin() {
 		try {
 			busy.value = true;
 			const loginResponse = await authApi.login(credentials);
-			// console.log('login: ', loginResponse);
+			console.log('login: ', loginResponse);
 
 			if (loginResponse === undefined) {
 				const err = new Error;
@@ -96,6 +97,7 @@ function handleLogin() {
 
 				router.replace({ name: 'home' });
 				msg.success('Welcome!', { closable: true });
+
 			}
 
 		} catch (err) {

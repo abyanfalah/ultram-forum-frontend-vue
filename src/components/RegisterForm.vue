@@ -302,7 +302,8 @@ function handleRegister() {
 		<NCard class="max-w-md">
 			<NResult status="success"
 				title="Registration success!"
-				description="Check your email inbox to verify your account and proceed using this platform.">
+				description="Check your email inbox to verify your account and proceed using this platform. (just kidding, you can use it right away)">
+
 
 				<template #footer>
 					<NButton block
