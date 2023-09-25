@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, h, onMounted, ref, watch } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import { useAuthStore } from './stores/authStore';
 import { useStore } from './stores/store';
@@ -14,7 +14,12 @@ import {
 	darkTheme,
 	useMessage,
 	useLoadingBar,
+	NAvatar,
+	NButton,
 } from 'naive-ui';
+import imageApi from './services/apis/backend/imageApi';
+import renderIcon from './services/renderIcon';
+import { useChatStore } from './stores/chatStore';
 
 const notification = useNotification();
 const msg = useMessage();
@@ -22,13 +27,66 @@ const loading = useLoadingBar();
 
 const authStore = useAuthStore();
 const store = useStore();
+const chatStore = useChatStore();
 const route = useRoute();
-
 
 const sidebarPosition = computed(() => {
 	return store.isAbsoluteSidebar ? 'absolute' : 'relative';
 });
 
+const isNotInChatRoom = computed(() => route.name !== 'chat');
+
+watch(() => authStore.user.id, (userId, oldUserId) => {
+	if (!userId) {
+		const userChannelName = `user-${oldUserId}`;
+		window.Echo.leaveChannel(userChannelName);
+		console.log('no user now');
+		return;
+	}
+
+	console.log('we got user');
+
+	// listen to user broadcast channel
+	const userChannelName = `user-${userId}`;
+	window.Echo.channel(userChannelName)
+		.listen('MessageSent', (e) => {
+			console.log(e);
+
+			// if not in chat room
+			if (isNotInChatRoom.value == true) {
+				messageNotification(e);
+			}
+		});
+});
+
+function messageNotification(event) {
+	const message = event.message;
+	const sender = event.sender;
+	notification.info({
+		title: sender.name,
+		content: message.content,
+		duration: 5000,
+		meta: 'now',
+		avatar: () => h(NAvatar, {
+			size: "small",
+			objectFit: 'cover',
+			round: true,
+			src: imageApi.profileImageEndpoint(sender.id)
+		}),
+		action: () => h(NButton,
+			{
+				text: false,
+				type: 'primary',
+				renderIcon: () => renderIcon('fe:mail'),
+				onClick: () => {
+					notification.destroyAll();
+					chatStore.goToConversation(message.conversation_id);
+				},
+			},
+			{ default: () => 'Go to chat' }
+		),
+	});
+};
 
 
 </script>

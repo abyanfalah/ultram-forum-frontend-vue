@@ -94,7 +94,7 @@ onBeforeMount(async () => {
 		<NMessageProvider>
 			<NDialogProvider>
 				<NLoadingBarProvider>
-					<NNotificationProvider>
+					<NNotificationProvider placement="bottom-right">
 						<!-- app -->
 						<AppWrapper />
 						<!-- end of app -->
