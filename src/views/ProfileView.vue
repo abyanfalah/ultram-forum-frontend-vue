@@ -47,7 +47,8 @@ const userPosts = ref([]);
 const profileImageUrl = ref();
 function reloadProfilePicUrl() {
 	if (!user.value) return null;
-	profileImageUrl.value = imageApi.profileImageEndpoint(user.value.id);
+
+	profileImageUrl.value = `${imageApi.profileImageEndpoint(user.value.id)}?timestamp=${new Date().getTime()}`;
 
 	if (isMe.value) {
 		authStore.myProfilePicUrl = profileImageUrl.value;
@@ -57,7 +58,7 @@ function reloadProfilePicUrl() {
 const coverImageUrl = ref();
 function reloadCoverPicUrl() {
 	if (!user.value) return null;
-	coverImageUrl.value = imageApi.coverImageEndpoint(user.value.id);
+	coverImageUrl.value = `${imageApi.coverImageEndpoint(user.value.id)}?timestamp=${new Date().getTime()}`;
 };
 
 const profilePicInputRef = ref();
@@ -215,7 +216,7 @@ onMounted(async () => {
 	await getUserData();
 	setMenuOptions();
 	// console.clear();
-	console.log(user.value);
+	// console.log(user.value);
 });
 </script>
 
@@ -338,6 +339,7 @@ onMounted(async () => {
 					v-for="thread in userThreads"
 					:key="thread.id"
 					:thread="thread"
+					:showSubForum="true && thread.sub_forum_id"
 					class="my-4" />
 
 			</NTabPane>
@@ -345,11 +347,11 @@ onMounted(async () => {
 			<NTabPane name="Comments">
 
 				<NSpace v-if="userPosts.length < 1">
-					Haven't make any post yet...
+					Haven't comment on any thread yet...
 				</NSpace>
 
 				<div v-else>
-					This user has comment(s), but i'll disable this feature, i guess.
+					This user has comment(s), decided to not show it here.
 				</div>
 
 			</NTabPane>
