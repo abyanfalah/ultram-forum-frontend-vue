@@ -84,7 +84,7 @@ async function getSubForumMembers() {
 	try {
 		isFetchingMembers.value = true;
 		const res = await subForumApi.getMembers(props?.slug);
-		console.log(res);
+		// console.log(res);
 		members.value = res.data;
 	} catch (error) {
 		msg.error('Failed retrieving members');

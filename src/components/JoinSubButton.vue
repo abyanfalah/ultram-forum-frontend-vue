@@ -1,15 +1,21 @@
 <script setup>
 import {
-	NButton, useMessage
+	NButton,
+	useMessage,
+	useDialog,
 } from 'naive-ui';
 import renderIcon from '../services/renderIcon';
 import { computed, onMounted, ref } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import followApi from '../services/apis/backend/followApi';
 import subForumApi from '../services/apis/backend/subForumApi';
+
 const store = useAuthStore();
-const props = defineProps(['subForum', 'isBlock']);
+
 const msg = useMessage();
+const dialog = useDialog();
+
+const props = defineProps(['subForum', 'isBlock']);
 
 const busy = ref(false);
 const emits = defineEmits(['toggleJoin']);
@@ -49,13 +55,27 @@ async function toggleJoinSub() {
 	}
 }
 
+function confirmLeaveSub() {
+	if (isJoined.value == false) return toggleJoinSub();
+
+	dialog.error({
+		title: 'Leave sub forum',
+		content: 'Are you sure?',
+		positiveText: 'Leave',
+		positiveButtonProps: { renderIcon: () => renderIcon('fe:logout') },
+		onPositiveClick: () => toggleJoinSub(),
+		negativeText: 'Cancel',
+		negativeButtonProps: { renderIcon: () => renderIcon('fe:close') },
+	});
+}
+
 onMounted(() => {
 	// console.log(props.subForum);
 });
 </script>
 
 <template>
-	<NButton @click="toggleJoinSub"
+	<NButton @click="confirmLeaveSub"
 		:block="isBlock"
 		:type="subForum?.is_joined ? 'default' : 'primary'"
 		:loading="busy"
