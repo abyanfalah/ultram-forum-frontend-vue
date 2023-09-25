@@ -40,11 +40,8 @@ watch(() => authStore.user.id, (userId, oldUserId) => {
 	if (!userId) {
 		const userChannelName = `user-${oldUserId}`;
 		window.Echo.leaveChannel(userChannelName);
-		console.log('no user now');
 		return;
 	}
-
-	console.log('we got user');
 
 	// listen to user broadcast channel
 	const userChannelName = `user-${userId}`;
@@ -52,14 +49,13 @@ watch(() => authStore.user.id, (userId, oldUserId) => {
 		.listen('MessageSent', (e) => {
 			console.log(e);
 
-			// if not in chat room
-			if (isNotInChatRoom.value == true) {
-				messageNotification(e);
+			if (isNotInChatRoom.value) {
+				showMessageNotification(e);
 			}
 		});
 });
 
-function messageNotification(event) {
+function showMessageNotification(event) {
 	const message = event.message;
 	const sender = event.sender;
 	notification.info({
