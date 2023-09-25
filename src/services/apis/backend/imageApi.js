@@ -36,8 +36,10 @@ export default {
 	},
 
 	// retrieving
-	profileImageEndpoint: (userId) => `${url}/profile_pic/${userId}?timestamp=${new Date().getTime()}`,
-	coverImageEndpoint: (userId) => `${url}/cover_pic/${userId}?timestamp=${new Date().getTime()}`,
+	profileImageEndpoint: (userId) => `${url}/profile_pic/${userId}}`,
+	coverImageEndpoint: (userId) => `${url}/cover_pic/${userId}}`,
+	// profileImageEndpoint: (userId) => `${url}/profile_pic/${userId}?timestamp=${new Date().getTime()}`,
+	// coverImageEndpoint: (userId) => `${url}/cover_pic/${userId}?timestamp=${new Date().getTime()}`,
 
 
 

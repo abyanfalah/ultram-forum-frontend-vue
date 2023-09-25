@@ -8,7 +8,7 @@ import { useAuthStore } from '../stores/authStore';
 import followApi from '../services/apis/backend/followApi';
 import subForumApi from '../services/apis/backend/subForumApi';
 const store = useAuthStore();
-const props = defineProps(['subForum']);
+const props = defineProps(['subForum', 'isBlock']);
 const msg = useMessage();
 
 const busy = ref(false);
@@ -27,7 +27,7 @@ async function toggleJoinSub() {
 	try {
 		busy.value = true;
 		const res = await subForumApi.toggleJoin(props?.subForum.id);
-		console.log(res);
+		console.log(res.data.is_joined, res.data);
 		emits('toggleJoin', res.data);
 
 		if (res.data.is_joined) {
@@ -56,6 +56,7 @@ onMounted(() => {
 
 <template>
 	<NButton @click="toggleJoinSub"
+		:block="isBlock"
 		:type="subForum?.is_joined ? 'default' : 'primary'"
 		:loading="busy"
 		:render-icon="() => renderIcon(subForum?.is_joined ? 'fe:logout' : 'fe:login')">

@@ -65,6 +65,20 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 			props: true,
 		},
+		{
+			path: '/sub/:subSlug/thread/:threadSlug',
+			name: 'sub.thread.view',
+			component: () => import('../views/SubForumThreadView.vue'),
+			meta: { requiresAuth: true },
+			props: true,
+		},
+		{
+			path: '/sub/:slug/members',
+			name: 'sub.member.list',
+			component: () => import('../views/SubForumMemberListView.vue'),
+			meta: { requiresAuth: true },
+			props: true,
+		},
 
 
 		// ========================================= MISC

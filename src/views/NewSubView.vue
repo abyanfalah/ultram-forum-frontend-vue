@@ -78,56 +78,61 @@ function handleSubmitNewSub() {
 </script>
 
 <template>
-	<h1 class="text-3xl">New sub forum</h1>
+	<div class="max-w-screen-md mx-auto">
 
-	<NForm ref="newSubFormRef"
-		:model="newSubFormModel"
-		:rules="newSubFormRules"
-		class="flex-col space-y-4 mt-4">
+		<h1 class="text-3xl">New sub forum</h1>
 
-		<NFormItem label="Name"
-			path="name">
-			<NInput type="text"
-				v-model:value="newSubFormModel.name"
-				placeholder="Sub name"
-				maxlength="64"
-				show-count />
-		</NFormItem>
+		<NForm ref="newSubFormRef"
+			:model="newSubFormModel"
+			:rules="newSubFormRules"
+			class="flex-col space-y-4 mt-4">
 
-		<NFormItem label="Description"
-			path="description">
-			<NInput type="textarea"
-				maxlength="256"
-				show-count
-				v-model:value="newSubFormModel.description"
-				:autosize="{
-					minRows: 10
-				}"
-				placeholder="Sub description" />
-		</NFormItem>
+			<NFormItem label="Name"
+				path="name">
+				<NInput type="text"
+					v-model:value="newSubFormModel.name"
+					placeholder="Sub name"
+					maxlength="64"
+					show-count />
+			</NFormItem>
+
+			<NFormItem label="Description"
+				path="description">
+				<NInput type="textarea"
+					maxlength="256"
+					show-count
+					v-model:value="newSubFormModel.description"
+					:autosize="{
+						minRows: 10
+					}"
+					placeholder="Sub description" />
+			</NFormItem>
 
 
-		<!-- maybe later -->
-		<!-- <NFormItem label="Sub cover image">
+			<!-- maybe later -->
+			<!-- <NFormItem label="Sub cover image">
 			<NUpload>
 				
 			</NUpload>
 		</NFormItem> -->
 
-		<NSpace justify="end">
-			<NButton type="primary"
-				:render-icon="() => renderIcon('fe:plus')"
-				@click="handleSubmitNewSub">
-				Create new sub
-			</NButton>
-		</NSpace>
+			<NSpace justify="end">
+				<NButton type="primary"
+					:render-icon="() => renderIcon('fe:plus')"
+					@click="handleSubmitNewSub">
+					Create new sub
+				</NButton>
+			</NSpace>
 
 
 
 
 
-	</NForm>
+		</NForm>
+	</div>
+
 
 
 	<!-- editor -->
-<!-- <Tiptap /> --></template>
+	<!-- <Tiptap /> -->
+</template>

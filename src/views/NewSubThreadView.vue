@@ -27,10 +27,11 @@ const subForum = ref({});
 
 const newThreadFormRef = ref();
 const newThreadFormModel = ref({
+	// title: '',
+	// content: '',
 	title: 'thread on a sub forum',
-	// content: 'asdf',
 	content: `The data property of a dataset can be passed in various formats. By default, that data is parsed using the associated chart type and scales. If the labels property of the main data property is used, it has to contain the same amount of elements as the dataset with the most values. These labels are used to label the index axis (default x axes). The values for the labels have to be provided in an array. The provided labels can be of the type string or number to be rendered correctly. In case you want multiline labels you can provide an array with each line as one entry in the array.`,
-	// categoryId: '1',
+
 });
 const newThreadFormRules = {
 	title: [
@@ -45,21 +46,11 @@ const newThreadFormRules = {
 		message: "Thread content is required",
 		trigger: ['input', 'blur',]
 	},
-	// category: {
-	// 	required: true,
-	// 	message: "Category is required",
-	// 	trigger: ['input', 'blur',]
-	// }
 };
 
 
-// const categories = ref([]);
-// let categoryList = [];
 
 function handleSubmitNewThread() {
-	// TODO: delete
-
-
 	newThreadFormRef.value?.validate(async (err) => {
 
 		if (err) return msg.error('Form is Invalid');
@@ -81,11 +72,16 @@ function handleSubmitNewThread() {
 			msg.success('Thread created');
 			loading.finish();
 
+
 			router.replace(
 				{
-					name: 'thread.view',
-					params: { slug: res.data.slug }
-				});
+					name: 'sub.thread.view',
+					params: {
+						threadSlug: res.data.slug,
+						subSlug: res.data.sub_forum.slug
+					}
+				}
+			);
 		} catch (err) {
 			loading.error();
 			msg.error('Failed to submit');
@@ -109,9 +105,6 @@ function handleSubmitNewThread() {
 // }
 
 onMounted(() => {
-
-	console.log(store.currentSubForum);
-	// getCategories();
 	if (!store.currentSubForum) {
 		msg.error('No selected sub forum!');
 		return router.back();

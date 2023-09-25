@@ -28,7 +28,7 @@ const subForums = ref([]);
 async function getSubforums() {
 	try {
 		const res = await subForumApi.getByJoinedUser(authStore.myId);
-		console.log(res);
+		// console.log(res);
 		subForums.value = res.data;
 	} catch (error) {
 		console.error(error);
@@ -52,14 +52,14 @@ onMounted(() => {
 		<NCard size="small">
 			<template #cover>
 				<img class="h-10 object-cover"
-					src="/img/pastel.png"
+					src="/img/cover/cover4.png"
 					alt="">
 			</template>
 
 			<div class="mb-4"></div>
 
 			<p>
-				Your personal Ultram frontpage. Come here to check in with your favorite communities.
+				Your personal Ultram frontpage.
 			</p>
 
 			<NDivider></NDivider>
@@ -107,7 +107,8 @@ onMounted(() => {
 		</NCard>
 
 		<NCard size="small">
-			<span v-for="i in 10">(some stuff here, might add later)</span>
+			<span class="block"
+				v-for="i in 10">(some stuff here, might add later)</span>
 		</NCard>
 	</NSpace>
 </template>

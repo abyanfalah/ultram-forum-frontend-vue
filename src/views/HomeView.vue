@@ -28,6 +28,7 @@ async function getAllThreads() {
 		isLoadingThreads.value = true;
 		const data = (await threadApi.getAll()).data;
 		threads.value = data;
+		// console.log(data);
 		loading.finish();
 
 	} catch (error) {
@@ -72,11 +73,12 @@ onMounted(() => {
 				:key="thread.id"
 				:thread="thread"
 				:showAuthor="true"
+				:showSubForum="true && thread.sub_forum_id"
 				class="mb-2" />
 		</div>
 
 		<!-- right -->
-		<div class="hidden sm:block relative w-1/4 ">
+		<div class="hidden sm:block  w-1/4 ">
 			<NSpace vertical
 				class="sticky top-4">
 				<RightSidebarVue />

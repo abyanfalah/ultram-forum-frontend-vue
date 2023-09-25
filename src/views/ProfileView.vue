@@ -220,34 +220,36 @@ onMounted(async () => {
 </script>
 
 <template>
-	<!-- images -->
-	<div class="relative mb-[5rem]">
-		<div class="group rounded transition-all ease-out "
-			:class="[store.isBrightTheme ? ' bg-primary' : ' bg-primary-dark',]">
+	<div class="max-w-screen-md mx-auto">
 
-			<NDropdown v-if="isMe"
-				show-arrow
-				trigger="click"
-				@select="(key, option) => { option.action() }"
-				:options="coverPicOptions">
-				<img class=" object-cover w-full mx-auto rounded transition ease-out  "
+		<!-- images -->
+		<div class="relative mb-[5rem]">
+			<div class="group rounded transition-all ease-out "
+				:class="[store.isBrightTheme ? ' bg-primary' : ' bg-primary-dark',]">
+
+				<NDropdown v-if="isMe"
+					show-arrow
+					trigger="click"
+					@select="(key, option) => { option.action() }"
+					:options="coverPicOptions">
+					<img class=" object-cover w-full mx-auto rounded transition ease-out  "
+						:src="coverImageUrl"
+						role="button"
+						style="height: 30vh;"
+						alt="">
+				</NDropdown>
+
+				<img v-else
+					class=" object-cover w-full mx-auto rounded transition ease-out  "
 					:src="coverImageUrl"
 					role="button"
 					style="height: 30vh;"
-					alt="">
-			</NDropdown>
-
-			<img v-else
-				class=" object-cover w-full mx-auto rounded transition ease-out  "
-				:src="coverImageUrl"
-				role="button"
-				style="height: 30vh;"
-				alt=""
-				@click="isViewingCoverPic = true">
+					alt=""
+					@click="isViewingCoverPic = true">
 
 
-			<!-- cover image -->
-			<!-- <NCarousel show-arrow
+				<!-- cover image -->
+				<!-- <NCarousel show-arrow
 				:show-dots="false"
 				dot-type="line"
 				dot-placement="bottom"
@@ -264,114 +266,104 @@ onMounted(async () => {
 			</NCarousel> -->
 
 
-		</div>
+			</div>
 
-		<!-- profile image -->
-		<div class="absolute  -bottom-[3rem]  flex rounded-full justify-start ms-4">
-			<div class="group transition ease-out rounded-full ">
-				<div class=" rounded-full  overflow-clip p-[4px] transition ease-out  "
-					:class="[store.isBrightTheme ? 'bg-white group-hover:bg-primary' : 'bg-dark group-hover:bg-primary-dark',]">
+			<!-- profile image -->
+			<div class="absolute  -bottom-[3rem]  flex rounded-full justify-start ms-4">
+				<div class="group transition ease-out rounded-full ">
+					<div class=" rounded-full  overflow-clip p-[4px] transition ease-out  "
+						:class="[store.isBrightTheme ? 'bg-white group-hover:bg-primary' : 'bg-dark group-hover:bg-primary-dark',]">
 
-					<NDropdown v-if="isMe"
-						show-arrow
-						@select="(key, option) => { option.action() }"
-						trigger="click"
-						:options="profilePicOptions">
-						<img :src="profileImageUrl ?? null"
+						<NDropdown v-if="isMe"
+							show-arrow
+							@select="(key, option) => { option.action() }"
+							trigger="click"
+							:options="profilePicOptions">
+							<img :src="profileImageUrl ?? null"
+								class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
+								role="button"
+								alt="">
+						</NDropdown>
+
+						<img v-else
+							:src="profileImageUrl ?? null"
 							class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
 							role="button"
+							@click="isViewingProfilePic = true"
 							alt="">
-					</NDropdown>
 
-					<img v-else
-						:src="profileImageUrl ?? null"
-						class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
-						role="button"
-						@click="isViewingProfilePic = true"
-						alt="">
-
+					</div>
 				</div>
 			</div>
+
 		</div>
+
+
+		<NSpace justify="space-between">
+			<div>
+				<p class="text-2xl">{{ user.name }}</p>
+				<p class="font-bold">@{{ user.username }}</p>
+				<p>{{ user.bio }}</p>
+
+				<div class="my-2">
+					<FollowCount :user="user" />
+				</div>
+			</div>
+
+			<!-- profile btns -->
+			<div v-if="isMe">
+				<RouterLink :to="{ name: 'profile.edit' }">
+					<NButton :render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
+				</RouterLink>
+			</div>
+
+			<!-- button for other's profile -->
+			<NSpace v-else>
+				<NButton @click="goToChat"
+					:render-icon="() => renderIcon('fe:mail')">Message</NButton>
+				<FollowButton :user="user"
+					@toggle-follow="changeUserData" />
+			</NSpace>
+		</NSpace>
+
+		<!-- thread / post history -->
+		<NTabs animated>
+			<NTabPane name="Threads">
+
+				<NSpace v-if="userThreads.length < 1">
+					Haven't make any thread yet...
+				</NSpace>
+
+				<ThreadCard v-else
+					v-for="thread in userThreads"
+					:key="thread.id"
+					:thread="thread"
+					class="my-4" />
+
+			</NTabPane>
+
+			<NTabPane name="Comments">
+
+				<NSpace v-if="userPosts.length < 1">
+					Haven't make any post yet...
+				</NSpace>
+
+				<div v-else>
+					This user has comment(s), but i'll disable this feature, i guess.
+				</div>
+
+			</NTabPane>
+
+			<NTabPane name="Pictures">
+				<span>Coming soon...</span>
+
+			</NTabPane>
+		</NTabs>
 
 	</div>
 
 
-	<NSpace justify="space-between">
-		<div>
-			<p class="text-2xl">{{ user.name }}</p>
-			<p class="font-bold">@{{ user.username }}</p>
-			<p>{{ user.bio }}</p>
-
-			<div class="my-2">
-				<FollowCount :user="user" />
-			</div>
-		</div>
-
-		<!-- profile btns -->
-		<div v-if="isMe">
-			<RouterLink :to="{ name: 'profile.edit' }">
-				<NButton :render-icon="() => renderIcon('fe:edit')">Edit profile</NButton>
-			</RouterLink>
-		</div>
-
-		<!-- button for other's profile -->
-		<NSpace v-else>
-			<NButton @click="goToChat"
-				:render-icon="() => renderIcon('fe:mail')">Message</NButton>
-			<FollowButton :user="user"
-				@toggle-follow="changeUserData" />
-		</NSpace>
-	</NSpace>
-
-	<!-- thread / post history -->
-
-	<NTabs animated>
-		<NTabPane name="Threads">
-
-			<NSpace v-if="userThreads.length < 1">
-				Haven't make any thread yet...
-			</NSpace>
-
-			<ThreadCard v-else
-				v-for="thread in userThreads"
-				:key="thread.id"
-				:thread="thread"
-				class="my-4" />
-
-		</NTabPane>
-
-		<NTabPane name="Comments">
-
-			<NSpace v-if="userPosts.length < 1">
-				Haven't make any post yet...
-			</NSpace>
-
-			<div v-else>
-				This user has comment(s), but i'll disable this feature, i guess.
-			</div>
-
-		</NTabPane>
-
-		<NTabPane name="Pictures">
-			<span>Coming soon...</span>
-
-		</NTabPane>
-	</NTabs>
-
-
 	<!-- modals -->
-
-	<!-- profile pic upload form -->
-	<!-- <NModal :mask-closable="false"
-		:close-on-esc="true"
-		v-model:show="isChangingProfilePic">
-		<div class="w-full px-4 ">
-			<div class="max-w-lg mx-auto">
-				<ProfilePictureUploadForm />
-			</div>
-		</div>
-	</NModal> -->
 
 	<!-- profile pic -->
 	<NModal v-model:show="isViewingProfilePic">

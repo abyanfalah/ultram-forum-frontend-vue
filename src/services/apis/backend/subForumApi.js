@@ -31,8 +31,8 @@ export default {
 		return api.get(`${url}/${subForumSlug}/thread`);
 	},
 
-	async getMembers(subForumId) {
-		return api.get(`${url}/${id}/member`);
+	async getMembers(slug) {
+		return api.get(`${url}/${slug}/member`);
 	},
 
 	async store(sub) {

@@ -6,6 +6,7 @@ import NewCommentInput from '../components/NewCommentInput.vue';
 import LikeDislikeThreadButton from '../components/LikeDislikeThreadButton.vue';
 import PostCard from '../components/PostCard.vue';
 import UserAvatarWithName from '../components/UserAvatarWithName.vue';
+import RightSidebar from '../components/SubForumThreadView/RightSidebar.vue';
 
 import {
 	NSpace,
@@ -21,10 +22,12 @@ import postApi from '../services/apis/backend/postApi';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useStore } from '../stores/store';
 
-const props = defineProps(['slug']);
+const props = defineProps(['subSlug', 'threadSlug']);
 const authStore = useAuthStore();
 const msg = useMessage();
 const store = useStore();
+
+const subForum = ref();
 
 const commentInputRef = ref(null);
 const thread = ref({});
@@ -48,10 +51,11 @@ function leaveBroadcastChannel() {
 
 
 
+
 async function getThread() {
 	try {
 		isLoadingThread.value = true;
-		const { data } = await threadApi.get(props.slug);
+		const { data } = await threadApi.get(props.threadSlug);
 		thread.value = data;
 		console.log(thread.value);
 		listenCommentBroadcast();
@@ -63,10 +67,12 @@ async function getThread() {
 	}
 }
 
+
+
 async function getThreadParentPosts() {
 	try {
 		isLoadingPost.value = true;
-		const data = (await postApi.getParentByThreadSlug(props.slug)).data;
+		const data = (await postApi.getParentByThreadSlug(props.threadSlug)).data;
 		posts.value = data;
 	} catch (error) {
 		msg.error('Failed retrieving comments');
@@ -97,6 +103,8 @@ function focusToCommentInput() {
 onBeforeMount(() => {
 	getThread();
 	getThreadParentPosts();
+	subForum.value = Object.assign({}, store.currentSubForum);
+	console.log(subForum.value);
 });
 
 onUnmounted(() => {
@@ -111,83 +119,94 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-	<!-- thread -->
-	<div class="block text-center"
-		v-show="isLoadingThread">
-		<NSpin></NSpin>
-	</div>
+	<div class="max-w-screen-lg mx-auto flex space-x-4">
 
-	<div class="max-w-screen-md mx-auto">
-
-		<div class="mb-10">
-
-			<img v-if="thread"
-				src="/img/img.png"
-				class="h-[30vh] rounded w-full object-cover ">
-			<p class="text-neutral-500">Thread's image coming soon...</p>
-		</div>
-
-
-		<div>
-			<!-- user detail and time -->
-			<NSpace v-if="thread?.user"
-				justify="space-between"
-				class="mb-4">
-				<UserAvatarWithName :user="thread?.user" />
-
-				<NSpace vertical
-					align="end">
-					<span class="ms-auto text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
-					<p v-if="thread?.sub_forum_id">
-						posted on:
-						<RouterLink :to="{
-							name: 'sub.view',
-							params: {
-								slug: thread?.sub_forum.slug
-							}
-						}">
-							<span :class="store.getHoverPrimaryBgColor"
-								class="transition ease-out font-bold p-1 rounded hover:bg-primary-dark hover:text-black">
-								<span class="hidden">sub/</span>
-								{{ thread.sub_forum.name }}</span>
-						</RouterLink>
-					</p>
-
-				</NSpace>
-			</NSpace>
-
-
+		<!-- left -->
+		<div class="w-1/2 grow">
 			<!-- thread -->
-			<h1 class="text-xl">{{ thread.title }}</h1>
-			<p class="my-4 whitespace-pre-line">{{ thread.content }}</p>
+			<div class="block text-center"
+				v-show="isLoadingThread">
+				<NSpin></NSpin>
+			</div>
 
-			<LikeDislikeThreadButton v-if="thread?.id"
-				:thread="thread" />
-			<!---->
+			<div class="mb-10">
+
+				<img v-if="thread"
+					src="/img/img.png"
+					class="h-[30vh] rounded w-full object-cover ">
+				<p class="text-neutral-500">Thread's image coming soon...</p>
+			</div>
+
+
+			<div>
+				<!-- user detail and time -->
+				<NSpace v-if="thread?.user"
+					justify="space-between"
+					class="mb-4">
+					<UserAvatarWithName :user="thread?.user" />
+
+					<NSpace vertical
+						align="end">
+						<span class="ms-auto text-neutral-400">{{ timesAgo(thread?.created_at) }}</span>
+						<p v-if="thread?.sub_forum_id">
+							posted on:
+							<RouterLink :to="{
+								name: 'sub.view',
+								params: {
+									slug: thread?.sub_forum.slug
+								}
+							}">
+								<span :class="store.getHoverPrimaryBgColor"
+									class="transition ease-out font-bold p-1 rounded hover:bg-primary-dark hover:text-black">
+									<span class="hidden">sub/</span>
+									{{ thread.sub_forum.name }}</span>
+							</RouterLink>
+						</p>
+
+					</NSpace>
+				</NSpace>
+
+
+				<!-- thread -->
+				<h1 class="text-xl">{{ thread.title }}</h1>
+				<p class="my-4 whitespace-pre-line">{{ thread.content }}</p>
+
+				<LikeDislikeThreadButton v-if="thread?.id"
+					:thread="thread" />
+				<!---->
+			</div>
+			<!--  -->
+
+			<NDivider></NDivider>
+
+			<!-- comment input -->
+			<NewCommentInput class="mb-10"
+				ref="commentInputRef"
+				:threadId="thread.id"
+				@created-new-post="pushPost"
+				@comment-mode="focusToCommentInput" />
+			<!--  -->
+
+			<!-- comment section -->
+			<div class="block text-center"
+				v-show="isLoadingPost">
+				<NSpin></NSpin>
+			</div>
+
+			<PostCard v-for="post in posts"
+				:post="post" />
+			<!--  -->
+
+			<!-- bottom spacer -->
+			<div class="my-[500px]"></div>
 		</div>
-		<!--  -->
 
-		<NDivider></NDivider>
+		<!-- right -->
+		<div class="hidden  md:block w-1/3">
+			<div> <!-- <div class="sticky top-4"> -->
+				<RightSidebar :subForum="subForum" />
 
-		<!-- comment input -->
-		<NewCommentInput class="mb-10"
-			ref="commentInputRef"
-			:threadId="thread.id"
-			@created-new-post="pushPost"
-			@comment-mode="focusToCommentInput" />
-		<!--  -->
-
-		<!-- comment section -->
-		<div class="block text-center"
-			v-show="isLoadingPost">
-			<NSpin></NSpin>
+			</div>
 		</div>
-
-		<PostCard v-for="post in posts"
-			:post="post" />
-		<!--  -->
-
-		<!-- bottom spacer -->
-		<div class="my-[500px]"></div>
 	</div>
 </template>

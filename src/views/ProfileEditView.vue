@@ -116,52 +116,38 @@ onMounted(() => {
 </script>
 
 <template>
-	<!-- cover image -->
-	<div class="relative mb-[5rem]">
-		<img class="w-full h-[30%] object-cover rounded"
-			src="/img/cover/default.jpg"
-			alt="">
+	<div class="max-w-screen-md mx-auto">
+		<!-- data edit form -->
+		<NForm ref="formRef"
+			:rules="formRules"
+			:model="formModel">
 
-		<!-- profile image -->
-		<div class="absolute -bottom-[3rem] w-full  flex justify-start px-4">
-			<div class="rounded-full overflow-clip p-[4px] transition ease-out duration-500"
-				:class="[store.isBrightTheme ? 'bg-white' : 'bg-dark']">
-				<img src="/img/egg.png"
-					class=" w-[8rem] h-[8rem] rounded-full object-cover"
-					alt="">
-			</div>
-		</div>
+			<NFormItemRow label="Display name"
+				path="name">
+				<NInput v-model:value="formModel.name"
+					placeholder="Display name" />
+			</NFormItemRow>
+
+			<NFormItemRow label="Bio"
+				path="bio">
+				<NInput v-model:value="formModel.bio"
+					placeholder="Tell about yourself"
+					type="textarea" />
+			</NFormItemRow>
+
+			<NSpace justify="end">
+				<NButton type="primary"
+					@click="saveChanges"
+					:loading="busy"
+					:render-icon="() => busy ? null : renderIcon('fe:check')">
+					{{ busy ? "Saving" : "Save changes" }}
+				</NButton>
+
+				<NButton @click="cancelEdit"
+					:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
+			</NSpace>
+
+		</NForm>
+
 	</div>
-
-	<!-- data edit form -->
-	<NForm ref="formRef"
-		:rules="formRules"
-		:model="formModel">
-
-		<NFormItemRow label="Display name"
-			path="name">
-			<NInput v-model:value="formModel.name"
-				placeholder="Display name" />
-		</NFormItemRow>
-
-		<NFormItemRow label="Bio"
-			path="bio">
-			<NInput v-model:value="formModel.bio"
-				placeholder="Tell about yourself"
-				type="textarea" />
-		</NFormItemRow>
-
-		<NSpace justify="end">
-			<NButton type="primary"
-				@click="saveChanges"
-				:loading="busy"
-				:render-icon="() => busy ? null : renderIcon('fe:check')">
-				{{ busy ? "Saving" : "Save changes" }}
-			</NButton>
-
-			<NButton @click="cancelEdit"
-				:render-icon="() => renderIcon('fe:close')">Cancel</NButton>
-		</NSpace>
-
-	</NForm>
 </template>
