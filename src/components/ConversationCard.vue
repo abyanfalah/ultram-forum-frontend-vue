@@ -16,7 +16,7 @@ const user = ref({});
 
 onBeforeMount(() => {
 	user.value = props.conversation.other_party[0];
-	console.log(user.value);
+	// console.log(user.value);
 });
 
 const cardHoverBgColor = computed(() => {
