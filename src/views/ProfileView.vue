@@ -281,7 +281,7 @@ onMounted(async () => {
 							trigger="click"
 							:options="profilePicOptions">
 							<img :src="profileImageUrl ?? null"
-								class=" w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem] rounded-full object-cover"
+								class=" w-[5rem] h-[5rem] sm:w-[8rem] sm:h-[8rem] rounded-full object-cover"
 								role="button"
 								alt="">
 						</NDropdown>

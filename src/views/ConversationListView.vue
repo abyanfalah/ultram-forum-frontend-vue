@@ -20,9 +20,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<ConversationCard v-for="conversation in conversations"
-		:conversation="conversation"
-		:key="conversation.id"
-		role="button"
-		@click="() => chatStore.goToConversation(conversation.id)" />
+	<div class="max-w-screen-md mx-auto">
+		<ConversationCard v-for="conversation in conversations"
+			:conversation="conversation"
+			:key="conversation.id"
+			role="button"
+			@click="() => chatStore.goToConversation(conversation.id)" />
+	</div>
 </template>

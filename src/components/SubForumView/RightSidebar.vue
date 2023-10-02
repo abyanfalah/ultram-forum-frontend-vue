@@ -64,7 +64,7 @@ onMounted(() => {
 				}">
 					<NButton block
 						:render-icon="() => renderIcon('fe:text-align-left')"
-						type=primary>Create thread</NButton>
+						type=success>Create thread</NButton>
 				</RouterLink>
 
 

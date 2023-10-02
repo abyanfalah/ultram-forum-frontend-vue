@@ -47,11 +47,16 @@ watch(() => authStore.user.id, (userId, oldUserId) => {
 	const userChannelName = `user-${userId}`;
 	window.Echo.channel(userChannelName)
 		.listen('MessageSent', (e) => {
-			console.log(e);
+			// console.log(e);
 
 			if (isNotInChatRoom.value) {
 				showMessageNotification(e);
 			}
+
+			console.log("is not in chat room", isNotInChatRoom.value);
+
+			// showMessageNotification(e);
+
 		});
 });
 
