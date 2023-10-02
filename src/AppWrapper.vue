@@ -88,6 +88,29 @@ function messageNotification(event) {
 	});
 };
 
+onMounted(() => {
+	// if(window.Echo)
+	if (!authStore.isLogin) return;
+
+	const isExistsChannel = `user-${authStore.myId}` in window.Echo.connector.channels;
+
+	if (isExistsChannel == false) {
+		const userChannelName = `user-${authStore.myId}`;
+		window.Echo.channel(userChannelName)
+			.listen('MessageSent', (e) => {
+				console.log(e);
+
+				// if not in chat room
+				if (isNotInChatRoom.value == true) {
+					messageNotification(e);
+				}
+			});
+	}
+
+	console.log('echo channels => ', window.Echo.connector.channels);
+
+})
+
 
 </script>
 
