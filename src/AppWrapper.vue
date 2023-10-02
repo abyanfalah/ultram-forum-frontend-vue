@@ -40,27 +40,26 @@ watch(() => authStore.user.id, (userId, oldUserId) => {
 	if (!userId) {
 		const userChannelName = `user-${oldUserId}`;
 		window.Echo.leaveChannel(userChannelName);
+		console.log('no user now');
 		return;
 	}
+
+	console.log('we got user');
 
 	// listen to user broadcast channel
 	const userChannelName = `user-${userId}`;
 	window.Echo.channel(userChannelName)
 		.listen('MessageSent', (e) => {
-			// console.log(e);
+			console.log(e);
 
-			if (isNotInChatRoom.value) {
-				showMessageNotification(e);
+			// if not in chat room
+			if (isNotInChatRoom.value == true) {
+				messageNotification(e);
 			}
-
-			console.log("is not in chat room", isNotInChatRoom.value);
-
-			// showMessageNotification(e);
-
 		});
 });
 
-function showMessageNotification(event) {
+function messageNotification(event) {
 	const message = event.message;
 	const sender = event.sender;
 	notification.info({
@@ -88,6 +87,30 @@ function showMessageNotification(event) {
 		),
 	});
 };
+
+onMounted(() => {
+	if (!authStore.isLogin) return;
+
+	const isExistsChannel = `user-${authStore.myId}` in window.Echo.connector.channels;
+
+	if (isExistsChannel == false) {
+		const userChannelName = `user-${authStore.myId}`;
+		window.Echo.channel(userChannelName)
+			.listen('MessageSent', (e) => {
+				console.log(e);
+
+				// if not in chat room
+				if (isNotInChatRoom.value) {
+					return messageNotification(e);
+				}
+
+				console.log('is in chat room, not showing notification');
+			});
+	}
+
+	// console.log('echo channels => ', window.Echo.connector.channels);
+
+})
 
 
 </script>

@@ -36,11 +36,11 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-	<!-- <RequiresEmailVerificationCard /> -->
-
-	<UserCard v-for="user in users"
-		:key="user.id"
-		:user="user"
-		class="mb-2"
-		@user-data-changes="handleUserDataChanges" />
+	<div class="max-w-screen-md mx-auto">
+		<UserCard v-for="user in users"
+			:key="user.id"
+			:user="user"
+			class="mb-2"
+			@user-data-changes="handleUserDataChanges" />
+	</div>
 </template>

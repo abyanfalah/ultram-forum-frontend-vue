@@ -41,13 +41,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<!-- <pre v-for="sub in subForums">
-{{ sub }}
-</pre> -->
-
-	<SubForumCard v-for="sub in subForums"
-		:key="sub.id"
-		:sub-forum="sub"
-		@data-changed="changeSubForumData"
-		class="my-4" />
+	<div class="max-w-screen-md mx-auto">
+		<SubForumCard v-for="sub in subForums"
+			:key="sub.id"
+			:sub-forum="sub"
+			@data-changed="changeSubForumData"
+			class="my-4" />
+	</div>
 </template>

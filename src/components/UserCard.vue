@@ -32,7 +32,8 @@ onBeforeMount(() => {
 </script>
 
 <template>
-	<NCard :bordered="true">
+	<NCard v-if="!isMe"
+		:bordered="true">
 		<NSpace justify="space-between"
 			align="start">
 

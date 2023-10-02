@@ -15,10 +15,17 @@ import {
 } from 'naive-ui';
 import { h, ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useAuthStore } from '../stores/authStore';
 
+const authStore = useAuthStore();
 const store = useStore();
 const msg = useMessage();
 function migrate() {
+	if (authStore.user.username != "abyan" || authStore.myId != 2) {
+		return msg.error("You think im gonna let you do that?");
+	}
+
+
 	store.migrate();
 	msg.info('Migrated');
 }
