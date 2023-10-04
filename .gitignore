@@ -30,5 +30,5 @@ coverage
 .env
 
 
-public/img/
-src/services/apis/backend/testApi.js
+# public/img/
+# src/services/apis/backend/testApi.js
