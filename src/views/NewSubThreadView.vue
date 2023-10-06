@@ -114,24 +114,26 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="flex flex-col">
-		<h1 class="text-3xl">New thread</h1>
-		<p>on <span class="font-bold"> {{ subForum.name }}</span></p>
-	</div>
+	<div class="max-w-screen-md mx-auto">
 
-	<NForm ref="newThreadFormRef"
-		:model="newThreadFormModel"
-		:rules="newThreadFormRules"
-		class="flex-col space-y-4 mt-4">
+		<div class="flex flex-col">
+			<h1 class="text-3xl">New thread</h1>
+			<p>on <span class="font-bold"> {{ subForum.name }}</span></p>
+		</div>
 
-		<NFormItem label="Title"
-			path="title">
-			<NInput type="text"
-				v-model:value="newThreadFormModel.title"
-				placeholder="Thread title" />
-		</NFormItem>
+		<NForm ref="newThreadFormRef"
+			:model="newThreadFormModel"
+			:rules="newThreadFormRules"
+			class="flex-col space-y-4 mt-4">
 
-		<!-- <NFormItem label="Category"
+			<NFormItem label="Title"
+				path="title">
+				<NInput type="text"
+					v-model:value="newThreadFormModel.title"
+					placeholder="Thread title" />
+			</NFormItem>
+
+			<!-- <NFormItem label="Category"
 			path="categoryId">
 			<NSelect placeholder="Select category"
 				v-model:value="newThreadFormModel.categoryId"
@@ -139,29 +141,31 @@ onMounted(() => {
 				filterable />
 		</NFormItem> -->
 
-		<NFormItem label="Content"
-			path="content">
-			<NInput type="textarea"
-				v-model:value="newThreadFormModel.content"
-				:autosize="{
-					minRows: 10
-				}"
-				placeholder="Thread content" />
-		</NFormItem>
+			<NFormItem label="Content"
+				path="content">
+				<NInput type="textarea"
+					v-model:value="newThreadFormModel.content"
+					:autosize="{
+						minRows: 10
+					}"
+					placeholder="Thread content" />
+			</NFormItem>
 
-		<NSpace justify="end">
-			<NButton type="primary"
-				:render-icon="() => renderIcon('fe:plus')"
-				@click="handleSubmitNewThread">
-				Create new thread
-			</NButton>
-		</NSpace>
-
-
+			<NSpace justify="end">
+				<NButton type="primary"
+					:render-icon="() => renderIcon('fe:plus')"
+					@click="handleSubmitNewThread">
+					Create new thread
+				</NButton>
+			</NSpace>
 
 
 
-	</NForm>
+
+
+		</NForm>
+
+	</div>
 
 
 	<!-- editor -->
