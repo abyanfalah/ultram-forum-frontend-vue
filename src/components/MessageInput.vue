@@ -30,7 +30,7 @@ async function sendMessage() {
 
 		// send mesage to server
 		const res = await messageApi.sendMessage(newMessage);
-		// console.log(res);
+		console.log(res);
 
 		// emit disabled. new message retrieved from broadcast instead
 		// emits('sentNewMessage', newMessage);
