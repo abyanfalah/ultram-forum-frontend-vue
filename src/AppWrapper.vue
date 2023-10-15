@@ -95,8 +95,7 @@ onMounted(() => {
 
 	if (isExistsChannel == false) {
 		const userChannelName = `user-${authStore.myId}`;
-		window.Echo.channel(userChannelName);
-		console.log('listening to ', userChannelName)
+		window.Echo.channel(userChannelName)
 			.listen('MessageSent', (e) => {
 				console.log(e);
 

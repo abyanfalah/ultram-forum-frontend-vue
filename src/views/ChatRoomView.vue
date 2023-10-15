@@ -76,9 +76,10 @@ onMounted(() => {
 
 
 	// listening to broadcast
-	window.Echo.channel(conversationChannel);
 	console.log('listening to ', conversationChannel)
+	window.Echo.channel(conversationChannel)
 		.listen('MessageSent', (e) => {
+
 			console.log('got message', e.message);
 			pushNewMessage(e.message);
 		});
